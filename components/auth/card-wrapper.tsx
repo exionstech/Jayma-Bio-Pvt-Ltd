@@ -29,18 +29,18 @@ export const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center px-10 md:px-32 lg:px-44 2xl:px-64 text-black gap-6 bg-white dark:bg-black">
-      <div className="w-full">
+    <div className="w-full h-[80vh] flex flex-col items-center justify-start md:justify-center px-10 md:px-32 lg:px-44 2xl:px-64 text-black gap-6 bg-white dark:bg-black">
+      <div className="w-full hidden md:block">
         <Header label={headerLabel} />
       </div>
 
-      <div className="flex flex-col w-full">{children}</div>
+      <div className="flex flex-col w-full mt-10">{children}</div>
 
       {showSocial && (
         <div className="w-full flex flex-col justify-center items-center -mt-2 gap-2">
           <div className="flex items-center space-x-8">
             <div className="h-[1px] bg-black dark:bg-white w-14 md:w-16 lg:w-24"></div>
-            <span className="text-black dark:text-white">or continue with</span>
+            <span className="text-sm text-black dark:text-white">or continue with</span>
             <div className="h-[1px] bg-black dark:bg-white w-14 md:w-16 lg:w-24"></div>
           </div>
           <Social />
