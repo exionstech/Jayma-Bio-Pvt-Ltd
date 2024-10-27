@@ -80,9 +80,10 @@
   .auth {
     background: url("/auth/auth-bg.png");
     background-size: cover;
-  }
-  
+  }  
 }
+
+
 
 
 .swiper-pagination-bullet {
