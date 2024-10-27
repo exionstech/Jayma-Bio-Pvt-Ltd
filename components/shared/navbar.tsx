@@ -11,9 +11,9 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 md:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
+    <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 lg:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
       <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
-        <div className="md:flex items-center shrink-0 hidden">
+        <div className="lg:flex items-center shrink-0 hidden">
           <Link href="/">
             <Image
               src="/logos/site-logo.svg"
@@ -24,7 +24,7 @@ const Navbar = () => {
             />
           </Link>
         </div>
-        <div className="flex items-center shrink-0 md:hidden">
+        <div className="flex items-center shrink-0 lg:hidden">
           <Link href="/">
             <Image
               src="/logos/site-logo.svg"
@@ -36,7 +36,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="hidden md:flex items-center justify-between ml-4">
+        <div className="hidden lg:flex items-center justify-between ml-4">
           <div className="flex space-x-5">
             {MenuItem.map((item, index) => {
               const active =
@@ -68,7 +68,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <Link href="/auth/login" className="hidden md:block">
+        <Link href="/auth/login" className="hidden lg:block">
           <Button className="w-[140px] h-[40px] rounded-full bg-green hover:bg-green/90">Login</Button>
         </Link>
         <MobileNavbar />
