@@ -23,7 +23,7 @@ const config = {
     },
     extend: {
       fontWeight: {
-        'bold-custom': '550',
+        'bold-custom': '850',
         'extra-bold-custom': '1000',
       },
       fontFamily: {
