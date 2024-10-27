@@ -3,7 +3,7 @@ import Image from "next/image";
 const logos = [
   {
     type: "text",
-    name: "Green Infrastructure",
+    name: "Innovative, Nature-Driven Solutions",
     url: "/landing/services/image1.svg",
   },
   {
@@ -13,7 +13,7 @@ const logos = [
   },
   {
     type: "text",
-    name: "Sustainable Products",
+    name: "Connecting People and Plants",
     url: "/landing/services/image1.svg",
   },
   {
@@ -23,7 +23,7 @@ const logos = [
   },
   {
     type: "text",
-    name: "Smart Bio Technology",
+    name: "Sustainable Tech for Green Living",
     url: "/landing/services/image1.svg",
   },
   {
@@ -33,13 +33,23 @@ const logos = [
   },
   {
     type: "text",
-    name: "Sustainable Products",
+    name: "Real-Time Plant Insights",
     url: "/landing/services/image1.svg",
   },
   {
     type: "",
     name: "Smart Bio Technology",
     url: "/landing/services/image1.svg",
+  },
+  {
+    type: "text",
+    name: "Cultivating Nature’s Intelligence",
+    url: "/landing/services/image1.svg",
+  },
+  {
+    type: "",
+    name: "Smart Products",
+    url: "/landing/services/image2.svg",
   },
 ];
 
