@@ -3,6 +3,7 @@ const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
 const svgToDataUri = require("mini-svg-data-uri");
+import { withUt } from "uploadthing/tw";
 
 const config = {
   darkMode: ["class"],
@@ -191,4 +192,4 @@ function addVariablesForColors({ addBase, theme }: any) {
   });
 }
 
-export default config;
+export default withUt(config);
