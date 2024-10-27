@@ -29,7 +29,7 @@ export const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <div className="w-full h-[80vh] flex flex-col items-center justify-start md:justify-center px-10 md:px-32 lg:px-44 2xl:px-64 text-black gap-6 bg-white dark:bg-black">
+    <div className="w-full h-[80vh] md:min-h-screen flex flex-col items-center justify-start md:justify-center px-10 md:px-32 lg:px-44 2xl:px-64 text-black gap-6 bg-white dark:bg-black">
       <div className="w-full hidden md:block">
         <Header label={headerLabel} />
       </div>
