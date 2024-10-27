@@ -16,18 +16,9 @@ export const Header = ({ label }: HeaderProps) => {
   return (
     <div className="w-full flex flex-col gap-y-4 items-center justify-center">
       <Link href="/" className="flex items-center cursor-pointer">
-        <img
-          src="/logos/dark-logo.svg"
-          alt="logo"
-          className={cn("w-[140px] dark:hidden")}
-        />
-        <img
-          src="/logos/white-logo.svg"
-          alt="logo"
-          className={cn("w-[140px] hidden dark:flex")}
-        />
+        <img src="/logos/site-logo.svg" alt="logo" className={cn("w-[80px]")} />
       </Link>
-      <p className="text-black dark:text-white text-md">{label}</p>
+      {/* <p className="text-black dark:text-white text-md">{label}</p> */}
     </div>
   );
 };
