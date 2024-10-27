@@ -48,7 +48,7 @@ const Services = () => {
     <div className="w-full">
       <div className="mx-auto w-full md:px-6">
         <div
-          className="group relative mt-6 flex gap-6 overflow-hidden py-4 border border-green"
+          className="group relative mt-5 md:mt-4 flex gap-6 overflow-hidden py-2 md:py-4 border border-green"
           style={{
             maskImage:
               "linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 99%)",
