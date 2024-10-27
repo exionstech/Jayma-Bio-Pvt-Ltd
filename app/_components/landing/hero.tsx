@@ -75,10 +75,10 @@ export const HeroSection = () => {
             </p>
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
-          <h1 className="text-2xl md:text-5xl font-medium leading-[1.5]">
+          <h1 className="text-2xl md:leading-[4.2rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium line-clamp-6">
             Reimagining Bio <br />
             Products{" "}
-            <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full">
+            <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full text-4.5xl">
               Greening
             </span>
             <br />
@@ -126,7 +126,7 @@ export const HeroSection = () => {
                 <p className="text-green text-sm">making lives easier</p>
               </div>
             </div>
-            <div className="w-40 h-40 object-cover flex items-center justify-end relative">
+            <div className="w-40 h-40 object-cover flex items-center justify-end relative cursor-pointer">
               <Image
                 src="/landing/hero/round.svg"
                 alt="image"
