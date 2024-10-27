@@ -10,7 +10,7 @@ export const HeroSection = () => {
         <div className="md:w-1/2 w-full flex flex-col gap-3 md:gap-5">
           <div className="flex gap-2 items-center">
             <p className="text-xs md:text-[15px] text-green">
-              Lorem ipsum dolor sit amet, consectetur
+            Pioneering Eco-Friendly Innovations
             </p>
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
