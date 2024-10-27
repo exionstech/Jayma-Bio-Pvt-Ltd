@@ -25,7 +25,7 @@ const nextConfig = {
     serverActions: true,
   },
   middleware: {
-    edge: true,
+    edge: false,
   }
 };
 
