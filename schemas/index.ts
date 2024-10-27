@@ -183,9 +183,7 @@ export const UserEditSchema = z.object({
       message: "Email is required",
     })
   ),
-  role: z.optional(
-    z.enum(["USER", "ADMIN"])
-  ),
+  role: z.optional(z.enum(["USER", "ADMIN"])),
 });
 
 export const OnboardingSchema = z.object({
@@ -196,4 +194,14 @@ export const OnboardingSchema = z.object({
     experience: z.optional(z.string()),
     budget: z.optional(z.string()),
   }),
+});
+
+export const ProductsSchema = z.object({
+  title: z.string().min(1, {
+    message: "Title is required",
+  }),
+  description: z.string().min(10, { message: "Description is required" }),
+  price: z.number().min(1, { message: "Price is required" }),
+  link: z.string().url().min(1, { message: "Link is required" }),
+  image: z.array(z.string().url().min(1, { message: "Image is required" })),
 });
