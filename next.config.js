@@ -1,32 +1,18 @@
+const withMDX = require('@next/mdx')({ extension: /\.mdx?$/ });
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com'
-      }
+    domains: [
+      "images.unsplash.com",
+      "avatars.githubusercontent.com",
+      "img.clerk.com",
+      "res.cloudinary.com",
+      "lh3.googleusercontent.com"
     ]
   },
   reactStrictMode: true,
-  experimental: {
-    serverActions: true,
-  },
-  middleware: {
-    edge: false,
-  }
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
 };
 
-module.exports = nextConfig;
+module.exports = withMDX(nextConfig);
