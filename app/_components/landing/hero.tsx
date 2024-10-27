@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const HeroSection = () => {
   return (
-    <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[80vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
+    <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[70vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
       <div className="w-full flex flex-col md:flex-row items-center h-full">
         <div className="md:w-1/2 w-full flex flex-col gap-3 md:gap-5">
           <div className="flex gap-2 items-center">
@@ -25,9 +25,9 @@ export const HeroSection = () => {
           <AnimatedButton buttonText="Get Started" link={"/"} />
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col gap-[4rem] h-full mt-4 md:mt-14">
+        <div className="w-full md:w-1/2 flex flex-col gap-[4rem] h-full mt-10 md:mt-14">
           <div className="flex flex-col w-full h-full md:h-1/2 items-end justify-center gap-3 pt-5 md:pt-8">
-            <div className="w-full flex items-center justify-start -mb-14 md:hidden">
+            <div className="w-full flex items-center justify-start -mb-10 md:hidden">
               <div className="flex flex-col gap-1 items-start justify-center">
                 <Image
                   src={"/landing/hero/right-image.svg"}
