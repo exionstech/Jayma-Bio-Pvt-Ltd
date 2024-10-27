@@ -29,7 +29,7 @@ const MissionSection = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
               ultricies eu purus eget posuere.
             </p>
-            <p className="w-full lg:w-[85%] text-green text-sm md:text-[18px] lg:text-[20px] leading-[1.3rem] lg:leading-[1.8rem]">
+            <p className="w-full lg:w-[85%] text-green text-sm md:text-[18px] 2xl:text-[20px] leading-[1.3rem] lg:leading-[1.8rem]">
               Our mission is to innovate and create bio-based products that
               prioritize sustainability while fostering a deeper connection
               between people and nature. We are dedicated to developing
