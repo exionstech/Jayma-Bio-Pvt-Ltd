@@ -12,7 +12,7 @@ const MissionSection = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center max-w-screen-2xl mx-auto h-full bg-[#D9E6BA] lg:rounded-[60px] rounded-[30px] mt-20 pb-10">
+    <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full bg-[#D9E6BA] lg:rounded-t-[60px] rounded-t-[30px] mt-20">
       <div className="w-full flex justify-end items-end">
         <div className="flex justify-center w-[25%] lg:w-[20%] items-center self-end bg-white lg:py-10 py-4 rounded-bl-3xl gap-2 font-semibold text-green text-xs lg:text-[18px]">
           Know More
@@ -21,7 +21,7 @@ const MissionSection = () => {
       </div>
       <div className="px-5 lg:px-14 flex flex-col lg:flex-row w-full gap-5">
         <div className="lg:w-1/2 w-full flex flex-col gap-5">
-          <h1 className="text-4xl leading-[2.5rem] lg:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl lg:text-5xl font-semibold line-clamp-6 mb-3 lg:mb-0">
+          <h1 className="text-4xl 2xl:text-6xl lg:text-5xl font-semibold line-clamp-6 mb-3 lg:mb-0">
             Our Mission
           </h1>
           <p className="lg:hidden text-green font-extra-bold-custom text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies eu purus eget posuere.</p>
