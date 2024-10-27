@@ -13,6 +13,12 @@ export const publicRoutes = [
   "/blogs",
   "/contact",
   "/terms-of-service",
+  "/api/products/add",
+  "/api/products/getById",
+  "/api/products/getAll",
+  "/api/products/update",
+  "/api/products/delete",
+  "/api/uploadthing",
 ];
 
 /**

@@ -87,7 +87,7 @@ export const NewPasswordForm = () => {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-full"
+            className="w-full bg-green hover:bg-green/90"
           >
             Reset password
           </Button>

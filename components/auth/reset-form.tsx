@@ -86,7 +86,7 @@ export const ResetForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button 
-          type="submit" disabled={isPending} className="w-full">
+          type="submit" disabled={isPending} className="w-full bg-green hover:bg-green/90">
             Send Confirmation Email
           </Button>
         </form>
