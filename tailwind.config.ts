@@ -22,6 +22,10 @@ const config = {
       },
     },
     extend: {
+      fontWeight: {
+        'bold-custom': '550',
+        'extra-bold-custom': '1000',
+      },
       fontFamily: {
         dmSans: ["var(--font-dmSans)", "sans"],
         kotka: ["var(--font-kotka)", "sans"],
