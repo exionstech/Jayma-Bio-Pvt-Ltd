@@ -25,6 +25,12 @@ export const MenuItem = [
   },
   {
     id: 5,
+    label: "Events",
+    href: "/events",
+    icon: "/navIcon/events.svg",
+  },
+  {
+    id: 6,
     label: "Contact",
     href: "/contact",
     icon: "/navIcon/contact.svg",
