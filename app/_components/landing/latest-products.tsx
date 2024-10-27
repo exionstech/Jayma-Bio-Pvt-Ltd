@@ -24,8 +24,8 @@ const LatestProductsLg = () => {
                 src={product.imageUrl}
                 alt={product.name}
                 width={800}
-                height={150}
-                className="h-[80%]"
+                height={100}
+                className="h-[70%]"
               />
             </div>
             <div className="w-[40%] flex flex-col justify-center gap-5">
@@ -63,7 +63,7 @@ const LatestProductsSm = () => {
                 src={product.imageUrl}
                 alt={product.name}
                 width={800}
-                height={150}
+                height={100}
                 className="h-[80%] w-full"
               />
             </div>
@@ -85,13 +85,13 @@ const LatestProductsSm = () => {
 
 const LatestProducts = () => {
   return (
-    <div className="w-full bg-[#D9E6BA]">
+    <div className="w-full bg-[#D9E6BA] pb-5">
       <div className="w-full px-5 lg:px-14 min-h-screen flex flex-col max-w-screen-2xl mx-auto h-full pt-10 ronded-b-[30px] gap-10">
         <div className="flex flex-col w-full mt-10">
           <h1 className="text-4xl 2xl:text-6xl lg:text-5xl font-semibold line-clamp-6 mb-3 lg:mb-0">
             Latest Products
           </h1>
-          <p className="lg:hidden text-green font-extra-bold-custom text-sm">
+          <p className="lg:hidden text-green font-extra-bold-custom text-[18px]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
             ultricies eu purus eget posuere.
           </p>
@@ -100,7 +100,9 @@ const LatestProducts = () => {
           <LatestProductsLg />
           <LatestProductsSm/>
         </div>
-        <div className=""></div>
+        <div className="flex items-center justify-center">
+        <AnimatedButton buttonText="Explore More" link={"/"} />
+        </div>
       </div>
     </div>
   );
