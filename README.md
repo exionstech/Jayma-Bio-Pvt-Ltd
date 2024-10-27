@@ -1,4 +1,4 @@
-# ExLan Community
+# Jayma Bio Pvt ltd
 
 ```bash
 DATABASE_URL="postgres://avnadmin:AVNS_WgCTslDZFDmFj2Tw9eE@jayma-bio-exionstech-projects.c.aivencloud.com:10100/defaultdb?sslmode=require"
