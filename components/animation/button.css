@@ -89,10 +89,10 @@ button {
     color: #fff;
   }
   
-  /* Responsive Styles */
-  @media (max-width: 600px) {
+
+  /* @media (max-width: 600px) {
     button.learn-more {
-      width: 10rem; /* Adjust width for mobile screens */
+      width: 10rem; 
     }
   }
-  
+   */
