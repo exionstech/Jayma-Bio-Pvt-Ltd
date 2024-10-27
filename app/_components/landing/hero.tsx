@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const HeroSection = () => {
   return (
-    <main className="w-full px-5 md:px-14 md:min-h-[75vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-1 md:pt-6">
+    <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[80vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
       <div className="w-full flex flex-col md:flex-row items-center h-full">
         <div className="md:w-1/2 w-full flex flex-col gap-3 md:gap-5">
           <div className="flex gap-2 items-center">
@@ -15,20 +15,19 @@ export const HeroSection = () => {
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
           <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium line-clamp-6">
-            Reimagining Bio <br />
-            Products{" "}
+          Innovating Solutions <br /> for a{" "}
             <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full text-4.5xl">
-              Greening
+            Greener
             </span>
             <br />
-            the World
+            Tomorrow.
           </h1>
           <AnimatedButton buttonText="Get Started" link={"/"} />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-[4rem] h-full mt-4 md:mt-14">
           <div className="flex flex-col w-full h-full md:h-1/2 items-end justify-center gap-3 pt-5 md:pt-8">
-            <div className="w-full flex items-center justify-start -mb-24 md:hidden">
+            <div className="w-full flex items-center justify-start -mb-14 md:hidden">
               <div className="flex flex-col gap-1 items-start justify-center">
                 <Image
                   src={"/landing/hero/right-image.svg"}
