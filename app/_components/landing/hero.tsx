@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const HeroSection = () => {
   return (
-    <main className="w-full px-5 md:px-14 2xl:px-4 md:min-h-[76vh] min-h-[70vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
+    <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[70vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
       <div className="w-full flex flex-col md:flex-row items-center h-full">
         <div className="md:w-1/2 w-full flex flex-col gap-3 md:gap-5">
           <div className="flex gap-2 items-center">
