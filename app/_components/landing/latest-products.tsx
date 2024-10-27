@@ -18,7 +18,7 @@ const LatestProductsLg = () => {
               index % 2 !== 0 && "flex-row-reverse"
             )}
           >
-            <div className="w-[60%] flex items-center">
+            <div className="w-[60%]">
               <Image
                 key={index}
                 src={product.imageUrl}
