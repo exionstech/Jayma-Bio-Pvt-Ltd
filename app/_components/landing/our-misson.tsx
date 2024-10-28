@@ -2,6 +2,7 @@ import React from "react";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const MissionSection = () => {
   const stats = [
@@ -39,18 +40,24 @@ const MissionSection = () => {
           <div className="lg:w-1/2 w-full flex lg:flex-row flex-col gap-5 mt-5 lg:mt-1">
             <div className="lg:w-1/2 w-full flex flex-col gap-5 items-start justify-center">
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <div className="flex w-full justify-between">
                 <h1 className="text-green text-4xl font-extra-bold-custom">
                   2022
                 </h1>
+                <Image src={"/landing/misson/misson.svg"} alt="misson" width={130} height={60} className="shrink-0 md:hidden"/>
+                </div>
                 <p className="text-green text-sm lg:text-[15px]">
                   JAYMA BIO INNOVATIONS PVT LTD is driven by a passion for
                   sustainability and innovation.
                 </p>
               </div>
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <div className="flex w-full justify-between">
+                <Image src={"/landing/misson/misson1.svg"} alt="misson" width={130} height={60} className="shrink-0 md:hidden"/>
                 <h1 className="text-green text-4xl font-extra-bold-custom">
                   1000+
                 </h1>
+                </div>
                 <p className="text-green text-sm lg:text-[15px]">
                   JAYMA BIO INNOVATIONS PVT LTD has 1000+ active user everyday
                   from all over the world .
@@ -59,18 +66,24 @@ const MissionSection = () => {
             </div>
             <div className="lg:w-1/2 w-full flex flex-col gap-5 items-center justify-center lg:mt-10">
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5 lg:mt-5">
+                <div className="flex w-full justify-between">
                 <h1 className="text-green text-4xl font-extra-bold-custom">
                   50+
                 </h1>
+                <Image src={"/landing/misson/misson.svg"} alt="misson" width={130} height={60} className="shrink-0 md:hidden"/>
+                </div>
                 <p className="text-green text-sm lg:text-[15px]">
                   JAYMA BIO INNOVATIONS PVT LTD has more than 50 customers all
                   over the world.
                 </p>
               </div>
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <div className="flex w-full justify-between">
+                <Image src={"/landing/misson/misson1.svg"} alt="misson" width={130} height={60} className="shrink-0 md:hidden"/>
                 <h1 className="text-green text-4xl font-extra-bold-custom">
                   3
                 </h1>
+                </div>
                 <p className="text-green text-sm lg:text-[15px]">
                   JAYMA BIO INNOVATIONS PVT LTD has launched 3 products that are
                   available for all users

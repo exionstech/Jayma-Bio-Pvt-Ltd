@@ -16,7 +16,7 @@ export const MobileNavbar = () => {
           <AlignJustify className="size-7 shrink-0 text-green" />
         </SheetTrigger>
         <SheetContent side={"left"}>
-          <div className="flex flex-col h-full mt-5 gap-10">
+          <div className="flex flex-col h-full py-1 gap-4">
             <div className="flex w-full items-center justify-center shrink-0">
               <Link href="/">
                 <Image
@@ -38,7 +38,7 @@ export const MobileNavbar = () => {
                     <Link key={index} href={item.href}>
                       <div
                         className={cn(
-                          "px-4 py-2 bg-[#F1F1F1] flex items-center justify-between rounded-md w-full",
+                          "px-4 py-2 bg-white border border-green flex items-center justify-between rounded-md w-full",
                           active && "bg-lightGreen",
                           item.label === "Products" && "w-full",
                           item.label === "Contact" && "w-full"
@@ -63,7 +63,7 @@ export const MobileNavbar = () => {
               </div>
               <div className="flex flex-col gap-6 px-3">
                 <Link href={"/"}>
-                  <Button className="px-4 py-6 bg-[#F1F1F1] flex items-center justify-between rounded-md w-full border-none">
+                  <Button className="px-4 py-6 bg-white border border-green flex items-center justify-between rounded-md w-full">
                     <span className="text-green text-medium">Profile</span>
                     <Image
                       src="/landing/nav/user.svg"
