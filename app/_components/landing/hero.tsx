@@ -10,14 +10,14 @@ export const HeroSection = () => {
         <div className="md:w-1/2 w-full flex flex-col gap-3 md:gap-5">
           <div className="flex gap-2 items-center">
             <p className="text-xs md:text-[15px] text-green">
-            Pioneering Eco-Friendly Innovations
+              Pioneering Eco-Friendly Innovations
             </p>
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
           <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight mb-3 md:mb-0 text-green">
-          Innovating Solutions <br /> for a{" "}
+            Innovating Solutions <br /> for a{" "}
             <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full text-4.5xl">
-            Greener
+              Greener
             </span>
             <br />
             Tomorrow.
@@ -36,7 +36,9 @@ export const HeroSection = () => {
                   width={70}
                   className="rounded-full"
                 />
-                <p className="text-green text-xs">making lives <br /> easier</p>
+                <p className="text-green text-xs">
+                  making lives <br /> easier
+                </p>
               </div>
             </div>
             <Button
