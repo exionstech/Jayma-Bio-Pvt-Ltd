@@ -1,23 +1,18 @@
 export const collaborationList = [
     {
-      alt: "Fresh Tomatoes",
-      src: "/api/placeholder/300/200",
+      src: "/landing/collaborators/c1.svg",
       },
     {
-      alt: "Green Asparagus",
-      src: "/api/placeholder/300/200",
+      src: "/landing/collaborators/c2.svg",
     },
     {
-      alt: "Greenhouse Plants",
-      src: "/api/placeholder/300/200",
+      src: "/landing/collaborators/c1.svg",
     },
     {
-      alt: "Fresh Produce",
-      src: "/api/placeholder/300/200"
+      src: "/landing/collaborators/c2.svg"
     },
     {
-      alt: "Organic Collection",
-      src: "/api/placeholder/300/200"
+      src: "/landing/collaborators/c1.svg"
     }
   ];
   
