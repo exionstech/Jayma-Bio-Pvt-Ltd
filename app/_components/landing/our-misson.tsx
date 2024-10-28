@@ -1,7 +1,4 @@
-import React from "react";
-// import { Card, CardContent } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
-import { ArrowRight, MoveRight } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import Image from "next/image";
 
 const MissionSection = () => {
@@ -26,7 +23,7 @@ const MissionSection = () => {
         </div>
         <div className="px-5 md:px-14 flex flex-col md:flex-row w-full gap-5">
           <div className="md:w-1/2 w-full flex flex-col justify-center gap-4 lg:gap-10">
-            <h1 className="text-2xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight text-green line-clamp-6 mb-3 md:mb-0">
+            <h1 className="text-3xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight text-green line-clamp-6 mb-3 md:mb-0">
               Our Mission
             </h1>
             <p className="w-full md:w-[95%] lg:w-[85%] text-green text-sm md:text-[18px] 2xl:text-[20px] leading-[1.3rem] md:leading-[1.8rem]">
