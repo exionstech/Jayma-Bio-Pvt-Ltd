@@ -19,6 +19,7 @@ export const publicRoutes = [
   "/api/products/update",
   "/api/products/delete",
   "/api/uploadthing",
+  "/api/newsletter/add",
 ];
 
 /**

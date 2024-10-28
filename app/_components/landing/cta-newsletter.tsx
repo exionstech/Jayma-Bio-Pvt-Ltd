@@ -31,9 +31,37 @@ const CtaNewsLetterSection = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.success("Newsletter subscription successful!");
-    console.log(values);
+  function onSubmit(values: z.infer<typeof formSchema>, e: any) {
+    e.preventDefault();
+    try {
+      fetch("/api/newsletter/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.status === 400) {
+            toast.error("You are already subscribed.");
+          } else if (data.status === 200) {
+            toast.success("Newsletter subscription successful!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          toast.error("Failed to subscribe to the newsletter.");
+        });
+    } catch (error) {
+      console.log(error);
+    }
     form.reset();
   }
 
