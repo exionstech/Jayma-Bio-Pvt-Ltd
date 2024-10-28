@@ -11,7 +11,7 @@ import CtaNewsLetterSection from "../_components/landing/cta-newsletter";
 
 
 export const metadata: Metadata = {
-  title: "Jayman Bio Innovations | Home",
+  title: "Jayma Bio Innovations | Home",
 };
 
 const LandingPage = () => {
