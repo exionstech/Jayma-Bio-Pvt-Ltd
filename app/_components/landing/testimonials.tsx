@@ -65,7 +65,7 @@ const TestimonialsColumn = (props: {
 
 export const Testimonials = () => {
   return (
-    <section className="w-full px-5 md:px-14 min-h-screen flex flex-col max-w-screen-2xl mx-auto h-full pt-4 md:pt-6 gap-[4rem]">
+    <section className="w-full px-5 md:px-14 min-h-screen flex flex-col max-w-screen-2xl mx-auto h-full pt-4 md:pt-6 gap-[3rem]">
       <div className="flex flex-col md:flex-row">
         <h2 className="text-3xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium text-green line-clamp-6">
           What Others

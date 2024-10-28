@@ -21,7 +21,7 @@ const LatestProductsLg = () => {
             )}
           >
             <div
-              className={cn("w-[60%]", index % 2 !== 0 && "justify-items-end")}
+              className={cn("w-[50%] flex items-center justify-center object-contain", index % 2 !== 0 && "justify-items-end")}
             >
               <Image
                 key={index}
@@ -29,10 +29,10 @@ const LatestProductsLg = () => {
                 alt={product.name}
                 width={600}
                 height={50}
-                className="object-cover h-[90%] rounded-3xl"
+                className="object-cover h-[94%] rounded-3xl"
               />
             </div>
-            <div className="w-[40%] flex flex-col justify-center gap-8">
+            <div className="w-[45%] flex flex-col justify-center gap-8">
               <h1 className="text-green text-3xl font-bold-custom">
                 {product.name}
               </h1>

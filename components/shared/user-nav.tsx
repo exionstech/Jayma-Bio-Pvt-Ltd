@@ -41,7 +41,7 @@ export function UserNav({ user }: UserNavProps) {
                     alt={`${user?.username}'s profile image`}
                   />
                   {user?.name && (
-                    <AvatarFallback className="bg-transparent h-12 w-12">
+                    <AvatarFallback className="bg-transparent h-12 w-12 text-xl">
                       {user?.name[0]}
                     </AvatarFallback>
                   )}

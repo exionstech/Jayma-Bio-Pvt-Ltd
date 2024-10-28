@@ -1,33 +1,50 @@
 export const testimonials = [
-    {
-      text: "The quality of the farming tools I purchased exceeded my expectations. The precision and durability are fantastic, and they’ve significantly improved my work efficiency.",
-      imageSrc: "/landing/customers/c1.png",
-      name: "Arjun Patel",
-      userName: "Rice Farmer",
-    },
-    {
-      text: "I’ve been using their equipment for a few months now, and it has made a huge difference in my farming practices. Excellent build quality and great customer service.",
-      imageSrc: "/landing/customers/c2.png",
-      name: "Neha Sharma",
-      userName: "Wheat Farmer",
-    },
-    {
-      text: "The tools I bought are reliable and have helped me manage my farm more effectively. The website was easy to navigate, and delivery was prompt.",
-      imageSrc: "/landing/customers/c3.png",
-      name: "Ravi Kumar",
-      userName: "Vegetable Grower",
-    },
-    {
-      text: "Fantastic service and top-notch products. I am very satisfied with the equipment I ordered. It’s clear that the tools are designed with farmers in mind.",
-      imageSrc: "/landing/customers/c4.png",
-      name: "Priya Singh",
-      userName: "Fruit Orchard Owner",
-    },
-    {
-      text: "The range of farming instruments available is impressive. The quality is great, and the support team was very helpful with my queries. Highly recommended!",
-      imageSrc: "/landing/customers/c5.png",
-      name: "Vikram Yadav",
-      userName: "Dairy Farmer",
-    },
-  ];
-  
+  {
+    text: "JAYMA's kombucha has become a staple in my wellness routine! I feel great knowing I'm consuming something that's as good for the environment as it is for my health.",
+    imageSrc: "/landing/testimonials/1.png",
+    name: "Aisha Verma",
+    userName: "Nutritionist",
+  },
+  {
+    text: "The Sam Symphony is beyond unique! Experiencing plant music was transformative, and it deepened my appreciation for nature in an entirely new way.",
+    imageSrc: "/landing/testimonials/2.png",
+    name: "Ravi Kumar",
+    userName: "Botany Professor",
+  },
+  {
+    text: "I love the philosophy behind JAYMA. Their dedication to sustainable, high-quality products really resonates with me, and their bacterial cellulose packaging is just genius.",
+    imageSrc: "/landing/testimonials/3.png",
+    name: "Meera Joshi",
+    userName: "Environmental Scientist",
+  },
+  {
+    text: "Working with JAYMA as an intern has been incredibly rewarding. The team is passionate, and I’ve gained so much hands-on experience in sustainable product innovation.",
+    imageSrc: "/landing/testimonials/4.png",
+    name: "Nikhil Patel",
+    userName: "Biotechnology Student",
+  },
+  {
+    text: "Every product I've tried from JAYMA feels like a true gift from nature. Their kombucha especially is a must-try for anyone looking to be more health-conscious.",
+    imageSrc: "/landing/testimonials/5.png",
+    name: "Priya Sharma",
+    userName: "Health Coach",
+  },
+  {
+    text: "The commitment JAYMA has toward the environment is unmatched. Knowing that every purchase supports sustainability makes me a loyal customer!",
+    imageSrc: "/landing/testimonials/6.png",
+    name: "Amit Singh",
+    userName: "Sustainability Consultant",
+  },
+  {
+    text: "Seeing students collaborate with JAYMA shows how deeply they value innovation and growth. It’s amazing to witness a company so dedicated to positive change.",
+    imageSrc: "/landing/testimonials/7.png",
+    name: "Kavya Nair",
+    userName: "Educational Coordinator",
+  },
+  {
+    text: "JAYMA’s use of biobased materials in everyday items is inspiring. I love that their products are not only effective but also contribute to a better planet.",
+    imageSrc: "/landing/testimonials/8.png",
+    name: "Sunil Mehta",
+    userName: "Eco Product Designer",
+  },
+];
