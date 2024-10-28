@@ -24,8 +24,8 @@ const config = {
     },
     extend: {
       fontWeight: {
-        'bold-custom': '850',
-        'extra-bold-custom': '1000',
+        "bold-custom": "850",
+        "extra-bold-custom": "1000",
       },
       fontFamily: {
         dmSans: ["var(--font-dmSans)", "sans"],
@@ -146,6 +146,17 @@ const config = {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
+        zoom: {
+          "0%": {
+            transform: "scale(1)",
+          },
+          " 50%": {
+            transform: "scale(1.2)",
+          },
+          " 100%": {
+            transform: "scale(1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -160,6 +171,7 @@ const config = {
         smoothSpin: "smoothSpin 8s linear infinite",
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+        zoom: "zoom 2s ease-in-out infinite",
       },
     },
   },

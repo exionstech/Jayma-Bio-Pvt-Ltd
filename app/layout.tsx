@@ -15,6 +15,12 @@ import { ConfettiProvider } from "@/providers/confetti-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
+import dynamic from "next/dynamic";
+import Script from "next/script";
+
+const Loader = dynamic(() => import("@/components/shared/loader"), {
+  ssr: false,
+});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -43,21 +49,45 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en" suppressHydrationWarning>
-        <body className={cn("", poppins.className)}>
-          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          {showUsernameModal && <ClientUsernameModalSetter />}
-          <ModalProvider />
-          <ConfettiProvider />
-          <ThemeProvider
-            defaultTheme="light"
-            attribute="class"
-            enableSystem={false}
+        <head>
+          <style>{`
+          #content { display: none; }
+          #loader { display: flex; }
+        `}</style>
+        </head>
+        <body
+          className={cn(`scroll-smooth overflow-x-hidden `, poppins.className)}
+        >
+          <div
+            id="loader"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-white"
           >
-            {children}
-          </ThemeProvider>
-          <Toaster />
-          <Analytics />
-          <SpeedInsights />
+            <Loader />
+          </div>
+          <div id="content">
+            {showUsernameModal && <ClientUsernameModalSetter />}
+            <ModalProvider />
+            <ConfettiProvider />
+            <ThemeProvider
+              defaultTheme="system"
+              attribute="class"
+              enableSystem={false}
+            >
+              {children}
+            </ThemeProvider>
+            <Toaster />
+            <Analytics />
+            <SpeedInsights />
+          </div>
+          <Script id="show-page" strategy="afterInteractive">
+            {`
+            function showContent() {
+              document.getElementById('loader').style.display = 'none';
+              document.getElementById('content').style.display = 'block';
+            }
+            setTimeout(showContent, 3000);
+          `}
+          </Script>
         </body>
       </html>
     </SessionProvider>
