@@ -18,8 +18,8 @@ import { Input } from "@/components/ui/input";
 import AnimatedButton from "@/components/animation/button";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  email: z.string().email({
+    message: "Please enter a valid email address",
   }),
 });
 
@@ -27,7 +27,7 @@ const CtaNewsLetterSection = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
     },
   });
 
@@ -38,35 +38,36 @@ const CtaNewsLetterSection = () => {
   }
 
   return (
-    <section className="w-full h-[40vh] flex items-center justify-center px-5 md:px-10 lg:px-12 my-10">
-      <div className="bg-lightGreen w-full h-full rounded-[2rem] flex items-center gap-6 px-6 md:px-10">
-        <div className="w-full md:w-2/5 flex flex-col items-start justify-center gap-3">
+    <section className="w-full h-full md:h-[50vh] flex items-center justify-center px-5 md:px-10 lg:px-12 py-8 md:py-10">
+      <div className="bg-lightGreen w-full h-full rounded-[2rem] flex flex-col md:flex-row items-center gap-6 px-4 md:px-10">
+        <div className="w-full md:w-2/5 flex flex-col items-start md:items-start justify-center gap-3 pt-6 md:py-0 px-2 md:px-0">
           <h1 className="text-xl md:text-3xl tracking-tight font-medium capitalize flex flex-col gap-2">
             Subscribe to our newsletter
           </h1>
-          <p className="text-medium font-medium">
+          <p className="text-[14px] md:text-medium font-medium text-left">
             Stay Informed: Get the Latest Updates, Bio Tips, and Exclusive
             Offers Straight to Your Inbox!
           </p>
         </div>
-        <div className="w-full md:w-3/5 flex flex-col gap-4 items-center justify-center pl-10">
+        <div className="w-full md:w-3/5 flex flex-col gap-5  items-center justify-center md:pl-10 pb-8 md:pb-0">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full flex items-center justify-start gap-4"
+              className="w-full flex flex-col md:flex-row items-center justify-start gap-4"
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         placeholder="enter email"
                         {...field}
-                        className="w-[350px] rounded-full bg-white text-black border-none"
+                        className="w-[300px] md:w-[370px] rounded-full bg-white text-black border-none"
                       />
                     </FormControl>
+                    <FormMessage className="text-sm capitalize" />
                   </FormItem>
                 )}
               />
@@ -74,7 +75,7 @@ const CtaNewsLetterSection = () => {
               <AnimatedButton buttonText="Subscribe" />
             </form>
           </Form>
-          <p className="text-sm text-left">
+          <p className="text-sm text-center md:text-left">
             By submitting your email address, you agree to receive X-Ack's
             monthly newsletter. For more information, please read our privacy
             and policy page.
