@@ -30,7 +30,7 @@ const ProductsCard = () => {
     defaultValues: {
       title: "",
       description: "",
-      price: 0,
+      price: "",
       link: "",
       image: [],
     },
@@ -42,7 +42,31 @@ const ProductsCard = () => {
   }, []);
 
   const onSubmit = (data: z.infer<typeof ProductsSchema>) => {
-    console.log(data);
+    try {
+      fetch("/api/products/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((result) => {
+          toast.success("Product added successfully");
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+          toast.error("Failed to add product");
+        });
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to add product");
+    }
   };
 
   const handleDescriptionChange = (
@@ -157,11 +181,7 @@ const ProductsCard = () => {
                   <FormItem className="flex flex-col gap-2 w-full space-y-0">
                     <FormLabel>Link</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Link"
-                        className="w-full"
-                      />
+                      <Input {...field} placeholder="Link" className="w-full" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -178,8 +198,7 @@ const ProductsCard = () => {
                         {...field}
                         placeholder="Price"
                         className="w-full"
-                        type="number"
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
