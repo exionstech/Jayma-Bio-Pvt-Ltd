@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const LatestProductsLg = () => {
   return (
-    <div className="hidden lg:flex flex-col w-full">
+    <div className="hidden md:flex flex-col w-full">
       {LatestProductsDetails.map((product, index) => (
         <div key={index} className="flex flex-col gap-8 items-start py-5">
           <div className="flex gap-2 rounded-3xl border border-green px-16 py-3">
@@ -48,7 +48,7 @@ const LatestProductsLg = () => {
 
 const LatestProductsSm = () => {
   return (
-    <div className="lg:hidden w-full">
+    <div className="md:hidden w-full">
       {LatestProductsDetails.map((product, index) => (
         <div key={index} className="flex flex-col gap-10 items-start py-5">
           <div className="flex gap-2 rounded-3xl border border-green px-8 py-2">
