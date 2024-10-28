@@ -10,7 +10,7 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="w-full bg-[#D9E6BA]">
+    <section className="w-full bg-[#D9E6BA]" id="mission">
       <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full mt-14 md:mt-20">
         <div className="w-full flex justify-end items-end">
           <div className="flex justify-center w-[35%] md:w-[20%] items-center self-end gap-2 font-semibold text-xs md:text-[18px] cursor-pointer rounded-bl-3xl relative">
