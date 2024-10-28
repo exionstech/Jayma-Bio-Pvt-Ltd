@@ -63,7 +63,7 @@ export const MobileNavbar = () => {
               </div>
               <div className="flex flex-col gap-3">
                 <Link href={"/"}>
-                  <Button className="px-4 py-1 bg-white border border-green flex items-center justify-between rounded-xl w-full">
+                  <Button className="px-4 py-2 bg-white border border-green flex items-center justify-between rounded-xl w-full">
                     <span className="text-green text-medium">Profile</span>
                     <Image
                       src="/landing/nav/user.svg"
@@ -75,7 +75,7 @@ export const MobileNavbar = () => {
                   </Button>
                 </Link>
                 <Link href={"/"}>
-                  <Button className="px-4 py-1 bg-green flex items-center justify-between rounded-xl w-full border-none">
+                  <Button className="px-4 py-2 bg-green flex items-center justify-between rounded-xl w-full border-none">
                     <span className="text-white text-medium">Logout</span>
                     <Image
                       src="/landing/nav/logout.svg"
