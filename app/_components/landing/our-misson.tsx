@@ -15,7 +15,7 @@ const MissionSection = () => {
     <div className="w-full bg-[#D9E6BA] lg:rounded-t-[60px] rounded-t-[30px]">
       <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full mt-20">
         <div className="w-full flex justify-end items-end">
-          <div className="flex justify-center w-[25%] lg:w-[20%] items-center self-end bg-white lg:py-10 py-4 rounded-bl-3xl gap-2 font-semibold text-green text-xs lg:text-[18px]">
+          <div className="flex justify-center w-[25%] lg:w-[20%] items-center self-end bg-white lg:py-10 py-4 rounded-bl-3xl gap-2 font-semibold text-green text-xs lg:text-[18px] cursor-pointer">
             Know More
             <ArrowRight className="size-4 lg:size-6" />
           </div>
