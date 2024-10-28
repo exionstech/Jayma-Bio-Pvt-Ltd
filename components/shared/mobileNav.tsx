@@ -64,7 +64,9 @@ export const MobileNavbar = () => {
               <div className="flex flex-col gap-3">
                 <Link href={"/"}>
                   <Button className="px-4 py-2 bg-white border border-green flex items-center justify-between rounded-xl w-full">
-                    <span className="text-green text-medium">Profile</span>
+                    <span className="text-green text-medium hover:text-white">
+                      Profile
+                    </span>
                     <Image
                       src="/landing/nav/user.svg"
                       alt="Profile Picture"
