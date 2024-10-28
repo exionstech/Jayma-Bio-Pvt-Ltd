@@ -58,7 +58,7 @@ export const NewPasswordSchema = z.object({
       message: "Password must be at least 8 characters",
     })
     .regex(
-      new RegExp("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&]).{8,32}"),
+      new RegExp("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&#]).{8,32}"),
       {
         message:
           "Password must contain one uppercase letter, one lowercase letter, one number and one of the following characters: * . ! @ $ % &",

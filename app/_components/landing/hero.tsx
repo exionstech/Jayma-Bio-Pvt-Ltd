@@ -4,6 +4,16 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const HeroSection = () => {
+  const scrollToNext = () => {
+    const element = document.getElementById("mission");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  };
   return (
     <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[70vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
       <div className="w-full flex flex-col md:flex-row items-center h-full">
@@ -78,7 +88,10 @@ export const HeroSection = () => {
                 <p className="text-green text-sm">making lives easier</p>
               </div>
             </div>
-            <div className="w-[140px] aspect-square object-cover flex items-center justify-end relative cursor-pointer">
+            <div
+              onClick={scrollToNext}
+              className="w-[140px] aspect-square object-cover flex items-center justify-end relative cursor-pointer"
+            >
               <Image
                 src="/landing/hero/round.svg"
                 alt="image"

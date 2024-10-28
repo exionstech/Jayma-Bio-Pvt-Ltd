@@ -174,7 +174,7 @@ export const sendTwoFactorTokenEmail = async (
   name: string
 ) => {
   await transporter.sendMail({
-    from: `"ExLan" <${process.env.GMAIL_EMAIL}>`,
+    from: `"Jayma Bio Innovations" <${process.env.GMAIL_EMAIL}>`,
     to: email,
     subject: "Confirm Login Attempt.",
     html: `<html dir="ltr" lang="en">
