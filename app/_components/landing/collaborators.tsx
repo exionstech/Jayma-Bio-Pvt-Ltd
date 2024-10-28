@@ -1,9 +1,8 @@
-"use client"
+"use client";
 import AnimatedButton from "@/components/animation/button";
 import { MovingCards } from "@/components/shared/moving-card";
 import { collaborators } from "@/constants/landing/collaborations";
 import Image from "next/image";
-
 
 const firstRow = collaborators.slice(0, collaborators.length / 2);
 
@@ -23,6 +22,7 @@ const Collaborators = () => {
         <MovingCards pauseOnHover className="[--duration:50s]">
           {firstRow.map((image, index) => (
             <Image
+              key={index}
               src={image.imgUrl}
               alt={index.toString()}
               height={350}
