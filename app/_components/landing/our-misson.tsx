@@ -1,7 +1,7 @@
 import React from "react";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MoveRight } from "lucide-react";
 import Image from "next/image";
 
 const MissionSection = () => {
@@ -14,16 +14,18 @@ const MissionSection = () => {
 
   return (
     <section className="w-full bg-[#D9E6BA]">
-      <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full mt-20">
+      <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full mt-14 md:mt-20">
         <div className="w-full flex justify-end items-end">
-          <div className="flex justify-center w-[25%] md:w-[20%] items-center self-end bg-white md:py-10 py-4 rounded-bl-[38px] gap-2 font-semibold text-green text-xs md:text-[18px] cursor-pointer relative">
-            Know More
-            <ArrowRight className="size-4 md:size-6" />
-            <div className="absolute top-0 -left-10 w-10 aspect-square rounded-tr-[30px] bg-black  " />
+          <div className="flex justify-center w-[35%] md:w-[20%] items-center self-end gap-2 font-semibold text-xs md:text-[18px] cursor-pointer rounded-bl-3xl relative">
+          <img src="/landing/misson/curve.svg" alt="curve" className="w-full select-none pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full flex items-center justify-center h-full gap-2 pl-3">
+            <span className="text-green">Know more</span>
+            <MoveRight className="size-5 md:size-6 shrink-0 text-green" />
+            </div>
           </div>
         </div>
         <div className="px-5 md:px-14 flex flex-col md:flex-row w-full gap-5">
-          <div className="md:w-1/2 w-full flex flex-col justify-center gap-6 lg:gap-10">
+          <div className="md:w-1/2 w-full flex flex-col justify-center gap-4 lg:gap-10">
             <h1 className="text-2xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight text-green line-clamp-6 mb-3 md:mb-0">
               Our Mission
             </h1>
