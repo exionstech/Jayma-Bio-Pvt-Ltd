@@ -14,7 +14,7 @@ export const HeroSection = () => {
             </p>
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
-          <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium line-clamp-6 mb-3 md:mb-0 text-green">
+          <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight mb-3 md:mb-0 text-green">
           Innovating Solutions <br /> for a{" "}
             <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full text-4.5xl">
             Greener
