@@ -2,9 +2,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuItem } from "@/constants/landing/menuItem";
 import { cn } from "@/lib/utils";
 import { AlignJustify } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
+import Image from "next/image";
 
 export const MobileNavbar = () => {
   const pathname = usePathname();
@@ -12,37 +13,81 @@ export const MobileNavbar = () => {
     <div className="lg:hidden">
       <Sheet>
         <SheetTrigger className="p-2 border-none">
-        <AlignJustify className="size-7 shrink-0 text-green"/>
+          <AlignJustify className="size-7 shrink-0 text-green" />
         </SheetTrigger>
         <SheetContent side={"left"}>
-          <div className="flex flex-col space-y-5 mt-8 px-4">
-          {MenuItem.map((item, index) => {
-              const active =
-                pathname === item.href && pathname.includes(item.href);
-              return (
-                <Link key={index} href={item.href}>
-                  <div
-                    className={cn(
-                      "px-2 py-1 bg-[#F1F1F1] flex items-center gap-4 rounded-full w-full justify-center",
-                      active && "bg-lightGreen", item.label === "Products" && "w-full",
-                      item.label === "Contact" && "w-full"
-                    )}
-                  >
-                    <p className="text-green text-medium">{item.label}</p>
-                    <div className="w-8 h-8 p-1 object-contain rounded-full items-center flex bg-white shrink-0 justify-center">
-                      <img
-                        src={item.icon}
-                        alt="icon"
-                        className={cn("size-6",
-                          item.icon === "/navIcon/contact.svg" &&
-                            "!size-4 m-0.5 shrink-0"
+          <div className="flex flex-col h-full py-1 gap-4">
+            <div className="flex w-full items-center justify-center shrink-0">
+              <Link href="/">
+                <Image
+                  src="/logos/site-logo.svg"
+                  alt="logo"
+                  height={50}
+                  width={50}
+                  className="shrink-0"
+                />
+              </Link>
+            </div>
+
+            <div className="flex flex-col h-full justify-between">
+              <div className="flex flex-col space-y-5 mt-8 px-4">
+                {MenuItem.map((item, index) => {
+                  const active =
+                    pathname === item.href && pathname.includes(item.href);
+                  return (
+                    <Link key={index} href={item.href}>
+                      <div
+                        className={cn(
+                          "px-4 py-2 bg-white border border-green flex items-center justify-between rounded-md w-full",
+                          active && "bg-lightGreen",
+                          item.label === "Products" && "w-full",
+                          item.label === "Contact" && "w-full"
                         )}
-                      />
-                    </div>
-                  </div>
+                      >
+                        <p className="text-green text-medium">{item.label}</p>
+                        <div className="w-8 h-8 p-1 object-contain rounded-full items-center flex bg-white shrink-0 justify-center">
+                          <img
+                            src={item.icon}
+                            alt="icon"
+                            className={cn(
+                              "size-6",
+                              item.icon === "/navIcon/contact.svg" &&
+                                "!size-4 m-0.5 shrink-0"
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className="flex flex-col gap-6 px-3">
+                <Link href={"/"}>
+                  <Button className="px-4 py-6 bg-white border border-green flex items-center justify-between rounded-md w-full">
+                    <span className="text-green text-medium">Profile</span>
+                    <Image
+                      src="/landing/nav/user.svg"
+                      alt="Profile Picture"
+                      width={20}
+                      height={20}
+                      className="shrink-0"
+                    />
+                  </Button>
                 </Link>
-              );
-            })}
+                <Link href={"/"}>
+                  <Button className="px-4 py-6 bg-green flex items-center justify-between rounded-md w-full border-none">
+                    <span className="text-white text-medium">Logout</span>
+                    <Image
+                      src="/landing/nav/logout.svg"
+                      alt="Profile Picture"
+                      width={20}
+                      height={20}
+                      className="shrink-0 text-white"
+                    />
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </SheetContent>
       </Sheet>

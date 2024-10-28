@@ -18,4 +18,6 @@ GMAIL_EMAIL="exlancommunity@gmail.com"
 GMAIL_PASSWORD="jevx dapc pgbz bcrv"
 
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+UPLOADTHING_TOKEN='eyJhcGlLZXkiOiJza19saXZlXzc2ZjRmOGMwMzJkYzg2ZWJlZmJiNDEzYzYyMjQyNjE0MmYzZWJmZGE2MzMzODdjMTIwNDZkY2M2MjY2NTY4NjciLCJhcHBJZCI6IjJ6ZWs4bGoweDkiLCJyZWdpb25zIjpbInNlYTEiXX0='
 ```

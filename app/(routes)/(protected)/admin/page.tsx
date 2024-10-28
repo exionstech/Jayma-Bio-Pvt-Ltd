@@ -31,6 +31,50 @@ export default function DashboardPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <div className="flex flex-wrap">
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Registered Users</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Total Products</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Total Events</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Total Blogs</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Archived Products</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Archived Events</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 lg:w-1/3 p-4">
+          <div className="flex flex-col justify-between bg-white border rounded p-4 h-28 shadow">
+            <h2 className="text-xl font-bold">Archived Blogs</h2>
+            <p className="text-3xl font-bold">100</p>
+          </div>
+        </div>
+      </div>
     </ContentLayout>
   );
 }
