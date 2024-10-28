@@ -1,28 +1,23 @@
-const collaborationList = [
+export const collaborationList = [
     {
-      name: "Fresh Tomatoes",
-      image: "/api/placeholder/300/200",
-      description: "Organic greenhouse tomatoes"
+      alt: "Fresh Tomatoes",
+      src: "/api/placeholder/300/200",
+      },
+    {
+      alt: "Green Asparagus",
+      src: "/api/placeholder/300/200",
     },
     {
-      name: "Green Asparagus",
-      image: "/api/placeholder/300/200",
-      description: "Fresh harvested asparagus"
+      alt: "Greenhouse Plants",
+      src: "/api/placeholder/300/200",
     },
     {
-      name: "Greenhouse Plants",
-      image: "/api/placeholder/300/200",
-      description: "Sustainable indoor farming"
+      alt: "Fresh Produce",
+      src: "/api/placeholder/300/200"
     },
     {
-      name: "Fresh Produce",
-      image: "/api/placeholder/300/200",
-      description: "Locally grown vegetables"
-    },
-    {
-      name: "Organic Collection",
-      image: "/api/placeholder/300/200",
-      description: "Premium organic selection"
+      alt: "Organic Collection",
+      src: "/api/placeholder/300/200"
     }
   ];
   

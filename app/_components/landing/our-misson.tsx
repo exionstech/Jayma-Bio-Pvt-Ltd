@@ -22,7 +22,7 @@ const MissionSection = () => {
         </div>
         <div className="px-5 lg:px-14 flex flex-col lg:flex-row w-full gap-5">
           <div className="lg:w-1/2 w-full flex flex-col justify-center gap-6 md:gap-10">
-            <h1 className="text-4xl 2xl:text-6xl lg:text-5xl font-semibold line-clamp-6 mb-3 lg:mb-0">
+            <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium line-clamp-6 mb-3 md:mb-0">
               Our Mission
             </h1>
             <p className="w-full lg:w-[85%] text-green text-sm md:text-[18px] 2xl:text-[20px] leading-[1.3rem] lg:leading-[1.8rem]">

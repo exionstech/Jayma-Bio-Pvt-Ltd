@@ -89,7 +89,7 @@ const LatestProducts = () => {
     <div className="w-full bg-[#D9E6BA] ronded-b-[30px] lg:rounded-b-[60px] pb-5 mb-5">
       <div className="w-full px-5 lg:px-14 min-h-screen flex flex-col max-w-screen-2xl mx-auto h-full pt-10 gap-6 md:gap-10">
         <div className="flex w-full mt-10">
-          <h1 className="text-4xl 2xl:text-6xl lg:text-5xl font-semibold line-clamp-6 mb-3 lg:mb-0">
+          <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium line-clamp-6 mb-3 md:mb-0">
             Latest Products
           </h1>
         </div>
