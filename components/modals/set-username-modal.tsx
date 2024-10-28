@@ -92,19 +92,19 @@ export function SetUsernameModel() {
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full gap-4 py-4">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                disabled={isPending}
-                id="username"
-                placeholder="ex_lan"
-                className="w-full rounded-md"
-                maxLength={15}
-                {...form.register("username")} 
-              />
-            </div>
-            {form.formState.errors.username && (
-              <FormError message={form.formState.errors.username.message} />
-            )}
+            <Label htmlFor="username">Username</Label>
+            <Input
+              disabled={isPending}
+              id="username"
+              placeholder="john_doe"
+              className="w-full rounded-md"
+              maxLength={15}
+              {...form.register("username")}
+            />
+          </div>
+          {form.formState.errors.username && (
+            <FormError message={form.formState.errors.username.message} />
+          )}
           <DialogFooter>
             <div className="flex flex-col gap-2 w-full">
               <Button disabled={isPending} className="w-full" type="submit">
