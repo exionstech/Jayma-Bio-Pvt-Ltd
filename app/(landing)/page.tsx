@@ -5,6 +5,7 @@ import Services from "../_components/landing/services";
 import MissionSection from "../_components/landing/our-misson";
 import LatestProducts from "../_components/landing/latest-products";
 import { Testimonials } from "../_components/landing/testimonials";
+import Collaborators from "../_components/landing/collaborators";
 
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ const LandingPage = () => {
       <Services />
       <MissionSection/>
       <LatestProducts/>
+      <Collaborators/>
       <Testimonials/>
     </MaxWrapper>
   );
