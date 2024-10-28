@@ -18,8 +18,9 @@ const LatestProductsLg = () => {
               index % 2 !== 0 && "flex-row-reverse"
             )}
           >
-            <div className={cn("w-[60%]", index % 2 !== 0 && "justify-items-end" )}>
-
+            <div
+              className={cn("w-[60%]", index % 2 !== 0 && "justify-items-end")}
+            >
               <Image
                 key={index}
                 src={product.imageUrl}
@@ -45,7 +46,6 @@ const LatestProductsLg = () => {
   );
 };
 
-
 const LatestProductsSm = () => {
   return (
     <div className="md:hidden w-full">
@@ -55,9 +55,7 @@ const LatestProductsSm = () => {
             <span className="text-green text-lg">0{index + 1}.</span>
             <span className="text-green text-lg">{product.name}</span>
           </div>
-          <div
-            className="w-full flex flex-col gap-8 bg-white rounded-3xl px-4 py-4"
-            >
+          <div className="w-full flex flex-col gap-8 bg-white rounded-3xl px-4 py-4">
             <div className="w-full flex items-center justify-center">
               <Image
                 key={index}
@@ -89,16 +87,16 @@ const LatestProducts = () => {
     <section className="w-full bg-[#D9E6BA] rounded-b-[30px] lg:rounded-b-[60px] pb-5 mb-5">
       <div className="w-full px-5 lg:px-14 min-h-screen flex flex-col max-w-screen-2xl mx-auto h-full pt-10 gap-6 md:gap-10">
         <div className="flex w-full mt-10">
-          <h1 className="text-3xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-bold md:font-semibold text-green line-clamp-6 mb-3 md:mb-0">
+          <h1 className="text-2xl leading-[2.8rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight text-green line-clamp-6 mb-3 md:mb-0">
             Latest Products
           </h1>
         </div>
         <div className="w-full">
           <LatestProductsLg />
-          <LatestProductsSm/>
+          <LatestProductsSm />
         </div>
         <div className="flex items-center justify-center">
-        <AnimatedButton buttonText="All Products" link={"/"} />
+          <AnimatedButton buttonText="All Products" link={"/"} />
         </div>
       </div>
     </section>

@@ -18,30 +18,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { currentUser } from "@/lib/auth";
-import { FaUser } from "react-icons/fa";
 import { LogoutButton } from "../auth/logout-button";
 
-export async function UserNav() {
-  const user = await currentUser();
+interface UserNavProps {
+  user: any;
+}
 
+export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="hidden md:flex">
               <Button
                 variant="ghost"
-                className="relative h-8 w-8 rounded-full"
+                className="relative h-12 w-12 rounded-full"
               >
-                <Avatar className="h-8 w-8 border">
+                <Avatar className="h-12 w-12 border">
                   <AvatarImage
                     src={user?.image}
                     alt={`${user?.username}'s profile image`}
                   />
                   {user?.name && (
-                    <AvatarFallback className="bg-transparent">
+                    <AvatarFallback className="bg-transparent h-12 w-12">
                       {user?.name[0]}
                     </AvatarFallback>
                   )}
