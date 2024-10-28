@@ -82,7 +82,7 @@ const Navbar = () => {
             </Button>
           </Link>
         )}
-        <MobileNavbar />
+        <MobileNavbar  user={user}/>
       </div>
     </nav>
   );

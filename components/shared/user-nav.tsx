@@ -30,7 +30,7 @@ export function UserNav({ user }: UserNavProps) {
       <TooltipProvider disableHoverableContent>
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild className="hidden md:flex">
+            <DropdownMenuTrigger asChild className="hidden lg:flex">
               <Button
                 variant="ghost"
                 className="relative h-12 w-12 rounded-full"
