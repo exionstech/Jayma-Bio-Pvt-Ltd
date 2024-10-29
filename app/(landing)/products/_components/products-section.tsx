@@ -10,7 +10,7 @@ const ProductsSection = () => {
   const { products, loading, error } = useProducts();
 
   return (
-    <section className="mt-8 md:mt-10 py-4 md:py-8 px-5 md:px-10 lg:px-14 flex flex-col items-center gap-4 md:gap-6">
+    <section className="mt-8 md:mt-10 py-4 md:py-8 px-5 md:px-10 lg:px-14 flex flex-col items-center gap-4 md:gap-6 max-w-screen-2xl mx-auto">
       <div className="w-full flex items-center justify-center pt-2 md:pt-5">
         <h1 className="text-4xl md:text-7xl font-semibold text-green select-none">
           Products

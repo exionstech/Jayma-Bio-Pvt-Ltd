@@ -9,7 +9,7 @@ import { MdEmail } from "react-icons/md";
 const Footer = () => {
   return (
     <footer className="w-full h-full mt-6 md:mt-8 flex flex-col items-center bg-[#F1F1F1]">
-      <div className="w-full h-full px-5 md:px-10 lg:px-12 py-5 md:py-6 grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-6">
+      <div className="w-full h-full px-5 md:px-10 lg:px-12 py-5 md:py-6 grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-6 max-w-screen-2xl mx-auto">
         {/* Logo and Details */}
         <div className="col-span-1 md:col-span-4 flex flex-col gap-3 md:gap-4">
           <div className="w-full flex items-center gap-2">
@@ -85,15 +85,17 @@ const Footer = () => {
           ></iframe>
         </div>
       </div>
-      <div className="w-full h-20 md:h-14 bg-lightGreen flex flex-col md:flex-row items-center justify-center md:justify-between px-5 md:px-10 lg:px-12 gap-2">
-        <h1 className="text-sm text-green text-center md:text-left">
-          © {new Date().getFullYear()} Jayma Bio Innovations Pvt Ltd.
-        </h1>
-        <Link href="https://exions.tech" target="_blank">
-          <h1 className="text-sm font-medium text-green md:tracking-wide">
-            Developed by <span className="font-semibold">Exions Tech</span>
+      <div className="w-full bg-lightGreen flex items-center justify-center">
+        <div className="w-full h-20 md:h-14 flex flex-col md:flex-row items-center justify-center md:justify-between px-5 md:px-10 lg:px-12 gap-2 max-w-screen-2xl mx-auto">
+          <h1 className="text-sm text-green text-center md:text-left">
+            © {new Date().getFullYear()} Jayma Bio Innovations Pvt Ltd.
           </h1>
-        </Link>
+          <Link href="https://exions.tech" target="_blank">
+            <h1 className="text-sm font-medium text-green md:tracking-wide">
+              Developed by <span className="font-semibold">Exions Tech</span>
+            </h1>
+          </Link>
+        </div>
       </div>
     </footer>
   );
