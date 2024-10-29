@@ -9,7 +9,7 @@ import { MdEmail } from "react-icons/md";
 const Footer = () => {
   return (
     <footer className="w-full h-full mt-6 md:mt-8 flex flex-col items-center bg-[#F1F1F1]">
-      <div className="w-full h-full px-5 md:px-10 lg:px-12 py-5 md:py-6 grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-6 max-w-screen-2xl mx-auto">
+      <div className="w-full h-full px-5 md:px-10 lg:px-12 py-5 md:py-6 grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-7 md:gap-6 max-w-screen-2xl mx-auto">
         {/* Logo and Details */}
         <div className="col-span-1 md:col-span-4 flex flex-col gap-3 md:gap-4">
           <div className="w-full flex items-center gap-2">
