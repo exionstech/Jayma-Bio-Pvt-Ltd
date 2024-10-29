@@ -20,6 +20,11 @@ export const publicRoutes = [
   "/api/products/delete",
   "/api/uploadthing",
   "/api/newsletter/add",
+  "/api/events/add",
+  "/api/events/getById",
+  "/api/events/getAll",
+  "/api/events/update",
+  "/api/events/delete",
 ];
 
 /**
