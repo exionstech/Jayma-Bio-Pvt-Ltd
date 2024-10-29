@@ -1,5 +1,6 @@
 "use client";
 
+import Providers from "@/app/_components/provider/query-provider";
 import AdminPanelLayout from "@/components/admin-sidebar-layout/sidebar-layout";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useUserData } from "@/hooks/user-data";
@@ -21,8 +22,10 @@ export default function DemoLayout({
   }, [user, router]);
 
   return (
-    <AdminPanelLayout>
-      <TooltipProvider>{children}</TooltipProvider>
-    </AdminPanelLayout>
+    <Providers>
+      <AdminPanelLayout>
+        <TooltipProvider>{children}</TooltipProvider>
+      </AdminPanelLayout>
+    </Providers>
   );
 }

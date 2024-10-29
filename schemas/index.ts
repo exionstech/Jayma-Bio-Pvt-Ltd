@@ -201,7 +201,21 @@ export const ProductsSchema = z.object({
     message: "Title is required",
   }),
   description: z.string().min(10, { message: "Description is required" }),
-  price: z.number().min(1, { message: "Price is required" }),
+  price: z.string().min(1, { message: "Price is required" }),
   link: z.string().url().min(1, { message: "Link is required" }),
   image: z.array(z.string().url().min(1, { message: "Image is required" })),
+});
+
+export const EventsSchema = z.object({
+  title: z.string().min(1, {
+    message: "Title is required",
+  }),
+  description: z.string().min(10, { message: "Description is required" }),
+  venue: z.string().min(1, { message: "Price is required" }),
+  date: z.string().min(1, { message: "Date is required" }),
+  link: z.string().url().min(1, { message: "Link is required" }),
+  image: z.array(z.string().url().min(1, { message: "Image is required" })),
+  socials: z.array(
+    z.object({ url: z.string().url().optional(), name: z.string().optional() })
+  ),
 });
