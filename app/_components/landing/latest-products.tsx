@@ -112,7 +112,7 @@ const LatestProducts = () => {
           <LatestProductsSm />
         </div>
         <div className="flex items-center justify-center pb-5">
-          <AnimatedButton buttonText="All Products" link={"/"} />
+          <AnimatedButton buttonText="All Products" link={"/products"} />
         </div>
       </div>
     </section>
