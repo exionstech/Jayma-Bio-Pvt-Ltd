@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/footer";
 import Navbar from "@/components/shared/navbar";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ export default function LandingLayout({
       <div className="w-full h-full flex flex-col gap-5 items-center mt-14">
         {children}
       </div>
+      <Footer />
     </main>
   );
 }
