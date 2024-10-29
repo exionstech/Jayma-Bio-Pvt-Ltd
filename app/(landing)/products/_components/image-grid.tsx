@@ -91,7 +91,7 @@ export const ImageGrid = ({ images, title }: ImageGridProps) => {
   const renderImageGrid = () => {
     if (images.length === 1) {
       return (
-        <div className="w-[550px] h-[350px] overflow-hidden object-contain flex items-center justify-center">
+        <div className="w-[550px] h-250px] md:h-[350px] overflow-hidden object-contain flex items-center justify-center">
           <img
             src={images[0]}
             alt={title}
@@ -104,7 +104,7 @@ export const ImageGrid = ({ images, title }: ImageGridProps) => {
 
     if (images.length === 2) {
       return (
-        <div className="w-[550px] h-[350px] flex flex-row gap-1 overflow-hidden object-contain rounded-lg">
+        <div className="w-[550px] h-250px] md:h-[350px] flex flex-row gap-1 overflow-hidden object-contain rounded-lg">
           {images.map((image, idx) => (
             <img
               key={idx}
@@ -120,7 +120,7 @@ export const ImageGrid = ({ images, title }: ImageGridProps) => {
 
     if (images.length === 3) {
       return (
-        <div className="pt-3 w-[550px] h-[350px]">
+        <div className="pt-3 w-[550px] h-250px] md:h-[350px]">
           <div className="flex flex-row h-full">
             <div className="w-1/2 pr-[4px]">
               <img
@@ -151,7 +151,7 @@ export const ImageGrid = ({ images, title }: ImageGridProps) => {
 
     // For 4 or more images
     return (
-      <div className="pt-3 w-[550px] h-[350px] overflow-hidden rounded-lg">
+      <div className="pt-3 w-[550px] h-250px] md:h-[350px] overflow-hidden rounded-lg">
         <div className="flex flex-row h-full">
           <div className="w-1/2 pr-[4px]">
             <img
