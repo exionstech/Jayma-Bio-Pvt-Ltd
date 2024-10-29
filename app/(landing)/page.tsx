@@ -8,8 +8,6 @@ import { Testimonials } from "../_components/landing/testimonials";
 import Collaborators from "../_components/landing/collaborators";
 import CtaNewsLetterSection from "../_components/landing/cta-newsletter";
 
-
-
 export const metadata: Metadata = {
   title: "Jayma Bio Innovations | Home",
 };
@@ -19,11 +17,11 @@ const LandingPage = () => {
     <MaxWrapper>
       <HeroSection />
       <Services />
-      <MissionSection/>
-      <LatestProducts/>
-      <Collaborators/>
-      <Testimonials/>
-      <CtaNewsLetterSection/>
+      <MissionSection />
+      <LatestProducts />
+      <Collaborators />
+      <Testimonials />
+      <CtaNewsLetterSection />
     </MaxWrapper>
   );
 };
