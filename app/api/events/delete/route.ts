@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       where: { id: id },
     });
 
-    return NextResponse.json({ message: "Event deleted" });
+    return NextResponse.json({ message: "Event deleted", status: 200 });
   } catch (error) {
     console.error("Failed to delete event:", error);
     return NextResponse.json(

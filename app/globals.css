@@ -74,6 +74,10 @@
     @apply bg-background text-foreground;
   }
 
+  .bpComposerPoweredBy {
+    display: none;
+  }
+  
   ::-webkit-scrollbar {
     display: none;
   }
