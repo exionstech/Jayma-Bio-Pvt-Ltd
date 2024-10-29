@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import { Cog, LayoutGrid, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -56,8 +56,7 @@ export function UserNav({ user }: UserNavProps) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              @ {user?.username}
+            <p className="text-sm font-medium leading-none"> {user?.name}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user?.email}
@@ -66,6 +65,14 @@ export function UserNav({ user }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user?.role === "ADMIN" && (
+            <DropdownMenuItem className="hover:cursor-pointer" asChild>
+              <Link href="/admin" className="flex items-center">
+                <Cog className="w-4 h-4 mr-3 text-muted-foreground" />
+                Admin Dashboard
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/account" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
