@@ -19,11 +19,17 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
+import { Loader2 } from "lucide-react";
 
 const MAX_CHARS = 230;
 
-const ProductsCard = () => {
+interface ProductscardProps {
+  setDialogOpen: (open: boolean) => void;
+}
+
+const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
   const [charCount, setCharCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof ProductsSchema>>({
     resolver: zodResolver(ProductsSchema),
@@ -42,6 +48,7 @@ const ProductsCard = () => {
   }, []);
 
   const onSubmit = (data: z.infer<typeof ProductsSchema>) => {
+    setLoading(true);
     try {
       fetch("/api/products/add", {
         method: "POST",
@@ -57,15 +64,19 @@ const ProductsCard = () => {
           return response.json();
         })
         .then((result) => {
+          setLoading(false);
           toast.success("Product added successfully");
+          setDialogOpen(false);
         })
         .catch((error) => {
+          setLoading(false);
           console.error("There was a problem with the fetch operation:", error);
           toast.error("Failed to add product");
         });
     } catch (err) {
-      console.log(err);
+      setLoading(false);
       toast.error("Failed to add product");
+      setDialogOpen(false);
     }
   };
 
@@ -206,7 +217,16 @@ const ProductsCard = () => {
                 )}
               />
               <div className="flex justify-end">
-                <Button type="submit">Submit</Button>
+                <Button
+                  type="submit"
+                  className="bg-green hover:bg-green/90"
+                  disabled={loading}
+                >
+                  {loading ? "Submitting":"Submit"}
+                  {loading && (
+                    <Loader2 className="size-5 shrink-0 animate-spin"/>
+                  )}
+                </Button>
               </div>
             </div>
           </div>
