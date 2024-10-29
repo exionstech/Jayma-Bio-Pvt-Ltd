@@ -9,6 +9,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ProductsSection = () => {
   const { products, loading, error } = useProducts();
 
+  if (products.length === 0) {
+    return (
+      <section className="mt-8 md:mt-10 py-4 md:py-8 px-5 md:px-10 lg:px-14 flex flex-col items-center gap-4 md:gap-6 max-w-screen-2xl mx-auto">
+        <div className="w-full flex items-center justify-center pt-2 md:pt-5">
+          <h1 className="text-4xl md:text-7xl font-semibold text-green select-none">
+            Products
+          </h1>
+        </div>
+        <div className="min-h-[50vh] w-full flex items-center justify-center">
+          <h1 className="text-2xl font-medium text-green">
+            No products available
+          </h1>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="mt-8 md:mt-10 py-4 md:py-8 px-5 md:px-10 lg:px-14 flex flex-col items-center gap-4 md:gap-6 max-w-screen-2xl mx-auto">
       <div className="w-full flex items-center justify-center pt-2 md:pt-5">
