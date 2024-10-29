@@ -46,7 +46,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                     <Link key={index} href={item.href}>
                       <div
                         className={cn(
-                          "px-4 py-1 bg-white border border-green flex items-center justify-between rounded-xl w-full",
+                          "px-4 py-1 bg-white border border-green/60 flex items-center justify-between rounded-xl w-full",
                           active && "bg-lightGreen",
                           item.label === "Products" && "w-full",
                           item.label === "Contact" && "w-full"
@@ -72,7 +72,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
               {user ? (
                 <div className="flex flex-col gap-3">
                   <Link href={"/account"}>
-                    <Button className="px-4 py-2 bg-white border border-green hover:bg-white flex items-center justify-between rounded-xl w-full">
+                    <Button className="px-4 py-2 bg-white border border-green/60 hover:bg-white flex items-center justify-between rounded-xl w-full">
                       <span className="text-green text-medium">Account</span>
                       <Image
                         src="/landing/nav/user.svg"
@@ -100,7 +100,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
               ) : (
                 <div className="flex flex-col gap-3">
                   <Link href={"/auth/login"}>
-                    <Button className="px-4 py-2 hover:bg-green/90 bg-green border border-green flex items-center justify-between rounded-xl w-full">
+                    <Button className="px-4 py-2 hover:bg-green/90 bg-green border border-green/60 flex items-center justify-between rounded-xl w-full">
                       <span className="text-white text-medium hover:text-white">
                         LogIn
                       </span>
