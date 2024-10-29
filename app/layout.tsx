@@ -88,8 +88,6 @@ export default async function RootLayout({
             setTimeout(showContent, 3000);
           `}
           </Script>
-          <Script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></Script>
-          <Script src="https://files.bpcontent.cloud/2024/10/29/19/20241029190021-PKI3MMYM.js"></Script>
         </body>
       </html>
     </SessionProvider>
