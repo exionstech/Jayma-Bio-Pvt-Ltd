@@ -43,21 +43,55 @@ enum SocialTypes {
   Linkedin = "linkedin",
 }
 
-const EventsCard = () => {
+interface Social {
+  name?: SocialTypes;
+  url?: string;
+}
+
+export type Event = {
+  id: string;
+  title: string;
+  description: string;
+  venue: string;
+  date: string;
+  link: string;
+  image: string[];
+  socials?: {
+    name: "facebook" | "instagram" | "twitter" | "linkedin";
+    url: string;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+interface EventsCardProps {
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  initialData?: Event;
+  onSuccess?: () => Promise<void>;
+}
+
+const EventsCard = ({
+  setDialogOpen,
+  initialData,
+  onSuccess,
+}: EventsCardProps) => {
   const [charCount, setCharCount] = useState(0);
   const [selectedSocialType, setSelectedSocialType] = useState<string>("");
   const [socialLink, setSocialLink] = useState<string>("");
+  const [socialDialogOpen, setSocialDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      venue: "",
-      link: "",
-      image: [],
-      socials: [],
-      date: "",
+      title: initialData?.title || "",
+      description: initialData?.description || "",
+      venue: initialData?.venue || "",
+      link: initialData?.link || "",
+      image: initialData?.image || [],
+      socials: initialData?.socials || [],
+      date: initialData?.date
+        ? new Date(initialData.date).toISOString().split("T")[0]
+        : "",
     },
   });
 
@@ -65,32 +99,38 @@ const EventsCard = () => {
     setCharCount(form.getValues("description").length);
   }, []);
 
-  const onSubmit = (data: z.infer<typeof EventsSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof EventsSchema>) => {
     try {
-      fetch("/api/events/add", {
-        method: "POST",
+      const endpoint = initialData ? "/api/events/update" : "/api/events/add";
+      const method = "POST";
+
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((result) => {
-          toast.success("Event added successfully");
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-          toast.error("Failed to add event");
-        });
+        body: JSON.stringify({
+          ...data,
+          id: initialData?.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+
+      toast.success(
+        initialData ? "Event updated successfully" : "Event added successfully"
+      );
+      if (onSuccess) await onSuccess();
+      setDialogOpen(false);
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-      toast.error("Failed to add event");
+      console.error("There was a problem with the operation:", error);
+      toast.error(
+        initialData ? "Failed to update event" : "Failed to add event"
+      );
     }
   };
 
@@ -119,12 +159,20 @@ const EventsCard = () => {
   const handleAddSocial = () => {
     if (selectedSocialType && socialLink) {
       const currentSocials = form.getValues("socials") || [];
-      form.setValue("socials", [
-        ...currentSocials,
-        { name: selectedSocialType, url: socialLink },
-      ]);
+      const newSocial: Social = {
+        name: selectedSocialType as SocialTypes,
+        url: socialLink,
+      };
+
+      form.setValue("socials", [...currentSocials, newSocial], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+
       setSelectedSocialType("");
       setSocialLink("");
+      setSocialDialogOpen(false);
       toast.success("Social media link added successfully");
     }
   };
@@ -132,13 +180,19 @@ const EventsCard = () => {
   const handleDeleteSocial = (index: number) => {
     const currentSocials = form.getValues("socials") || [];
     const updatedSocials = currentSocials.filter((_, i) => i !== index);
-    form.setValue("socials", updatedSocials);
+    form.setValue("socials", updatedSocials, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
     toast.success("Social media link deleted successfully");
   };
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold">Add Product</h1>
+      <h1 className="text-2xl font-semibold">
+        {initialData ? "Update Event" : "Add Event"}
+      </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
           <div className="flex gap-10 my-5">
@@ -171,20 +225,19 @@ const EventsCard = () => {
                 )}
               />
               <div className="mt-4">
-                {form.watch("socials")?.map((social: any, index: number) => {
-                  // Import specific icons based on social type
+                {form.watch("socials")?.map((social, index: number) => {
                   let SocialIcon;
                   switch (social.name) {
-                    case "facebook":
+                    case SocialTypes.Facebook:
                       SocialIcon = Facebook;
                       break;
-                    case "instagram":
+                    case SocialTypes.Instagram:
                       SocialIcon = Instagram;
                       break;
-                    case "twitter":
+                    case SocialTypes.Twitter:
                       SocialIcon = Twitter;
                       break;
-                    case "linkedin":
+                    case SocialTypes.Linkedin:
                       SocialIcon = Linkedin;
                       break;
                     default:
@@ -215,7 +268,6 @@ const EventsCard = () => {
               </div>
             </div>
             <div className="flex flex-col flex-1 w-full gap-2">
-              {/* Previous form fields remain the same */}
               <FormField
                 control={form.control}
                 name="title"
@@ -271,7 +323,6 @@ const EventsCard = () => {
                         {...field}
                         placeholder="Venue"
                         className="w-full"
-                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -303,7 +354,6 @@ const EventsCard = () => {
                         placeholder="Date"
                         className="w-full"
                         type="date"
-                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -311,9 +361,12 @@ const EventsCard = () => {
                 )}
               />
               <div className="flex justify-between items-center">
-                <Dialog>
+                <Dialog
+                  open={socialDialogOpen}
+                  onOpenChange={setSocialDialogOpen}
+                >
                   <DialogTrigger asChild>
-                    <Button>Add Social</Button>
+                    <Button type="button">Add Social</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <div className="grid gap-4 py-4">
@@ -360,7 +413,9 @@ const EventsCard = () => {
                     </div>
                   </DialogContent>
                 </Dialog>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">
+                  {initialData ? "Update Event" : "Add Event"}
+                </Button>
               </div>
             </div>
           </div>
