@@ -1,4 +1,4 @@
-import { UserNav } from "@/components/shared/user-nav";
+import { UserNav } from "@/components/admin-sidebar-layout/user-nav";
 import React from "react";
 
 const UserProfile = () => {

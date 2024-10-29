@@ -1,14 +1,22 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuItem } from "@/constants/landing/menuItem";
 import { cn } from "@/lib/utils";
-import { AlignJustify } from "lucide-react";
+import { AlignJustify, LogIn } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { logout } from "@/actions/logout";
 
-export const MobileNavbar = () => {
+interface MobileNavbarProps {
+  user: any;
+}
+
+export const MobileNavbar = ({ user }: MobileNavbarProps) => {
   const pathname = usePathname();
+  const onClick = () => {
+    logout();
+  };
   return (
     <div className="lg:hidden">
       <Sheet>
@@ -17,20 +25,20 @@ export const MobileNavbar = () => {
         </SheetTrigger>
         <SheetContent side={"left"}>
           <div className="flex flex-col h-full py-1 gap-4">
-            <div className="flex w-full items-center justify-center shrink-0">
+            <div className="flex w-full items-start justify-center shrink-0">
               <Link href="/">
                 <Image
                   src="/logos/site-logo.svg"
                   alt="logo"
-                  height={50}
-                  width={50}
+                  height={60}
+                  width={60}
                   className="shrink-0"
                 />
               </Link>
             </div>
 
-            <div className="flex flex-col h-full justify-between">
-              <div className="flex flex-col space-y-5 mt-8 px-4">
+            <div className="flex flex-col h-[90%] justify-between">
+              <div className="flex flex-col space-y-2 mt-2">
                 {MenuItem.map((item, index) => {
                   const active =
                     pathname === item.href && pathname.includes(item.href);
@@ -38,7 +46,7 @@ export const MobileNavbar = () => {
                     <Link key={index} href={item.href}>
                       <div
                         className={cn(
-                          "px-4 py-2 bg-white border border-green flex items-center justify-between rounded-md w-full",
+                          "px-4 py-1 bg-white border border-green/60 flex items-center justify-between rounded-xl w-full",
                           active && "bg-lightGreen",
                           item.label === "Products" && "w-full",
                           item.label === "Contact" && "w-full"
@@ -61,32 +69,46 @@ export const MobileNavbar = () => {
                   );
                 })}
               </div>
-              <div className="flex flex-col gap-6 px-3">
-                <Link href={"/"}>
-                  <Button className="px-4 py-6 bg-white border border-green flex items-center justify-between rounded-md w-full">
-                    <span className="text-green text-medium">Profile</span>
-                    <Image
-                      src="/landing/nav/user.svg"
-                      alt="Profile Picture"
-                      width={20}
-                      height={20}
-                      className="shrink-0"
-                    />
-                  </Button>
-                </Link>
-                <Link href={"/"}>
-                  <Button className="px-4 py-6 bg-green flex items-center justify-between rounded-md w-full border-none">
+              {user ? (
+                <div className="flex flex-col gap-3">
+                  <Link href={"/account"}>
+                    <Button className="px-4 py-2 bg-white border border-green/60 hover:bg-white flex items-center justify-between rounded-xl w-full">
+                      <span className="text-green text-medium">Account</span>
+                      <Image
+                        src="/landing/nav/user.svg"
+                        alt="Profile Picture"
+                        width={20}
+                        height={20}
+                        className="shrink-0"
+                      />
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={onClick}
+                    className="px-4 py-2 bg-green hover:bg-green/90 flex items-center justify-between rounded-xl w-full border-none"
+                  >
                     <span className="text-white text-medium">Logout</span>
                     <Image
                       src="/landing/nav/logout.svg"
                       alt="Profile Picture"
-                      width={20}
-                      height={20}
+                      width={18}
+                      height={18}
                       className="shrink-0 text-white"
                     />
                   </Button>
-                </Link>
-              </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <Link href={"/auth/login"}>
+                    <Button className="px-4 py-2 hover:bg-green/90 bg-green border border-green/60 flex items-center justify-between rounded-xl w-full">
+                      <span className="text-white text-medium hover:text-white">
+                        LogIn
+                      </span>
+                      <LogIn className="size-7 shrink-0 text-white" />
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </SheetContent>

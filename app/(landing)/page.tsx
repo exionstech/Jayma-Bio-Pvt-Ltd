@@ -6,11 +6,10 @@ import MissionSection from "../_components/landing/our-misson";
 import LatestProducts from "../_components/landing/latest-products";
 import { Testimonials } from "../_components/landing/testimonials";
 import Collaborators from "../_components/landing/collaborators";
-
-
+import CtaNewsLetterSection from "../_components/landing/cta-newsletter";
 
 export const metadata: Metadata = {
-  title: "Jayman Bio Innovations | Home",
+  title: "Jayma Bio Innovations | Home",
 };
 
 const LandingPage = () => {
@@ -18,10 +17,11 @@ const LandingPage = () => {
     <MaxWrapper>
       <HeroSection />
       <Services />
-      <MissionSection/>
-      <LatestProducts/>
-      <Collaborators/>
-      <Testimonials/>
+      <MissionSection />
+      <LatestProducts />
+      <Collaborators />
+      <Testimonials />
+      <CtaNewsLetterSection />
     </MaxWrapper>
   );
 };

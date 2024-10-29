@@ -6,9 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useUserData } from "@/hooks/user-data";
+import { UserNav } from "./user-nav";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { user } = useUserData();
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 lg:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
@@ -46,7 +49,8 @@ const Navbar = () => {
                   <div
                     className={cn(
                       "px-2 py-1 bg-[#F1F1F1] flex items-center gap-4 rounded-full w-[120px] justify-end",
-                      active && "bg-lightGreen", item.label === "Products" && "w-[140px]",
+                      active && "bg-lightGreen",
+                      item.label === "Products" && "w-[140px]",
                       item.label === "Contact" && "w-[140px]"
                     )}
                   >
@@ -55,7 +59,8 @@ const Navbar = () => {
                       <img
                         src={item.icon}
                         alt="icon"
-                        className={cn("size-6",
+                        className={cn(
+                          "size-6",
                           item.icon === "/navIcon/contact.svg" &&
                             "!size-4 m-0.5 shrink-0"
                         )}
@@ -68,10 +73,16 @@ const Navbar = () => {
           </div>
         </div>
 
-        <Link href="/auth/login" className="hidden lg:block">
-          <Button className="w-[140px] h-[40px] rounded-full bg-green hover:bg-green/90">Login</Button>
-        </Link>
-        <MobileNavbar />
+        {user ? (
+          <UserNav user={user} />
+        ) : (
+          <Link href="/auth/login" className="hidden lg:block">
+            <Button className="w-[140px] h-[40px] rounded-full bg-green hover:bg-green/90">
+              Login
+            </Button>
+          </Link>
+        )}
+        <MobileNavbar  user={user}/>
       </div>
     </nav>
   );
