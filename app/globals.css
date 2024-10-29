@@ -74,10 +74,6 @@
     @apply bg-background text-foreground;
   }
 
-  .bpComposerPoweredBy {
-    display: none;
-  }
-  
   ::-webkit-scrollbar {
     display: none;
   }
@@ -107,4 +103,8 @@
   padding-left: 1px !important;
   margin-bottom: 1rem !important;
   margin-top: 1rem !important;
+}
+
+.bpComposerPoweredBy {
+  opacity: 0;
 }
