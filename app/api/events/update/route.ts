@@ -2,7 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { id, ...body } = await req.json();
+  const { id, ...data } = await req.json();
   try {
     const existingEvent = await prismadb.event.findUnique({
       where: { id: id },
@@ -14,10 +14,10 @@ export async function POST(req: Request) {
 
     const updatedEvent = await prismadb.event.update({
       where: { id: id },
-      data: body,
+      data: data,
     });
 
-    return NextResponse.json(updatedEvent);
+    return NextResponse.json({ message: "Updated successfully", status: 200 });
   } catch (error) {
     console.error("Failed to update event:", error);
     return NextResponse.json(
