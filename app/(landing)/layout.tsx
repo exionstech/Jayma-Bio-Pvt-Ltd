@@ -8,6 +8,7 @@ export default function LandingLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <main
       className={cn(
@@ -19,6 +20,8 @@ export default function LandingLayout({
         {children}
       </div>
       <Footer />
+
+      {/* Chatbot Script */}
       <Script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></Script>
       <Script src="https://files.bpcontent.cloud/2024/10/29/19/20241029190021-PKI3MMYM.js"></Script>
     </main>
