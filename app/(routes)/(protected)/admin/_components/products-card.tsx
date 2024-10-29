@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import {
   Form,
@@ -20,6 +18,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
 import { Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import Image from "next/image";
 
 const MAX_CHARS = 230;
 
@@ -30,6 +35,9 @@ interface ProductscardProps {
 const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof ProductsSchema>>({
     resolver: zodResolver(ProductsSchema),
@@ -105,13 +113,29 @@ const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
     }
   };
 
+  const handleImageUpload = (
+    res: ClientUploadedFileData<{ uploadedBy: string }>[]
+  ) => {
+    if (res && res.length > 0) {
+      const fileUrls = res.map((file) => file.url);
+      form.setValue("image", fileUrls);
+      setUploadedImages(fileUrls);
+      toast.success("Image uploaded successfully");
+    }
+  };
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setShowImageDialog(true);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-semibold">Add Product</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
           <div className="flex gap-10 my-5">
-            <div className="flex">
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="image"
@@ -120,15 +144,7 @@ const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
                     <FormControl>
                       <UploadDropzone
                         endpoint="imageUploader"
-                        onClientUploadComplete={(
-                          res: ClientUploadedFileData<{ uploadedBy: string }>[]
-                        ) => {
-                          if (res && res.length > 0) {
-                            const fileUrls = res.map((file) => file.url);
-                            field.onChange(fileUrls);
-                            toast.success("Image uploaded successfully");
-                          }
-                        }}
+                        onClientUploadComplete={handleImageUpload}
                         onUploadError={(error: Error) => {
                           console.error(`Upload error: ${error.message}`);
                           toast.error("Image upload failed");
@@ -139,6 +155,21 @@ const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
                   </FormItem>
                 )}
               />
+              <div className="grid grid-cols-2 gap-4">
+                {uploadedImages.map((imageUrl, index) => (
+                  <div
+                    key={index}
+                    className="cursor-pointer"
+                    onClick={() => handleImageClick(imageUrl)}
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={`Uploaded Image ${index}`}
+                      className="w-14 rounded-md h-auto"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="flex flex-col flex-1 w-full gap-2">
               <FormField
@@ -222,9 +253,9 @@ const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
                   className="bg-green hover:bg-green/90"
                   disabled={loading}
                 >
-                  {loading ? "Submitting":"Submit"}
+                  {loading ? "Submitting" : "Submit"}
                   {loading && (
-                    <Loader2 className="size-5 shrink-0 animate-spin"/>
+                    <Loader2 className="size-5 shrink-0 animate-spin" />
                   )}
                 </Button>
               </div>
@@ -232,6 +263,23 @@ const ProductsCard = ({ setDialogOpen }: ProductscardProps) => {
           </div>
         </form>
       </Form>
+
+      {/* Image Dialog */}
+      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+        <DialogContent>
+          {selectedImage && (
+            <div className="w-full h-full flex justify-center items-center">
+              <Image
+                src={selectedImage}
+                alt="Selected Image"
+                width={800}
+                height={600}
+                className="max-w-full max-h-[80vh] object-contain rounded-xl"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
