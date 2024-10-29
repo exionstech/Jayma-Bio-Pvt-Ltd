@@ -1,3 +1,4 @@
+"use clienta";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuItem } from "@/constants/landing/menuItem";
 import { cn } from "@/lib/utils";
@@ -7,25 +8,34 @@ import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { logout } from "@/actions/logout";
+import { useState } from "react";
 
 interface MobileNavbarProps {
   user: any;
 }
 
 export const MobileNavbar = ({ user }: MobileNavbarProps) => {
+  const [sheetClose, setSheetClose] = useState(false);
   const pathname = usePathname();
   const onClick = () => {
     logout();
   };
+
+  const handleSheetClose = () => {
+    setSheetClose(false);
+  };
   return (
     <div className="lg:hidden">
-      <Sheet>
+      <Sheet open={sheetClose} onOpenChange={setSheetClose}>
         <SheetTrigger className="p-2 border-none">
           <AlignJustify className="size-7 shrink-0 text-green" />
         </SheetTrigger>
         <SheetContent side={"left"}>
           <div className="flex flex-col h-full py-1 gap-4">
-            <div className="flex w-full items-start justify-center shrink-0">
+            <div
+              className="flex w-full items-start justify-center shrink-0"
+              onClick={handleSheetClose}
+            >
               <Link href="/">
                 <Image
                   src="/logos/site-logo.svg"
@@ -38,7 +48,10 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
             </div>
 
             <div className="flex flex-col h-[90%] justify-between">
-              <div className="flex flex-col space-y-2 mt-2">
+              <div
+                className="flex flex-col space-y-2 mt-2"
+                onClick={handleSheetClose}
+              >
                 {MenuItem.map((item, index) => {
                   const active =
                     pathname === item.href && pathname.includes(item.href);
@@ -70,7 +83,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                 })}
               </div>
               {user ? (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3" onClick={handleSheetClose}>
                   <Link href={"/account"}>
                     <Button className="px-4 py-2 bg-white border border-green/60 hover:bg-white flex items-center justify-between rounded-xl w-full">
                       <span className="text-green text-medium">Account</span>
@@ -98,7 +111,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                   </Button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3" onClick={handleSheetClose}>
                   <Link href={"/auth/login"}>
                     <Button className="px-4 py-2 hover:bg-green/90 bg-green border border-green/60 flex items-center justify-between rounded-xl w-full">
                       <span className="text-white text-medium hover:text-white">
