@@ -5,7 +5,7 @@ export const Socials = [
   },
   {
     label: "Instagram",
-    path: "",
+    path: "https://www.linkedin.com/company/jayma-bio-innovations-private-limited/",
   },
   {
     label: "Facebook",
