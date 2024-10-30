@@ -13,6 +13,7 @@ import { ConfettiProvider } from "@/providers/confetti-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import NextTopLoader from "nextjs-toploader";
 
 const Loader = dynamic(() => import("@/components/shared/loader"), {
   ssr: false,
@@ -29,7 +30,9 @@ export const metadata: Metadata = {
     "JAYMA BIO INNOVATIONS: Sustainable health products like kombucha, bacterial cellulose, and the SapStudio device, creating music from plants. Building a meaningful digital connection with our audience.",
   icons: {
     icon: "/logos/logo.png",
+    apple: "/logos/logo.png",
   },
+  manifest: "./manifest.json",
 };
 
 export default async function RootLayout({
@@ -64,6 +67,7 @@ export default async function RootLayout({
             {showUsernameModal && <ClientUsernameModalSetter />}
             <ModalProvider />
             <ConfettiProvider />
+            <NextTopLoader color="#0D2A25" />
             <ThemeProvider
               defaultTheme="system"
               attribute="class"
@@ -81,7 +85,7 @@ export default async function RootLayout({
               document.getElementById('loader').style.display = 'none';
               document.getElementById('content').style.display = 'block';
             }
-            setTimeout(showContent, 3000);
+            setTimeout(showContent, 2000);
           `}
           </Script>
         </body>
