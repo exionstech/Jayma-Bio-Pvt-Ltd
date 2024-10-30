@@ -85,6 +85,10 @@
     background: url("/auth/mobile-auth-bg.png");
     background-size: cover;
   }
+  .notfound-bg{
+    background: url("/not-found.png");
+    background-size: cover;
+  }
 }
 
 .swiper-pagination-bullet {
