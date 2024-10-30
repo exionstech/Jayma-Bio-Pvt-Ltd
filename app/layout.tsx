@@ -5,16 +5,12 @@ import { SessionProvider } from "next-auth/react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { auth } from "@/auth";
-import React from "react";
 import ClientUsernameModalSetter from "@/components/renderers/ClientUsernameModalSetter";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ModalProvider } from "@/providers/modal-provider";
 import { ConfettiProvider } from "@/providers/confetti-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "./api/uploadthing/core";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 
