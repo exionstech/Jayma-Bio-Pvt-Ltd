@@ -215,7 +215,4 @@ export const EventsSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
   link: z.string().url().min(1, { message: "Link is required" }),
   image: z.array(z.string().url().min(1, { message: "Image is required" })),
-  socials: z.array(
-    z.object({ url: z.string().url().optional(), name: z.string().optional() })
-  ),
 });

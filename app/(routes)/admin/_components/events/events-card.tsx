@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Form,
@@ -7,13 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { EventsSchema } from "@/schemas";
@@ -21,41 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { UploadDropzone } from "@/lib/uplaodthing";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  CalendarIcon,
-  Facebook,
-  Instagram,
-  Link,
-  Linkedin,
-  Trash2,
-  Twitter,
-} from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import Image from "next/image";
 
 const MAX_CHARS = 230;
-
-enum SocialTypes {
-  Facebook = "facebook",
-  Instagram = "instagram",
-  Twitter = "twitter",
-  Linkedin = "linkedin",
-}
-
-interface Social {
-  name?: SocialTypes;
-  url?: string;
-}
 
 export type Event = {
   id: string;
@@ -64,11 +32,7 @@ export type Event = {
   venue: string;
   date: string;
   link: string;
-  image: string[];
-  socials?: {
-    name: "facebook" | "instagram" | "twitter" | "linkedin";
-    url: string;
-  }[];
+  image?: string[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -85,9 +49,12 @@ const EventsCard = ({
   onSuccess,
 }: EventsCardProps) => {
   const [charCount, setCharCount] = useState(0);
-  const [selectedSocialType, setSelectedSocialType] = useState<string>("");
-  const [socialLink, setSocialLink] = useState<string>("");
-  const [socialDialogOpen, setSocialDialogOpen] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>(
+    initialData?.image || []
+  );
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
@@ -97,10 +64,7 @@ const EventsCard = ({
       venue: initialData?.venue || "",
       link: initialData?.link || "",
       image: initialData?.image || [],
-      socials: initialData?.socials || [],
-      date: initialData?.date
-        ? new Date(initialData.date).toISOString().split("T")[0]
-        : "",
+      date: initialData?.date || "",
     },
   });
 
@@ -109,6 +73,7 @@ const EventsCard = ({
   }, []);
 
   const onSubmit = async (data: z.infer<typeof EventsSchema>) => {
+    setLoading(true);
     try {
       const endpoint = initialData ? "/api/events/update" : "/api/events/add";
       const method = "POST";
@@ -140,6 +105,8 @@ const EventsCard = ({
       toast.error(
         initialData ? "Failed to update event" : "Failed to add event"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -165,46 +132,44 @@ const EventsCard = ({
     }
   };
 
-  const handleAddSocial = () => {
-    if (selectedSocialType && socialLink) {
-      const currentSocials = form.getValues("socials") || [];
-      const newSocial: Social = {
-        name: selectedSocialType as SocialTypes,
-        url: socialLink,
-      };
-
-      form.setValue("socials", [...currentSocials, newSocial], {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-
-      setSelectedSocialType("");
-      setSocialLink("");
-      setSocialDialogOpen(false);
-      toast.success("Social media link added successfully");
+  const handleImageUpload = (
+    res: ClientUploadedFileData<{ uploadedBy: string }>[]
+  ) => {
+    if (res && res.length > 0) {
+      const fileUrls = res.map((file) => file.url);
+      // Update both uploadedImages state and form value
+      const updatedImages = [...uploadedImages, ...fileUrls];
+      setUploadedImages(updatedImages);
+      form.setValue("image", updatedImages);
+      toast.success("Image uploaded successfully");
     }
   };
 
-  const handleDeleteSocial = (index: number) => {
-    const currentSocials = form.getValues("socials") || [];
-    const updatedSocials = currentSocials.filter((_, i) => i !== index);
-    form.setValue("socials", updatedSocials, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-    toast.success("Social media link deleted successfully");
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setShowImageDialog(true);
+  };
+
+  const handleRemoveImage = async (indexToRemove: number, name: string) => {
+    const updatedImages = uploadedImages.filter(
+      (_, index) => index !== indexToRemove
+    );
+    setUploadedImages(updatedImages);
+    toast.success("Image deleted");
+    form.setValue("image", updatedImages);
   };
 
   return (
-    <div>
+    <div className="w-full overflow-auto">
       <h1 className="text-2xl font-semibold">
         {initialData ? "Update Event" : "Add Event"}
       </h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
-          <div className="flex gap-10 my-5">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col w-full"
+        >
+          <div className="flex md:flex-row flex-col justify-between gap-10 my-5 w-full">
             <div className="flex flex-col">
               <FormField
                 control={form.control}
@@ -214,15 +179,7 @@ const EventsCard = ({
                     <FormControl>
                       <UploadDropzone
                         endpoint="imageUploader"
-                        onClientUploadComplete={(
-                          res: ClientUploadedFileData<{ uploadedBy: string }>[]
-                        ) => {
-                          if (res && res.length > 0) {
-                            const fileUrls = res.map((file) => file.url);
-                            field.onChange(fileUrls);
-                            toast.success("Image uploaded successfully");
-                          }
-                        }}
+                        onClientUploadComplete={handleImageUpload}
                         onUploadError={(error: Error) => {
                           console.error(`Upload error: ${error.message}`);
                           toast.error("Image upload failed");
@@ -233,198 +190,164 @@ const EventsCard = ({
                   </FormItem>
                 )}
               />
-              <div className="mt-4">
-                {form.watch("socials")?.map((social, index: number) => {
-                  let SocialIcon;
-                  switch (social.name) {
-                    case SocialTypes.Facebook:
-                      SocialIcon = Facebook;
-                      break;
-                    case SocialTypes.Instagram:
-                      SocialIcon = Instagram;
-                      break;
-                    case SocialTypes.Twitter:
-                      SocialIcon = Twitter;
-                      break;
-                    case SocialTypes.Linkedin:
-                      SocialIcon = Linkedin;
-                      break;
-                    default:
-                      SocialIcon = Link;
-                  }
-
-                  return (
+              <div className="w-full flex gap-2 flex-wrap py-5">
+                {uploadedImages.map((imageUrl, index) => (
+                  <div key={index} className="relative group">
                     <div
-                      key={index}
-                      className="flex items-center gap-2 mb-2 group bg-gray-300/50 p-2 rounded-lg"
+                      className="cursor-pointer"
+                      onClick={() => handleImageClick(imageUrl)}
                     >
-                      <SocialIcon className="h-6 w-6 text-gray-600" />
-                      <span className="text-sm text-gray-600">
-                        {social.url}
-                      </span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto h-8 w-8"
-                        onClick={() => handleDeleteSocial(index)}
-                      >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
+                      <img
+                        src={imageUrl}
+                        alt={`Uploaded Image ${index}`}
+                        className="w-14 rounded-md h-auto"
+                      />
                     </div>
-                  );
-                })}
+                    <button
+                      type="button"
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => handleRemoveImage(index, imageUrl)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="flex flex-col flex-1 w-full gap-2">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Title"
-                        className="w-full"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Description"
-                        className="w-full border-black h-[100px] resize-none"
-                        onChange={(e) => handleDescriptionChange(e, field)}
-                      />
-                    </FormControl>
-                    <div className="flex justify-end items-end">
-                      <p
-                        className={`text-xs ${
-                          charCount === MAX_CHARS ? "text-red-500" : ""
-                        }`}
-                      >
-                        {charCount}/{MAX_CHARS}
-                      </p>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="venue"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Venue</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Venue"
-                        className="w-full"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="link"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Registration Link</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Link" className="w-full" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                    <Input {...field} type="date" className="w-full" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex justify-between items-center">
-                <Dialog
-                  open={socialDialogOpen}
-                  onOpenChange={setSocialDialogOpen}
-                >
-                  <DialogTrigger asChild>
-                    <Button type="button">Add Social</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <div className="grid gap-4 py-4">
-                      <div className="flex flex-col gap-4">
-                        <FormItem>
-                          <FormLabel>Social Media Platform</FormLabel>
-                          <Select
-                            value={selectedSocialType}
-                            onValueChange={setSelectedSocialType}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select platform" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {Object.values(SocialTypes).map((type) => (
-                                <SelectItem key={type} value={type}>
-                                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </FormItem>
-                        <FormItem>
-                          <FormLabel>Social Media Link</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Enter social media link"
-                              value={socialLink}
-                              onChange={(e) => setSocialLink(e.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                        <Button
-                          onClick={handleAddSocial}
-                          type="button"
-                          className="mt-2"
-                          disabled={!selectedSocialType || !socialLink}
+            <div className="flex flex-col md:flex-row flex-1 w-full gap-2">
+              <div className="flex flex-col gap-5 w-full">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Title"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder="Description"
+                          className="w-full border-black h-[100px] resize-none"
+                          onChange={(e) => handleDescriptionChange(e, field)}
+                        />
+                      </FormControl>
+                      <div className="flex justify-end items-end">
+                        <p
+                          className={`text-xs ${
+                            charCount === MAX_CHARS ? "text-red-500" : ""
+                          }`}
                         >
-                          Add Social Link
-                        </Button>
+                          {charCount}/{MAX_CHARS}
+                        </p>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                <Button type="submit">
-                  {initialData ? "Update Event" : "Add Event"}
-                </Button>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col gap-5 w-full">
+                <FormField
+                  control={form.control}
+                  name="venue"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Venue</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Venue"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="link"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Registration Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Link"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Date of birth</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          placeholder="Pick a Date"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
           </div>
+          <div className="flex justify-end items-end">
+            <Button type="submit" disabled={loading}>
+              {loading
+                ? initialData
+                  ? "Updating..."
+                  : "Submitting..."
+                : initialData
+                ? "Update"
+                : "Submit"}
+              {loading && (
+                <Loader2 className="ml-2 size-5 shrink-0 animate-spin" />
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
+
+      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+        <DialogContent>
+          {selectedImage && (
+            <div className="w-full h-full flex justify-center items-center">
+              <Image
+                src={selectedImage}
+                alt="Selected Image"
+                width={800}
+                height={600}
+                className="max-w-full max-h-[80vh] object-contain rounded-xl"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
