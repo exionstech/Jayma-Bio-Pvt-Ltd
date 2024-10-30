@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ContentLayout } from "@/components/admin-sidebar-layout/content-layout";
 import Link from "next/link";
-import ProductsComponents from "../_components/propducts-components";
+import ProductsComponents from "../_components/products/propducts-components";
 
 const Page = () => {
   return (
