@@ -1,19 +1,10 @@
 "use client";
 import AnimatedButton from "@/components/animation/button";
 import { Button } from "@/components/ui/button";
+import { scrollToNext } from "@/lib/utils";
 import Image from "next/image";
 
 export const HeroSection = () => {
-  const scrollToNext = () => {
-    const element = document.getElementById("mission");
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
-  };
   return (
     <main className="w-full px-5 md:px-14 md:min-h-[76vh] min-h-[70vh] flex flex-col items-center justify-center max-w-screen-2xl mx-auto h-full pt-10 md:pt-6">
       <div className="w-full flex flex-col md:flex-row items-center h-full">
@@ -32,7 +23,7 @@ export const HeroSection = () => {
             <br />
             Tomorrow.
           </h1>
-          <AnimatedButton buttonText="Get Started" link={"/"} />
+          <AnimatedButton buttonText="Get Started" link={"/auth/login"} />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-[4rem] h-full mt-10 md:mt-14">
@@ -69,10 +60,13 @@ export const HeroSection = () => {
             <Button
               size={"lg"}
               variant="outline"
+              onClick={() => {
+                scrollToNext("testimonials");
+              }}
               className="text-green w-[180px] md:w-[240px] rounded-full border border-green text-sm md:text-medium flex items-center justify-end font-medium "
             >
               What Clients Tell
-            </Button>
+            </Button> 
           </div>
 
           <div className="hidden h-1/2 w-full md:flex items-center justify-end">
@@ -89,7 +83,9 @@ export const HeroSection = () => {
               </div>
             </div>
             <div
-              onClick={scrollToNext}
+              onClick={() => {
+                scrollToNext("mission");
+              }}
               className="w-[140px] aspect-square object-cover flex items-center justify-end relative cursor-pointer"
             >
               <Image
