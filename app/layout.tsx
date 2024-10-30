@@ -13,6 +13,7 @@ import { ConfettiProvider } from "@/providers/confetti-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import NextTopLoader from "nextjs-toploader";
 
 const Loader = dynamic(() => import("@/components/shared/loader"), {
   ssr: false,
@@ -64,6 +65,7 @@ export default async function RootLayout({
             {showUsernameModal && <ClientUsernameModalSetter />}
             <ModalProvider />
             <ConfettiProvider />
+            <NextTopLoader color="#0D2A25" />
             <ThemeProvider
               defaultTheme="system"
               attribute="class"
