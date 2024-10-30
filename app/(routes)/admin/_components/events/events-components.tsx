@@ -40,11 +40,7 @@ export type Event = {
   venue: string;
   date: string;
   link: string;
-  image: string[];
-  socials?: {
-    name: "facebook" | "instagram" | "twitter" | "linkedin";
-    url: string;
-  }[];
+  image?: string[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -229,7 +225,7 @@ export default function EventsTable() {
                 <Plus className="size-5 shrink-0" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl">
+            <DialogContent className="md:max-w-4xl w-full">
               <EventsCard
                 setDialogOpen={setDialogOpen}
                 onSuccess={fetchEvents}
