@@ -42,7 +42,7 @@ const config = {
         lightGreen: "#D9E6BA",
         green: "#0D2A25",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#0D2A25",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {

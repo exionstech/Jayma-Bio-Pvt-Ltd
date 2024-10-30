@@ -1,57 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { format, isBefore } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { useState, useEffect } from "react"
+import { format, isBefore } from "date-fns"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { ChevronLeft, ChevronRight, CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { UseFormReturn } from "react-hook-form";
+} from "@/components/ui/form"
+import { CalendarIcon } from "lucide-react"
+import { UseFormReturn } from "react-hook-form"
+import { Calendar } from "./calendar"
+import { cn } from "@/lib/utils"
 
 const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+]
 
-// Extend the years list to 3000
-const currentYear = new Date().getFullYear();
-const years = Array.from(
-  { length: 2100 - currentYear },
-  (_, i) => currentYear + i
-);
+const currentYear = new Date().getFullYear()
+const years = Array.from({ length: 2100 - currentYear + 1 }, (_, i) => currentYear + i)
 
 interface DatePickerFieldProps {
-  form: UseFormReturn<any>;
-  name: string;
-  label: string;
-  className?: string;
+  form: UseFormReturn<any>
+  name: string
+  label: string
+  className?: string
 }
 
 const EventDatePicker: React.FC<DatePickerFieldProps> = ({
@@ -60,53 +46,87 @@ const EventDatePicker: React.FC<DatePickerFieldProps> = ({
   label,
   className,
 }) => {
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    new Date().getMonth()
-  );
-  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [isMonthSelectOpen, setIsMonthSelectOpen] = useState(false)
+  const [isYearSelectOpen, setIsYearSelectOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date>()
+  const [month, setMonth] = useState<Date>(new Date())
 
-  const today = new Date();
-  const fieldValue = form.watch(name);
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
   useEffect(() => {
-    if (fieldValue) {
-      const date =
-        fieldValue instanceof Date ? fieldValue : new Date(fieldValue);
-      setSelectedMonth(date.getMonth());
-      setSelectedYear(date.getFullYear());
+    const value = form.watch(name)
+    if (value) {
+      const date = new Date(value)
+      if (!isNaN(date.getTime())) {
+        setSelectedDate(date)
+        setMonth(date)
+      }
     }
-  }, [fieldValue]);
+  }, [form.watch(name)])
 
-  const handleMonthChange = (value: string) => {
-    setSelectedMonth(parseInt(value));
-  };
-
-  const handleYearChange = (value: string) => {
-    setSelectedYear(parseInt(value));
-  };
-
-  const navigateMonth = (direction: number) => {
-    let newMonth = selectedMonth + direction;
-    let newYear = selectedYear;
-
-    if (newMonth > 11) {
-      newMonth = 0;
-      newYear += 1;
-    } else if (newMonth < 0) {
-      newMonth = 11;
-      newYear -= 1;
+  const handleSelect = (date: Date | undefined) => {
+    if (date) {
+      setSelectedDate(date)
+      form.setValue(name, format(date, "yyyy-MM-dd"), {
+        shouldValidate: true,
+        shouldDirty: true,
+      })
     }
+  }
 
-    setSelectedMonth(newMonth);
-    setSelectedYear(newYear);
-  };
+  const handleMonthSelect = (month: number) => {
+    const newDate = new Date(selectedDate?.getFullYear() || new Date().getFullYear(), month, 1)
+    setMonth(newDate)
+    setIsMonthSelectOpen(false)
+  }
 
-  const formatDate = (date: Date | string | undefined) => {
-    if (!date) return undefined;
-    const dateObject = date instanceof Date ? date : new Date(date);
-    return isNaN(dateObject.getTime()) ? undefined : dateObject;
-  };
+  const handleYearSelect = (year: string) => {
+    const newDate = new Date(parseInt(year), month.getMonth(), 1)
+    setMonth(newDate)
+    setIsYearSelectOpen(false)
+  }
+
+  const footer = (
+    <div className="flex items-center gap-2 mt-2">
+      <Select
+        open={isMonthSelectOpen}
+        onOpenChange={setIsMonthSelectOpen}
+        value={month.getMonth().toString()}
+        onValueChange={(value) => handleMonthSelect(parseInt(value))}
+      >
+        <SelectTrigger className="w-[120px]">
+          <SelectValue>{monthNames[month.getMonth()]}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {monthNames.map((month, index) => (
+            <SelectItem key={month} value={index.toString()}>
+              {month}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select
+        open={isYearSelectOpen}
+        onOpenChange={setIsYearSelectOpen}
+        value={month.getFullYear().toString()}
+        onValueChange={handleYearSelect}
+      >
+        <SelectTrigger className="w-[90px]">
+          <SelectValue>{month.getFullYear()}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {years.map((year) => (
+            <SelectItem key={year} value={year.toString()}>
+              {year}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  )
 
   return (
     <FormField
@@ -119,92 +139,42 @@ const EventDatePicker: React.FC<DatePickerFieldProps> = ({
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
-                  variant={"outline"}
+                  variant="outline"
                   className={cn(
-                    "w-full pl-3 font-normal flex items-center justify-start",
+                    "w-full pl-3 text-left font-normal",
                     !field.value && "text-muted-foreground",
                     className
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {field.value ? (
-                    format(formatDate(field.value) || new Date(), "LLL dd, y")
-                  ) : (
-                    <span>Select Date</span>
-                  )}
+                  {field.value ? format(new Date(field.value), "PPP") : "Select date"}
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <div className="p-2 bg-white rounded-lg shadow flex items-center justify-center flex-col">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigateMonth(-1)}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Select
-                      value={selectedMonth.toString()}
-                      onValueChange={handleMonthChange}
-                    >
-                      <SelectTrigger className="w-[120px]">
-                        <SelectValue>{monthNames[selectedMonth]}</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {monthNames.map((month, index) => (
-                          <SelectItem key={index} value={index.toString()}>
-                            {month}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Select
-                      value={selectedYear.toString()}
-                      onValueChange={handleYearChange}
-                    >
-                      <SelectTrigger className="w-[80px]">
-                        <SelectValue>{selectedYear}</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {years.map((year) => (
-                          <SelectItem key={year} value={year.toString()}>
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigateMonth(1)}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                <Calendar
-                  mode="single"
-                  selected={formatDate(field.value)}
-                  onSelect={(date) => {
-                    field.onChange(date);
-                    setIsOpen(false);
-                  }}
-                  month={new Date(selectedYear, selectedMonth)}
-                  disabled={(date) => isBefore(date, today)}
-                  className="rounded-md border"
-                  showNav={false}
-                />
-              </div>
+            <PopoverContent
+              className="w-auto p-0"
+              align="start"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleSelect}
+                defaultMonth={selectedDate || new Date()}
+                month={month}
+                onMonthChange={setMonth}
+                disabled={(date) => isBefore(date, today)}
+                initialFocus
+                footer={footer}
+                className="cursor-pointer"
+              />
             </PopoverContent>
           </Popover>
           <FormMessage />
         </FormItem>
       )}
     />
-  );
-};
+  )
+}
 
-export default EventDatePicker;
+export default EventDatePicker ;

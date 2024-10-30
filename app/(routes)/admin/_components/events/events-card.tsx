@@ -26,6 +26,12 @@ import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  CalendarIcon,
   Facebook,
   Instagram,
   Link,
@@ -33,6 +39,9 @@ import {
   Trash2,
   Twitter,
 } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 const MAX_CHARS = 230;
 
@@ -349,12 +358,7 @@ const EventsCard = ({
                   <FormItem className="flex flex-col gap-2 w-full space-y-0">
                     <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Date"
-                        className="w-full"
-                        type="date"
-                      />
+                    <Input {...field} type="date" className="w-full" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
