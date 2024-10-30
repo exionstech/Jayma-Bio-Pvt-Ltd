@@ -81,7 +81,7 @@ export default async function RootLayout({
               document.getElementById('loader').style.display = 'none';
               document.getElementById('content').style.display = 'block';
             }
-            setTimeout(showContent, 3000);
+            setTimeout(showContent, 2000);
           `}
           </Script>
         </body>
