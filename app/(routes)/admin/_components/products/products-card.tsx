@@ -132,7 +132,7 @@ const ProductsCard = ({
       });
     }
   };
-
+  
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
   ) => {
@@ -145,12 +145,12 @@ const ProductsCard = ({
       toast.success("Image uploaded successfully");
     }
   };
-
+  
   const handleImageClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
     setShowImageDialog(true);
   };
-
+  
   const handleRemoveImage = (indexToRemove: number) => {
     const updatedImages = uploadedImages.filter(
       (_, index) => index !== indexToRemove
