@@ -38,9 +38,15 @@ const PicturePage = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
   const user = useCurrentUser();
   const router = useRouter();
+
+  const form = useForm<z.infer<typeof PictureEditSchema>>({
+    resolver: zodResolver(PictureEditSchema),
+    defaultValues: {
+      image: user?.image || "",
+    },
+  });
 
   if (!user) {
     return (
@@ -49,13 +55,6 @@ const PicturePage = () => {
       </div>
     );
   }
-
-  const form = useForm<z.infer<typeof PictureEditSchema>>({
-    resolver: zodResolver(PictureEditSchema),
-    defaultValues: {
-      image: user.image ? user.image : "",
-    },
-  });
 
   const onSubmit = (values: z.infer<typeof PictureEditSchema>) => {
     startTransition(() => {
