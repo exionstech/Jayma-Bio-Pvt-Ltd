@@ -1,4 +1,4 @@
-export const LeadersDetails = [
+export const ExecutiveLeadersDetails = [
   {
     name: "Dr. Balasubramanian Paramasivan",
     image: "/leaders/one.png",
@@ -27,24 +27,24 @@ export const LeadersDetails = [
     facebook: "",
     x: "",
   },
-  {
-    name: "Karthika Parvathy",
-    image: "/leaders/four.png",
-    role: " Founder and Director",
-    instagram: "",
-    linkedin: "",
-    facebook: "",
-    x: "",
-  },
   // {
-  //   name: "Shyam Arjunan",
+  //   name: "Karthika Parvathy",
   //   image: "/leaders/four.png",
-  //   role: "CTO, COO, Chief Policy & Strategy Officer & Director of Sapstudio Div.",
+  //   role: " Founder and Director",
   //   instagram: "",
-  //   linkedin: "https://www.linkedin.com/in/shyamarjunan/",
+  //   linkedin: "",
   //   facebook: "",
   //   x: "",
   // },
+  {
+    name: "Shyam Arjunan",
+    image: "/leaders/four.png",
+    role: "CTO, COO, Chief Policy & Strategy Officer & Director of Sapstudio Div.",
+    instagram: "",
+    linkedin: "https://www.linkedin.com/in/shyamarjunan/",
+    facebook: "",
+    x: "",
+  },
   {
     name: "Maudi Rajkumar",
     image: "/leaders/five.png",
