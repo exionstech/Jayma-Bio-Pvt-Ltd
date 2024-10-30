@@ -14,7 +14,7 @@ export default function Loader() {
       videoElement.onended = () => setLoading(false);
     }
 
-    const timer = setTimeout(() => setLoading(false), 3000);
+    const timer = setTimeout(() => setLoading(false), 2000);
 
     return () => clearTimeout(timer);
   }, []);
