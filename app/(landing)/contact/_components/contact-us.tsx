@@ -1,9 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useForm } from "@formspree/react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import AnimatedButton from "@/components/animation/button";
 import { Button } from "@/components/ui/button";
 import { Loader2, MoveRight } from "lucide-react";
 import { useEffect } from "react";
