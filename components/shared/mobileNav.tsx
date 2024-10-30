@@ -84,9 +84,9 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
               </div>
               {user ? (
                 <div className="flex flex-col gap-3" onClick={handleSheetClose}>
-                  <Link href={"/account"}>
+                  <Link href={"/profile"}>
                     <Button className="px-4 py-2 bg-white border border-green/60 hover:bg-white flex items-center justify-between rounded-xl w-full">
-                      <span className="text-green text-medium">Account</span>
+                      <span className="text-green text-medium">Profile</span>
                       <Image
                         src="/landing/nav/user.svg"
                         alt="Profile Picture"
