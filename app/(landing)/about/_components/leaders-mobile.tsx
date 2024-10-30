@@ -7,7 +7,7 @@ const LeadersMobile = () => {
   return (
     <MovingCards
       pauseOnHover
-      className="w-full flex items-center justify-center [--duration:30s] -mt-14 pb-7 md:hidden"
+      className="w-full flex items-start justify-center [--duration:30s] -mt-20 pb-7 md:hidden"
     >
       {LeadersDetails.map((leader, index) => (
         <div
