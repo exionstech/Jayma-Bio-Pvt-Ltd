@@ -1,3 +1,4 @@
+"use client"
 import { MenuItem } from "@/constants/landing/menuItem";
 import { Socials } from "@/constants/landing/socials";
 import Image from "next/image";
@@ -12,7 +13,13 @@ const Footer = () => {
       <div className="w-full h-full px-5 md:px-10 lg:px-12 py-5 md:py-6 grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-7 md:gap-6 max-w-screen-2xl mx-auto">
         {/* Logo and Details */}
         <div className="col-span-1 md:col-span-4 flex flex-col gap-3 md:gap-4">
-          <div className="w-full flex items-center gap-2">
+          <div
+            className="w-full flex items-center gap-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
             <Image src="/logos/logo.png" alt="logo" width={70} height={70} />
             <h1 className="text-xl font-semibold text-green">
               Jayma Bio Innovations
