@@ -30,7 +30,9 @@ export const metadata: Metadata = {
     "JAYMA BIO INNOVATIONS: Sustainable health products like kombucha, bacterial cellulose, and the SapStudio device, creating music from plants. Building a meaningful digital connection with our audience.",
   icons: {
     icon: "/logos/logo.png",
+    apple: "/logos/logo.png",
   },
+  manifest: "./manifest.json",
 };
 
 export default async function RootLayout({
