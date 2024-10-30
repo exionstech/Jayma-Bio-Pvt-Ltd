@@ -1,1 +1,24 @@
-{"theme_color":"#d9e6ba","background_color":"#0d2a25","orientation":"portrait","display":"standalone","dir":"auto","lang":"en-US","name":"Jayma Bio Innovations","short_name":"Jayma Biotech"}
+{
+  "theme_color": "#0d2a25",
+  "background_color": "#d9e6ba",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "./icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "./icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "en-US",
+  "name": "Jayma Bio Innovations",
+  "short_name": "Jayma Bio Innovations"
+}
