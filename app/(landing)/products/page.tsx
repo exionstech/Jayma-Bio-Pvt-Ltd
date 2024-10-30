@@ -3,12 +3,10 @@ import React from "react";
 import ProductsSection from "./_components/products-section";
 import { Metadata } from "next";
 
-
 export const metadata: Metadata = {
-    title: "Jayma Bio Innovations | Products",
-  };
+  title: "Products | Jayma Bio Innovations",
+};
 
-  
 const ProductsPage = () => {
   return (
     <MaxWrapper>

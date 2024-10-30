@@ -19,7 +19,7 @@ const Navbar = () => {
         <div className="lg:flex items-center shrink-0 hidden">
           <Link href="/">
             <Image
-              src="/logos/site-logo.svg"
+              src="/logos/logo.png"
               alt="logo"
               height={75}
               width={75}
@@ -30,7 +30,7 @@ const Navbar = () => {
         <div className="flex items-center shrink-0 lg:hidden">
           <Link href="/">
             <Image
-              src="/logos/site-logo.svg"
+              src="/logos/logo.png"
               alt="logo"
               height={50}
               width={50}
