@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, LogOut } from "lucide-react";
+import { MoreHorizontal, LogOut } from "lucide-react"; // Assuming MoreHorizontal is a valid export
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -14,48 +14,17 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getMenuList } from "@/lib/menu-list";
 import { logout } from "@/actions/logout";
 import { getUserMenuList } from "@/lib/user-menu-list";
-import { useUserData } from "@/hooks/user-data";
 
 interface MenuProps {
   isOpen: boolean | undefined;
 }
 
-function Menu({ isOpen }: MenuProps) {
+function UserMenu({ isOpen }: MenuProps) {
   const pathname = usePathname();
-  const { user, userLoading } = useUserData();
-
-  // Show loading state while user data is being fetched
-  if (userLoading) {
-    return (
-      <ScrollArea className="[&>div>div[style]]:!block">
-        <nav className="mt-8 h-full w-full">
-          <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
-            {[1, 2, 3, 4].map((index) => (
-              <li key={index} className="w-full">
-                <div className="flex items-center space-x-4 px-4 py-2">
-                  <Skeleton className="h-8 w-8 rounded-md" />
-                  {isOpen !== false && (
-                    <Skeleton className="h-6 w-32 rounded-md" />
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </ScrollArea>
-    );
-  }
-
-  // Get appropriate menu list based on user role
-  const menuList = user?.role === "USER" 
-    ? getUserMenuList(pathname) 
-    : getMenuList(pathname);
-
-  const handleLogout = () => {
+  const menuList = getUserMenuList(pathname);
+  const onClick = () => {
     logout();
   };
 
@@ -143,7 +112,7 @@ function Menu({ isOpen }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={handleLogout}
+                    onClick={onClick}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5"
                   >
@@ -171,5 +140,4 @@ function Menu({ isOpen }: MenuProps) {
     </ScrollArea>
   );
 }
-
-export default Menu;
+export default UserMenu;

@@ -12,7 +12,7 @@ import { ContentLayout } from "@/components/admin-sidebar-layout/content-layout"
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Jayman Bio Innovations | Admin Dashboard",
+  title: "Jayma Bio Innovations | Admin Dashboard",
 };
 
 export default function DashboardPage() {
