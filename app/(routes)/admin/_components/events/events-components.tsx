@@ -228,7 +228,7 @@ export default function EventsTable() {
                 <Plus className="size-5 shrink-0" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="md:max-w-4xl w-full">
+            <DialogContent className="md:max-w-3xl w-full !px-3 !py-2">
               <EventsCard
                 setDialogOpen={setDialogOpen}
                 onSuccess={fetchEvents}

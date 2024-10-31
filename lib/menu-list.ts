@@ -46,7 +46,7 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Management",
       menus: [
         {
-          href: "/admin/products",
+          href: "https://ecommerce.jayma-bio.exions.tech/",
           label: "Products",
           active: pathname.includes("/admin/products"),
           icon: SquarePen,
