@@ -2,7 +2,7 @@ export const LatestProductsDetails = [
     {
         name:"BrewBucha",
         desc:"BrewBucha is a fermented tea loved for its tangy flavor and health benefits. Rich in probiotics and antioxidants, it supports digestion and boosts wellness. An ancient drink, BrewBucha brings natural health to the modern world.",
-        imageUrl:"/landing/latest-products/brewbucha.svg",
+        imageUrl:"/landing/latest-products/brewbucha.png",
         url:"/products",
     },
     {
