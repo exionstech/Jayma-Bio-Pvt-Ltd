@@ -3,6 +3,7 @@ import AnimatedButton from "@/components/animation/button";
 import { Button } from "@/components/ui/button";
 import { scrollToNext } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 export const HeroSection = () => {
   return (
@@ -42,13 +43,15 @@ export const HeroSection = () => {
                 </p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              className="text-green w-[180px] md:w-[240px] rounded-full border border-green text-sm md:text-medium flex items-center justify-end font-medium"
-              size={"lg"}
-            >
-              Upcoming Events
-            </Button>
+            <Link href="/events">
+              <Button
+                variant="outline"
+                className="text-green w-[180px] md:w-[240px] rounded-full border border-green text-sm md:text-medium flex items-center justify-end font-medium"
+                size={"lg"}
+              >
+                Upcoming Events
+              </Button>
+            </Link>
 
             <Button
               size={"lg"}
@@ -66,7 +69,7 @@ export const HeroSection = () => {
               className="text-green w-[180px] md:w-[240px] rounded-full border border-green text-sm md:text-medium flex items-center justify-end font-medium "
             >
               What Clients Tell
-            </Button> 
+            </Button>
           </div>
 
           <div className="hidden h-1/2 w-full md:flex items-center justify-end">

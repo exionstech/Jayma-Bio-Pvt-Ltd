@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import React, { useState } from "react";
 
 interface MarqueeProps {
   className?: string;
@@ -19,16 +20,50 @@ export function MovingCards({
   repeat = 4,
   ...props
 }: MarqueeProps) {
+  const [isMoving, setIsMoving] = useState(true);
+  const [activeChildIndex, setActiveChildIndex] = useState<number | null>(null);
+
+  // Handle double click on the container to toggle overall movement
+  const handleContainerDoubleClick = (e: React.MouseEvent) => {
+    // Prevent the event from bubbling up
+    e.stopPropagation();
+    setIsMoving(!isMoving);
+  };
+
+  // Handle double click on individual children
+  const handleChildDoubleClick = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveChildIndex(activeChildIndex === index ? null : index);
+  };
+
+  // Wrap children with click handlers and active states
+  const wrappedChildren = React.Children.map(children, (child, index) => {
+    if (!React.isValidElement(child)) return child;
+
+    return React.cloneElement(child as React.ReactElement<any>, {
+      onDoubleClick: (e: React.MouseEvent) => handleChildDoubleClick(index, e),
+      className: cn(
+        child.props.className,
+        "transition-all duration-200",
+      ),
+      style: {
+        ...child.props.style,
+        animationPlayState: activeChildIndex === index ? "paused" : "running",
+      },
+    });
+  });
+
   return (
     <div
       {...props}
+      onDoubleClick={handleContainerDoubleClick}
       className={cn(
-        "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
+        "group relative flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
         {
           "flex-row": !vertical,
           "flex-col": vertical,
         },
-        className,
+        className
       )}
     >
       {Array(repeat)
@@ -37,15 +72,18 @@ export function MovingCards({
           <div
             key={i}
             className={cn("flex shrink-0 justify-around [gap:var(--gap)]", {
-              "animate-marquee flex-row": !vertical,
-              "animate-marquee-vertical flex-col": vertical,
+              "animate-marquee flex-row": !vertical && isMoving,
+              "animate-marquee-vertical flex-col": vertical && isMoving,
               "group-hover:[animation-play-state:paused]": pauseOnHover,
               "[animation-direction:reverse]": reverse,
+              "[animation-play-state:paused]": !isMoving,
             })}
           >
-            {children}
+            {wrappedChildren}
           </div>
         ))}
     </div>
   );
 }
+
+export default MovingCards;

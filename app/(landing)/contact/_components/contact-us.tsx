@@ -33,6 +33,10 @@ const ContactUsSection = () => {
   useEffect(() => {
     if (state.succeeded) {
       toast.success("Message sent successfully");
+      const form = document.getElementById("contactForm") as HTMLFormElement;
+      if (form) {
+        form.reset();
+      }
     }
   }, [state.succeeded]);
 
@@ -44,6 +48,7 @@ const ContactUsSection = () => {
       <div className="w-full h-full max-w-screen-2xl mx-auto flex flex-col-reverse md:flex-row gap-7 md:gap-4 items-start pt-4 md:pt-10">
         <div className="w-full md:w-1/2 flex items-start justify-start pt-5 md:pt-14">
           <form
+            id="contactForm"
             className="w-full flex flex-col items-start justify-start gap-3 md:gap-5"
             onSubmit={handleSubmit}
           >

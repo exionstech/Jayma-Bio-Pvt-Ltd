@@ -7,9 +7,11 @@ export const metadata: Metadata = {
 };
 
 const AboutUspage = () => {
-  return <MaxWrapper>
-    <AboutUsSection/>
-  </MaxWrapper>;
+  return (
+    <MaxWrapper>
+      <AboutUsSection />
+    </MaxWrapper>
+  );
 };
 
 export default AboutUspage;
