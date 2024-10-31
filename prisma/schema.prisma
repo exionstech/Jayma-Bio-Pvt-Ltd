@@ -12,6 +12,12 @@ enum UserRole {
   USER
 }
 
+enum EventType {
+  FEATURED
+  UPCOMING
+  PAST
+}
+
 model User {
   id                    String                 @id @default(cuid())
   username              String?                @unique
@@ -95,16 +101,26 @@ model Products {
 }
 
 model Event {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String
   venue       String
   date        String
   link        String
   image       String[]
-  socials     Json[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  eventType   EventType
+  notify      Boolean
+  archived    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Blog {
+  id        String @id @default(cuid())
+  thumbnail String
+  title     String
+  content   Json
+  likes     Int   @default(0)
 }
 
 model Newsletter {

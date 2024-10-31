@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         email: body.email,
       },
     });
-
+    
     try {
       await subcribedNewsleter(body.email);
     } catch (error) {

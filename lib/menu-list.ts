@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   LucideIcon,
   User,
+  User2,
 } from "lucide-react";
 
 type Submenu = {
@@ -63,6 +64,13 @@ export function getMenuList(pathname: string): Group[] {
           label: "Blogs",
           active: pathname.includes("/admin/blogs"),
           icon: Tag,
+          submenus: [],
+        },
+        {
+          href: "/admin/users",
+          label: "Users",
+          active: pathname.includes("/admin/users"),
+          icon: User2,
           submenus: [],
         },
       ],
