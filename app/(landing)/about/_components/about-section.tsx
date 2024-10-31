@@ -1,6 +1,6 @@
 "use client";
 
-import { ExecutiveLeadersDetails } from "@/constants/leaders/leaders";
+import { BoardDirectorDetails, ExecutiveLeadersDetails } from "@/constants/leaders/leaders";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -186,13 +186,13 @@ const AboutUsSection = () => {
           </div>
 
           <div className="w-full h-full grid md:grid-cols-4 lg:grid-cols-8 gap-3 md:gap-5">
-            {ExecutiveLeadersDetails.map((leader, index) => (
+            {BoardDirectorDetails.map((leader, index) => (
               <div
                 key={index}
                 className="col-span-4 h-full flex flex-col gap-3 md:px-4 py-2 md:py-3 items-start justify-start"
               >
                 <div className="flex items-start gap-4">
-                  <h2 className="text-medium md:text-lg font-semibold text-green">
+                  <h2 className="text-medium md:text-xl font-semibold text-green">
                     {leader.name}
                   </h2>
                   <Link href={leader.linkedin}>
