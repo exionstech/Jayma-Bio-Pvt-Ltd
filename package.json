@@ -76,6 +76,7 @@
     "nodemailer": "^6.9.8",
     "phenomenon": "^1.6.0",
     "prisma": "^5.8.1",
+    "query-string": "^9.1.1",
     "react": "^18.2.0",
     "react-canvas-confetti": "^2.0.5",
     "react-confetti": "^6.1.0",

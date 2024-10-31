@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Pencil, PlusCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Image from "next/image";
 import {
@@ -193,13 +193,13 @@ const EventsCard = ({
 
   return (
     <div className="w-full overflow-auto">
-      <h1 className="text-2xl font-semibold">
-        {initialData ? "Update Event" : "Add Event"}
+      <h1 className="text-2xl font-semibold p-1">
+        {initialData ? "Update Event" : "Add New Event"}
       </h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col w-full"
+          className="flex flex-col w-full items-end justify-start"
         >
           <div className="flex md:flex-row flex-col justify-between gap-5 my-5 w-full">
             <div className="flex flex-col">
@@ -210,6 +210,7 @@ const EventsCard = ({
                   <FormItem>
                     <FormControl>
                       <UploadDropzone
+                        className="w-50 h-auto"
                         endpoint="imageUploader"
                         onClientUploadComplete={handleImageUpload}
                         onUploadError={(error: Error) => {
@@ -218,7 +219,6 @@ const EventsCard = ({
                         }}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -229,11 +229,15 @@ const EventsCard = ({
                       className="cursor-pointer"
                       onClick={() => handleImageClick(imageUrl)}
                     >
-                      <img
-                        src={imageUrl}
-                        alt={`Uploaded Image ${index}`}
-                        className="w-14 rounded-md h-auto"
-                      />
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={`Uploaded Image ${index}`}
+                          className="w-20 rounded-md h-auto"
+                        />
+                      ) : (
+                        <Skeleton className="w-20 h-20 rounded-md" />
+                      )}
                     </div>
                     <button
                       type="button"
@@ -421,13 +425,18 @@ const EventsCard = ({
             <Button type="submit" disabled={loading}>
               {loading
                 ? initialData
-                  ? "Updating..."
-                  : "Submitting..."
+                  ? "Updating"
+                  : "Adding"
                 : initialData
                 ? "Update"
-                : "Submit"}
+                : "Add"}
               {loading && (
                 <Loader2 className="ml-2 size-5 shrink-0 animate-spin" />
+              )}
+              {!initialData ? (
+                <PlusCircle className="size-5 shrink-0 text-white" />
+              ) : (
+                <Pencil className="size-5 shrink-0 text-white" />
               )}
             </Button>
           </div>
