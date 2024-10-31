@@ -58,7 +58,7 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
         >
           {data.map((event: any, index: number) => (
             <SwiperSlide key={index}>
-              <Card className="rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <Card className="rounded-lg p-0 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="p-0">
                   <div className="relative aspect-video">
                     <Image
