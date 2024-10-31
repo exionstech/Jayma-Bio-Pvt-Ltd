@@ -41,6 +41,9 @@ export type Event = {
   date: string;
   link: string;
   image?: string[];
+  eventType: "FEATURED" | "UPCOMMING" | "PAST";
+  notify: boolean;
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
 };

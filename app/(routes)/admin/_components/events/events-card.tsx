@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +23,16 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, PlusCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { sendNewsletter } from "@/lib/mail";
+import { sendEventMail } from "@/actions/event-newsletter";
 
 const MAX_CHARS = 230;
 
@@ -34,6 +44,9 @@ export type Event = {
   date: string;
   link: string;
   image?: string[];
+  eventType: "FEATURED" | "UPCOMMING" | "PAST";
+  notify: boolean;
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -56,7 +69,7 @@ const EventsCard = ({
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
+  
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
@@ -66,6 +79,9 @@ const EventsCard = ({
       link: initialData?.link || "",
       image: initialData?.image || [],
       date: initialData?.date || "",
+      eventType: initialData?.eventType || "FEATURED",
+      notify: initialData?.notify || false,
+      archived: initialData?.archived || true,
     },
   });
 
@@ -75,6 +91,7 @@ const EventsCard = ({
 
   const onSubmit = async (data: z.infer<typeof EventsSchema>) => {
     setLoading(true);
+    console.log(data);
     try {
       const endpoint = initialData ? "/api/events/update" : "/api/events/add";
       const method = "POST";
@@ -95,7 +112,21 @@ const EventsCard = ({
       }
 
       const result = await response.json();
+      if (data.notify) {
+        //send mail to subscribed users
+        const res = await sendEventMail(
+          data.title,
+          data.description,
+          data.date
+        );
 
+        if (!res.success) {
+          toast.error("Failed to send mail to subscribed users");
+        } else {
+          toast.success("Mail sent successfully");
+        }
+      }
+      
       toast.success(
         initialData ? "Event updated successfully" : "Event added successfully"
       );
@@ -170,7 +201,7 @@ const EventsCard = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col w-full items-end justify-start"
         >
-          <div className="flex md:flex-row flex-col justify-between gap-10 my-4 w-full">
+          <div className="flex md:flex-row flex-col justify-between gap-5 my-5 w-full">
             <div className="flex flex-col">
               <FormField
                 control={form.control}
@@ -219,91 +250,175 @@ const EventsCard = ({
                 ))}
               </div>
             </div>
-            <div className="flex flex-col w-full gap-2 px-2">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Title"
-                        className="w-full"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1 w-full space-y-0">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Description"
-                        className="w-full border-black h-[100px] resize-none"
-                        onChange={(e) => handleDescriptionChange(e, field)}
-                      />
-                    </FormControl>
-                    <div className="flex justify-end items-end">
-                      <p
-                        className={`text-xs ${
-                          charCount === MAX_CHARS ? "text-red-500" : ""
-                        }`}
-                      >
-                        {charCount}/{MAX_CHARS}
-                      </p>
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="venue"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Venue</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Venue"
-                        className="w-full"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="link"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                    <FormLabel>Registration Link</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Link" className="w-full" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date of Event</FormLabel>
-                    <FormControl>
-                      <Input type="date" placeholder="Pick a Date" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+            <div className="flex flex-col md:flex-row flex-1 w-full gap-2">
+              <div className="flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Title"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder="Description"
+                          className="w-full border-black h-[100px] resize-none"
+                          onChange={(e) => handleDescriptionChange(e, field)}
+                        />
+                      </FormControl>
+                      <div className="flex justify-end items-end">
+                        <p
+                          className={`text-xs ${
+                            charCount === MAX_CHARS ? "text-red-500" : ""
+                          }`}
+                        >
+                          {charCount}/{MAX_CHARS}
+                        </p>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="eventType"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Event Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Event Type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="FEATURED">Featured</SelectItem>
+                            <SelectItem value="UPCOMMING">Upcomming</SelectItem>
+                            <SelectItem value="PAST">Past</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="venue"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Venue</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Venue"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="link"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                      <FormLabel>Registration Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Link"
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Date of Event</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          placeholder="Pick a Date"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="notify"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Send Mail</FormLabel>
+                      <div className="flex gap-2 leading-none">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Tick the checkbox to send mail to subscribed users.
+                        </FormDescription>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="archived"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Archive</FormLabel>
+                      <div className="flex gap-2 leading-none">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Archive the event.
+                        </FormDescription>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
           <div className="flex justify-end items-end">

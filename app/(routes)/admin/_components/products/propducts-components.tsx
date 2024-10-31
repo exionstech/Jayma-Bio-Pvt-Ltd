@@ -54,7 +54,7 @@ export default function ProductsTable() {
     "Delete Product",
     "Are you sure you want to delete this product ? This action cannot be undone."
   );
-
+  
   const fetchProducts = async () => {
     try {
       const response = await fetch("/api/products/getAll");
@@ -70,11 +70,11 @@ export default function ProductsTable() {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchProducts();
   }, []);
-
+  
   const handleDelete = async (id: string) => {
     const ok = await confirm();
     if (ok) {
@@ -98,7 +98,7 @@ export default function ProductsTable() {
       }
     }
   };
-
+  
   const columns: ColumnDef<Product>[] = [
     {
       header: "Title",
@@ -191,11 +191,11 @@ export default function ProductsTable() {
       },
     },
   });
-
+  
   if (loading) {
     return <Loader />;
   }
-
+  
   return (
     <>
       <ConfirmDialogue />
@@ -241,7 +241,7 @@ export default function ProductsTable() {
             </Select>
           </div>
         </div>
-
+        
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -285,7 +285,7 @@ export default function ProductsTable() {
             </TableBody>
           </Table>
         </div>
-
+        
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button

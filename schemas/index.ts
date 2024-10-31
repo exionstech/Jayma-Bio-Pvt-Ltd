@@ -217,4 +217,14 @@ export const EventsSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
   link: z.string().url().min(1, { message: "Link is required" }),
   image: z.array(z.string().url().min(1, { message: "Image is required" })),
+  eventType: z.enum(["FEATURED", "UPCOMMING", "PAST"]),
+  notify: z.boolean(),
+  archived: z.boolean(),
+});
+
+export const BlogSchema = z.object({
+  thumbnail: z.string().url().min(1, { message: "Thumbnail is required" }),
+  title: z.string().min(1, { message: "Title is required" }),
+  content: z.optional(z.array(z.string())),
+  likes: z.number().default(0),
 });
