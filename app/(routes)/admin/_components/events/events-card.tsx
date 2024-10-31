@@ -19,9 +19,10 @@ import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import type { ClientUploadedFileData } from "uploadthing/types";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Pencil, PlusCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MAX_CHARS = 230;
 
@@ -161,15 +162,15 @@ const EventsCard = ({
 
   return (
     <div className="w-full overflow-auto">
-      <h1 className="text-2xl font-semibold">
-        {initialData ? "Update Event" : "Add Event"}
+      <h1 className="text-2xl font-semibold p-1">
+        {initialData ? "Update Event" : "Add New Event"}
       </h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col w-full"
+          className="flex flex-col w-full items-end justify-start"
         >
-          <div className="flex md:flex-row flex-col justify-between gap-10 my-5 w-full">
+          <div className="flex md:flex-row flex-col justify-between gap-10 my-4 w-full">
             <div className="flex flex-col">
               <FormField
                 control={form.control}
@@ -178,6 +179,7 @@ const EventsCard = ({
                   <FormItem>
                     <FormControl>
                       <UploadDropzone
+                        className="w-50 h-auto"
                         endpoint="imageUploader"
                         onClientUploadComplete={handleImageUpload}
                         onUploadError={(error: Error) => {
@@ -186,7 +188,6 @@ const EventsCard = ({
                         }}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -197,11 +198,15 @@ const EventsCard = ({
                       className="cursor-pointer"
                       onClick={() => handleImageClick(imageUrl)}
                     >
-                      <img
-                        src={imageUrl}
-                        alt={`Uploaded Image ${index}`}
-                        className="w-14 rounded-md h-auto"
-                      />
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={`Uploaded Image ${index}`}
+                          className="w-20 rounded-md h-auto"
+                        />
+                      ) : (
+                        <Skeleton className="w-20 h-20 rounded-md" />
+                      )}
                     </div>
                     <button
                       type="button"
@@ -214,119 +219,109 @@ const EventsCard = ({
                 ))}
               </div>
             </div>
-            <div className="flex flex-col md:flex-row flex-1 w-full gap-2">
-              <div className="flex flex-col gap-5 w-full">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Title"
-                          className="w-full"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          {...field}
-                          placeholder="Description"
-                          className="w-full border-black h-[100px] resize-none"
-                          onChange={(e) => handleDescriptionChange(e, field)}
-                        />
-                      </FormControl>
-                      <div className="flex justify-end items-end">
-                        <p
-                          className={`text-xs ${
-                            charCount === MAX_CHARS ? "text-red-500" : ""
-                          }`}
-                        >
-                          {charCount}/{MAX_CHARS}
-                        </p>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex flex-col gap-5 w-full">
-                <FormField
-                  control={form.control}
-                  name="venue"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                      <FormLabel>Venue</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Venue"
-                          className="w-full"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="link"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2 w-full space-y-0">
-                      <FormLabel>Registration Link</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Link"
-                          className="w-full"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Date of birth</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          placeholder="Pick a Date"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+            <div className="flex flex-col w-full gap-2 px-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Title"
+                        className="w-full"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-1 w-full space-y-0">
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Description"
+                        className="w-full border-black h-[100px] resize-none"
+                        onChange={(e) => handleDescriptionChange(e, field)}
+                      />
+                    </FormControl>
+                    <div className="flex justify-end items-end">
+                      <p
+                        className={`text-xs ${
+                          charCount === MAX_CHARS ? "text-red-500" : ""
+                        }`}
+                      >
+                        {charCount}/{MAX_CHARS}
+                      </p>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="venue"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                    <FormLabel>Venue</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Venue"
+                        className="w-full"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="link"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2 w-full space-y-0">
+                    <FormLabel>Registration Link</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Link" className="w-full" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Date of Event</FormLabel>
+                    <FormControl>
+                      <Input type="date" placeholder="Pick a Date" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
           <div className="flex justify-end items-end">
             <Button type="submit" disabled={loading}>
               {loading
                 ? initialData
-                  ? "Updating..."
-                  : "Submitting..."
+                  ? "Updating"
+                  : "Adding"
                 : initialData
                 ? "Update"
-                : "Submit"}
+                : "Add"}
               {loading && (
                 <Loader2 className="ml-2 size-5 shrink-0 animate-spin" />
+              )}
+              {!initialData ? (
+                <PlusCircle className="size-5 shrink-0 text-white" />
+              ) : (
+                <Pencil className="size-5 shrink-0 text-white" />
               )}
             </Button>
           </div>
