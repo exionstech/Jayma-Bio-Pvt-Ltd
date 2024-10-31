@@ -33,6 +33,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { sendNewsletter } from "@/lib/mail";
 import { sendEventMail } from "@/actions/event-newsletter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MAX_CHARS = 230;
 
