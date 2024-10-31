@@ -314,7 +314,22 @@ export const subcribedNewsleter = async (email: string) => {
     </tbody>
   </table>
 </body>
-
 </html>`,
   });
+};
+
+export const sendNewsletter = async (
+  email: string,
+  title: string,
+  description: string,
+  date: string
+) => {
+  const info = await transporter.sendMail({
+    from: `"Jayma Bio Innovations" <${process.env.GMAIL_EMAIL}>`,
+    to: email,
+    subject: `Newsletter: ${title} ${date}`,
+    html: `<p>${description}</p>`,
+  });
+
+  return info;
 };
