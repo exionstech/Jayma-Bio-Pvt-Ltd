@@ -36,8 +36,8 @@ interface ProductDetailsProps {
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
   return (
     <div className="w-full h-full flex flex-col gap-4 max-w-screen-xl mx-auto">
-      <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start justify-start">
-        <div className="w-full  flex-1 items-start justify-start">
+      <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start md:items-center justify-start">
+        <div className="w-full flex-1 items-start justify-start">
           <ImageGrid images={prodcut.images} title={prodcut.name} />
         </div>
         <div className="w-full flex flex-col items-start justify-start py-1 md:py-3 md:px-3 gap-4 md:gap-8">
@@ -68,7 +68,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 /-
               </h1>
             </div>
-            <div className="flex items-center gap- md:gap-5">
+            <div className="flex items-center gap-4 md:gap-5">
               <Button
                 size={"lg"}
                 variant="outline"
@@ -89,19 +89,19 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
               </Button>
             </div>
           </div>
-          <div className="w-full flex flex-col gap-4">
-            <h1 className="text-xl md:text-2xl font-semibold text-green">
-              About this item
-            </h1>
-            <div className="flex flex-col gap-2 md:gap-3">
-              {aboutProduct?.aboutItems.map((item, index) => (
-                <li key={index} className="text-sm md:text-medium">
-                  <span className="font-semibold pr-1">{item.title}</span>{" "}
-                  <span>{item.description}</span>
-                </li>
-              ))}
-            </div>
-          </div>
+        </div>
+      </div>
+      <div className="w-full md:w-[70%] flex flex-col gap-3 md:gap-4 md:mt-5">
+        <h1 className="text-xl md:text-2xl font-semibold text-green">
+          About this item
+        </h1>
+        <div className="flex flex-col gap-2 md:gap-4">
+          {aboutProduct?.aboutItems.map((item, index) => (
+            <li key={index} className="text-sm md:text-medium">
+              <span className="font-medium pr-1">{item.title}</span>{" "}
+              <span className="font-normal">{item.description}</span>
+            </li>
+          ))}
         </div>
       </div>
       <div className="w-full flex flex-col md:flex-row items-center gap-3 md:gap-4">
