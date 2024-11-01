@@ -8,7 +8,7 @@ export interface Event {
   title: string;
   description: string;
   venue: string;
-  date: string;
+  date: Date;
   link: string;
   image: string[];
   eventType: EventType;
