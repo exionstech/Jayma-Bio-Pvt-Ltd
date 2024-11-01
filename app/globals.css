@@ -6,7 +6,7 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-
+    
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
@@ -85,7 +85,7 @@
     background: url("/auth/mobile-auth-bg.png");
     background-size: cover;
   }
-  .notfound-bg{
+  .notfound-bg {
     background: url("/not-found/not-found.png");
     background-size: cover;
   }

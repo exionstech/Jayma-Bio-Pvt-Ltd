@@ -1,25 +1,32 @@
-"use client";
-
 import { Block } from "@blocknote/core";
 import "@blocknote/core/fonts/inter.css";
-import { useCreateBlockNote } from "@blocknote/react";
+import { useBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import { useState } from "react";
+import { SetStateAction } from "react";
 
-export default function Editor() {
-  const [blocks, setBlocks] = useState<Block[]>([]);
-  // Creates a new editor instance.
-  const editor = useCreateBlockNote();
-
-  // Renders the editor instance using a React component.
-  return (
-    <BlockNoteView
-      editor={editor}
-      onChange={() => {
-        // Saves the document JSON to state.
-        setBlocks(editor.document);
-      }}
-    />
-  );
+interface EditorProps {
+  setBlocks: React.Dispatch<SetStateAction<Block[]>>;
+  initialContent?: Block[] | null;
 }
+
+const Editor = ({ setBlocks, initialContent }: EditorProps) => {
+  
+  const editor = useBlockNote({
+    initialContent: initialContent || [],
+  });
+
+  return (
+    <div className="w-full min-h-[200px] border rounded-md">
+      <BlockNoteView
+        editor={editor}
+        theme="light"
+        onChange={() => {
+          setBlocks(editor.document);
+        }}
+      />
+    </div>
+  );
+};
+
+export default Editor;

@@ -166,7 +166,7 @@ const EventsForm = ({
     { label: "Open-source Sprints", value: "open_source_sprints" },
     { label: "Tech Panel Discussions", value: "tech_panel_discussions" },
   ];
-
+  
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
