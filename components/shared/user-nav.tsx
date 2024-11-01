@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cog, LayoutGrid, LogOut, User } from "lucide-react";
+import { Cog, LayoutDashboard, LayoutGrid, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -56,8 +56,7 @@ export function UserNav({ user }: UserNavProps) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none"> {user?.name}
-            </p>
+            <p className="text-sm font-medium leading-none"> {user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
               {user?.email}
             </p>
@@ -70,6 +69,18 @@ export function UserNav({ user }: UserNavProps) {
               <Link href="/admin" className="flex items-center">
                 <Cog className="w-4 h-4 mr-3 text-muted-foreground" />
                 Admin Dashboard
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {user?.role === "ADMIN" && (
+            <DropdownMenuItem className="hover:cursor-pointer" asChild>
+              <Link
+                href="https://ecommerce.jayma-bio.exions.tech"
+                target="_blank"
+                className="flex items-center"
+              >
+                <LayoutDashboard className="w-4 h-4 mr-3 text-muted-foreground" />
+                Manage Store
               </Link>
             </DropdownMenuItem>
           )}

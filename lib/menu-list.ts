@@ -54,13 +54,6 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "https://ecommerce.jayma-bio.exions.tech/",
-          label: "Products",
-          active: pathname.includes("/admin/products"),
-          icon: SquarePen,
-          submenus: [],
-        },
-        {
           href: "/admin/events",
           label: "Events",
           active: pathname.includes("/admin/events"),
