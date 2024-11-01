@@ -1,11 +1,20 @@
 import { Products } from "@/types/products-related-types";
-
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/products`;
+import { getUrl } from "../get-url";
 
 const getProduct = async (id: string): Promise<Products> => {
+  const URL = await getUrl().then((data) => {
+    if (data.data) {
+      return `${data.data.baseUrl}${data.data.storeId}/products`;
+    }
+  });
+
+  if (!URL) {
+    throw new Error("URL is undefined");
+  }
+
   try {
     // Add timestamp to URL to prevent caching
-    const timestampedURL = `${URL}/${id}?timestamp=${Date.now()}`;
+    const timestampedURL = `${URL!}/${id}?timestamp=${Date.now()}`;
 
     const res = await fetch(timestampedURL, {
       cache: "no-store",

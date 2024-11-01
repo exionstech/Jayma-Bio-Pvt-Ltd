@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,9 +19,8 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2, Copy } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import EventsCard from "./events-card";
 import {
   Select,
   SelectContent,
@@ -32,126 +31,199 @@ import {
 import { toast } from "sonner";
 import Loader from "@/components/shared/loader";
 import { useConfirm } from "@/hooks/use-confirm";
-import { EventType } from "@prisma/client";
+import { getAll } from "@/actions/endpoint/get-all";
+import { deleteEndpoint } from "@/actions/endpoint/delete-endpoint";
+import { addEndpoint } from "@/actions/endpoint/add-endpoints";
+import { updateEndpoint } from "@/actions/endpoint/update-endpoint";
 
-export type Event = {
+export type Endpoint = {
   id: string;
-  title: string;
-  description: string;
-  venue: string;
-  date: string;
-  link: string;
-  image?: string[];
-  eventType: EventType;
-  notify: boolean;
-  archived: boolean;
-  tags: string[];
+  baseUrl: string;
+  storeId: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export interface EventsCardProps {
-  setDialogOpen: Dispatch<SetStateAction<boolean>>;
-  initialData?: Event;
+export interface EndpointCardProps {
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  initialData?: Endpoint;
   onSuccess?: () => Promise<void>;
 }
 
-export default function EventsTable() {
-  const [data, setData] = useState<Event[]>([]);
+const EndpointCard: React.FC<EndpointCardProps> = ({
+  setDialogOpen,
+  initialData,
+  onSuccess,
+}) => {
+  const [baseUrl, setBaseUrl] = useState(initialData?.baseUrl || "");
+  const [storeId, setStoreId] = useState(initialData?.storeId || "");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const url = initialData
+        ? "update"
+        : "create";
+
+      const payload = initialData
+        ? { id: initialData.id, baseUrl, storeId }
+        : { baseUrl, storeId };
+
+      if(url === "create") {
+        await addEndpoint(payload).then((data) => {
+          if (data.success) {
+            toast.success("Endpoint created successfully");
+            setDialogOpen(false);
+            onSuccess && onSuccess();
+          } else {
+            toast.error("Failed to create endpoint");
+          }
+        });
+      } else {
+        await updateEndpoint(payload).then((data) => {
+          if (data.success) {
+            toast.success("Endpoint updated successfully");
+            setDialogOpen(false);
+            onSuccess && onSuccess();
+          } else {
+            toast.error("Failed to update endpoint");
+          }
+        });
+      }
+      
+    } catch (error) {
+      toast.error("Error saving endpoint");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-xl font-semibold">
+        {initialData ? "Edit Endpoint" : "Add New Endpoint"}
+      </h2>
+      <div className="grid gap-4">
+        <div>
+          <label className="block mb-2">Base URL</label>
+          <Input
+            value={baseUrl}
+            onChange={(e) => setBaseUrl(e.target.value)}
+            placeholder="Enter base URL"
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-2">Store ID</label>
+          <Input
+            value={storeId}
+            onChange={(e) => setStoreId(e.target.value)}
+            placeholder="Enter store ID"
+            required
+          />
+        </div>
+        <Button type="submit" className="w-full">
+          {initialData ? "Update" : "Create"}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default function EndpointsTable() {
+  const [data, setData] = useState<Endpoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [globalFilter, setGlobalFilter] = useState("");
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedEndpoint, setSelectedEndpoint] = useState<Endpoint | null>(
+    null
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ConfirmDialogue, confirm] = useConfirm(
-    "Delete Event",
-    "Are you sure you want to delete this event? This action cannot be undone."
+    "Delete Endpoint",
+    "Are you sure you want to delete this endpoint? This action cannot be undone."
   );
 
-  const fetchEvents = async () => {
+  const fetchEndpoints = async () => {
     try {
-      const response = await fetch("/api/events/getAll");
-      const data = await response.json();
-      if (data.status === 200) {
-        setData(data.events);
-      } else {
-        toast.error("Failed to fetch events");
-      }
+      await getAll().then((data) => {
+        if (data.success) {
+          setData(data.data!);
+        } else {
+          toast.error("Failed to fetch endpoints");
+        }
+      });
     } catch (error) {
-      toast.error("Error fetching events");
+      toast.error("Error fetching endpoints");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchEvents();
+    fetchEndpoints();
   }, []);
 
   const handleDelete = async (id: string) => {
     const ok = await confirm();
     if (ok) {
       try {
-        const response = await fetch("/api/events/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id }),
+        await deleteEndpoint(id).then((data) => {
+          if (data.success) {
+            toast.success("Endpoint deleted successfully");
+            fetchEndpoints();
+          } else {
+            toast.error("Failed to delete endpoint");
+          }
         });
-        const data = await response.json();
-        if (data.status === 200) {
-          toast.success("Event deleted successfully");
-          fetchEvents();
-        } else {
-          toast.error("Failed to delete event");
-        }
       } catch (error) {
-        toast.error("Error deleting event");
+        toast.error("Error deleting endpoint");
       }
     }
   };
 
-  const columns: ColumnDef<Event>[] = [
+  const handleCopy = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied to clipboard");
+      })
+      .catch(() => {
+        toast.error("Failed to copy");
+      });
+  };
+
+  const columns: ColumnDef<Endpoint>[] = [
     {
-      header: "Title",
-      accessorKey: "title",
+      header: "Base URL",
+      accessorKey: "baseUrl",
       cell: ({ row }) => (
-        <div className="max-w-[200px]">
-          <p className="font-medium truncate">{row.original.title}</p>
+        <div className="flex items-center gap-2">
+          <span>{row.original.baseUrl}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleCopy(row.original.baseUrl)}
+          >
+            <Copy className="w-3 h-3" />
+          </Button>
         </div>
       ),
     },
     {
-      header: "Date",
-      accessorKey: "date",
+      header: "Store ID",
+      accessorKey: "storeId",
       cell: ({ row }) => (
-        <span>{new Date(row.original.date).toLocaleDateString()}</span>
-      ),
-    },
-    {
-      header: "Venue",
-      accessorKey: "venue",
-      cell: ({ row }) => (
-        <span className="capitalize">{row.original.venue}</span>
-      ),
-    },
-    {
-      header: "Link",
-      accessorKey: "link",
-      cell: ({ row }) =>
-        row.original.link ? (
-          <a
-            href={row.original.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
+        <div className="flex items-center gap-2">
+          <span>{row.original.storeId}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleCopy(row.original.storeId)}
           >
-            Visit <ExternalLink className="w-3 h-3" />
-          </a>
-        ) : (
-          <span className="text-gray-500">-</span>
-        ),
+            <Copy className="w-3 h-3" />
+          </Button>
+        </div>
+      ),
     },
     {
       header: "Created",
@@ -169,17 +241,17 @@ export default function EventsTable() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setSelectedEvent(row.original)}
+                onClick={() => setSelectedEndpoint(row.original)}
               >
                 <Pencil className="w-4 h-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl">
-              {selectedEvent && (
-                <EventsCard
+            <DialogContent className="max-w-md">
+              {selectedEndpoint && (
+                <EndpointCard
                   setDialogOpen={setUpdateDialogOpen}
-                  initialData={selectedEvent}
-                  onSuccess={fetchEvents}
+                  initialData={selectedEndpoint}
+                  onSuccess={fetchEndpoints}
                 />
               )}
             </DialogContent>
@@ -222,18 +294,18 @@ export default function EventsTable() {
       <ConfirmDialogue />
       <div className="space-y-4">
         <div className="w-full h-full py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">Events</h1>
+          <h1 className="text-2xl font-semibold">Endpoints</h1>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-green hover:bg-green/90 px-6 flex items-center gap-2">
-                Add Event
+                Add Endpoint
                 <Plus className="size-5 shrink-0" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="md:max-w-4xl w-full">
-              <EventsCard
+            <DialogContent className="max-w-md">
+              <EndpointCard
                 setDialogOpen={setDialogOpen}
-                onSuccess={fetchEvents}
+                onSuccess={fetchEndpoints}
               />
             </DialogContent>
           </Dialog>
@@ -241,7 +313,7 @@ export default function EventsTable() {
 
         <div className="flex items-center justify-between">
           <Input
-            placeholder="Search events..."
+            placeholder="Search endpoints..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             className="max-w-sm"
@@ -303,7 +375,7 @@ export default function EventsTable() {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No events found.
+                    No endpoints found.
                   </TableCell>
                 </TableRow>
               )}
