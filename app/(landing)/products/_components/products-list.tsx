@@ -113,14 +113,14 @@ const BrewBuchaCard = ({
       </div>
 
       <CardContent className="p-4 pb-6">
-       <div className="w-full flex flex-col gap-1 min-h-[9rem]">
-       <h3 className="text-lg font-semibold text-green mb-2">
-          {product.name}
-        </h3>
-        <p className="text-sm text-green mb-4 line-clamp-2">
-          {product.description}
-        </p>
-       </div>
+        <div className="w-full flex flex-col gap-1 min-h-[9rem]">
+          <h3 className="text-lg font-semibold text-green mb-2">
+            {product.name}
+          </h3>
+          <p className="text-sm text-green mb-4 line-clamp-2">
+            {product.description}
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             {product.discount > 0 && (
@@ -250,14 +250,14 @@ const BacterialCelluloseCard = ({
       </div>
 
       <CardContent className="p-4 pb-6">
-       <div className="w-full flex flex-col gap-1 min-h-[9rem]">
-       <h3 className="text-lg font-semibold text-green mb-2">
-          {product.name}
-        </h3>
-        <p className="text-sm text-green mb-4 line-clamp-2">
-          {product.description}
-        </p>
-       </div>
+        <div className="w-full flex flex-col gap-1 min-h-[9rem]">
+          <h3 className="text-lg font-semibold text-green mb-2">
+            {product.name}
+          </h3>
+          <p className="text-sm text-green mb-4 line-clamp-2">
+            {product.description}
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             {product.discount > 0 && (
@@ -348,202 +348,211 @@ const ProductsList = ({ products }: ProductsListProps) => {
 
   const hanldeProductClick = async (productId: string) => {
     setRedirecting(true);
-    await router.push(`/products/${productId}`);
-    setRedirecting(false);
+    try {
+      await router.push(`/products/${productId}`);
+      setRedirecting(false);
+    } finally {
+      setRedirecting(false);
+    }
   };
 
   return (
-    <section className="w-full py-4 md:py-8 flex flex-col gap-7 md:gap-12 mb-8 md:mb-10">
-      {/* BrewBucha Products */}
-      {(loadingStates.brewbucha || brewBuchaProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-4 md:gap-6">
-          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
-            BrewBucha Beverages
-          </h2>
+    <>
+      {redirecting && <Loader />}
+      <section className="w-full py-4 md:py-6 flex flex-col gap-7 md:gap-12 mb-8 md:mb-10">
+        {/* BrewBucha Products */}
+        {(loadingStates.brewbucha || brewBuchaProducts.length > 0) && (
+          <div className="w-full flex flex-col gap-4 md:gap-6">
+            <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
+              BrewBucha Beverages
+            </h2>
 
-          {/* Mobile View */}
-          <div className="md:hidden w-full">
-            {loadingStates.brewbucha ? (
-              <div className="flex flex-col gap-4">
-                {[1, 2].map((_, index) => (
-                  <ProductCardSkeleton
-                    key={`brew-mobile-skeleton-${index}`}
-                    variant="brewbucha"
-                    isMobile={true}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Swiper
-                spaceBetween={16}
-                slidesPerView={1}
-                centeredSlides={true}
-                loop={brewBuchaProducts.length > 1}
-                autoplay={{
-                  delay: 2000,
-                  disableOnInteraction: false,
-                }}
-                pagination={false}
-                modules={[Autoplay, Pagination]}
-                className="w-full"
-              >
-                {brewBuchaProducts.map((product, index) => (
-                  <SwiperSlide key={`brew-mobile-${product.id || index}`}>
-                    <BrewBuchaCard
-                      product={product}
-                      onClick={hanldeProductClick}
-                      redirecting={redirecting}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
-          </div>
-
-          {/* Desktop Grid View */}
-          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {loadingStates.brewbucha
-              ? Array(4)
-                  .fill(0)
-                  .map((_, index) => (
+            {/* Mobile View */}
+            <div className="md:hidden w-full">
+              {loadingStates.brewbucha ? (
+                <div className="flex flex-col gap-4">
+                  {[1, 2].map((_, index) => (
                     <ProductCardSkeleton
-                      key={`brew-skeleton-${index}`}
+                      key={`brew-mobile-skeleton-${index}`}
                       variant="brewbucha"
+                      isMobile={true}
                     />
-                  ))
-              : brewBuchaProducts.map((product, index) => (
-                  <BrewBuchaCard
-                    key={`brew-${product.id || index}`}
-                    product={product}
-                    onClick={hanldeProductClick}
-                    redirecting={redirecting}
-                  />
-                ))}
-          </div>
-        </div>
-      )}
+                  ))}
+                </div>
+              ) : (
+                <Swiper
+                  spaceBetween={16}
+                  slidesPerView={1}
+                  centeredSlides={true}
+                  loop={brewBuchaProducts.length > 1}
+                  autoplay={{
+                    delay: 2000,
+                    disableOnInteraction: false,
+                  }}
+                  pagination={false}
+                  modules={[Autoplay, Pagination]}
+                  className="w-full"
+                >
+                  {brewBuchaProducts.map((product, index) => (
+                    <SwiperSlide key={`brew-mobile-${product.id || index}`}>
+                      <BrewBuchaCard
+                        product={product}
+                        onClick={hanldeProductClick}
+                        redirecting={redirecting}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+            </div>
 
-      {/* SapStudio Products */}
-      {(loadingStates.sapsymphony || sapSymphonyProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-4 md:gap-6">
-          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
-            SapStudio
-          </h2>
-
-          {/* Mobile View */}
-          <div className="md:hidden">
-            {loadingStates.sapsymphony ? (
-              <div className="flex flex-col gap-4">
-                {[1, 2].map((_, index) => (
-                  <ProductCardSkeleton
-                    key={`spa-mobile-skeleton-${index}`}
-                    variant="spastudio"
-                    isMobile={true}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                {sapSymphonyProducts.map((product, index) => (
-                  <SapSymphonyCard
-                    key={`spa-mobile-${product.id || index}`}
-                    product={product}
-                    onClick={hanldeProductClick}
-                    redirecting={redirecting}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Desktop View */}
-          <div className="hidden md:block">
-            {loadingStates.sapsymphony ? (
-              <ProductCardSkeleton variant="spastudio" />
-            ) : (
-              sapSymphonyProducts.map((product, index) => (
-                <SapSymphonyCard
-                  key={`spa-${product.id || index}`}
-                  product={product}
-                  onClick={hanldeProductClick}
-                  redirecting={redirecting}
-                />
-              ))
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Bacterial Cellulose Products */}
-      {(loadingStates.bacterialcellulose ||
-        bacterialCelluloseProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-5 md:gap-6">
-          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
-            Bacterial Cellulose Products
-          </h2>
-
-          {/* Mobile View */}
-          <div className="md:hidden w-full">
-            {loadingStates.bacterialcellulose ? (
-              <div className="flex flex-col gap-4">
-                {[1, 2].map((_, index) => (
-                  <ProductCardSkeleton
-                    key={`cellulose-mobile-skeleton-${index}`}
-                    variant="bacterialcellulose"
-                    isMobile={true}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Swiper
-                spaceBetween={16}
-                slidesPerView={1}
-                centeredSlides={true}
-                loop={bacterialCelluloseProducts.length > 1}
-                autoplay={{
-                  delay: 2000,
-                  disableOnInteraction: false,
-                }}
-                pagination={false}
-                modules={[Autoplay]}
-                className="w-full"
-              >
-                {bacterialCelluloseProducts.map((product, index) => (
-                  <SwiperSlide key={`cellulose-mobile-${product.id || index}`}>
-                    <BacterialCelluloseCard
+            {/* Desktop Grid View */}
+            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {loadingStates.brewbucha
+                ? Array(4)
+                    .fill(0)
+                    .map((_, index) => (
+                      <ProductCardSkeleton
+                        key={`brew-skeleton-${index}`}
+                        variant="brewbucha"
+                      />
+                    ))
+                : brewBuchaProducts.map((product, index) => (
+                    <BrewBuchaCard
+                      key={`brew-${product.id || index}`}
                       product={product}
                       onClick={hanldeProductClick}
                       redirecting={redirecting}
                     />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
+                  ))}
+            </div>
           </div>
+        )}
 
-          {/* Desktop Grid View */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {loadingStates.bacterialcellulose
-              ? Array(4)
-                  .fill(0)
-                  .map((_, index) => (
+        {/* SapStudio Products */}
+        {(loadingStates.sapsymphony || sapSymphonyProducts.length > 0) && (
+          <div className="w-full flex flex-col gap-4 md:gap-6">
+            <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
+              SapStudio
+            </h2>
+
+            {/* Mobile View */}
+            <div className="md:hidden">
+              {loadingStates.sapsymphony ? (
+                <div className="flex flex-col gap-4">
+                  {[1, 2].map((_, index) => (
                     <ProductCardSkeleton
-                      key={`cellulose-skeleton-${index}`}
-                      variant="bacterialcellulose"
+                      key={`spa-mobile-skeleton-${index}`}
+                      variant="spastudio"
+                      isMobile={true}
                     />
-                  ))
-              : bacterialCelluloseProducts.map((product, index) => (
-                  <BacterialCelluloseCard
-                    key={`cellulose-${product.id || index}`}
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {sapSymphonyProducts.map((product, index) => (
+                    <SapSymphonyCard
+                      key={`spa-mobile-${product.id || index}`}
+                      product={product}
+                      onClick={hanldeProductClick}
+                      redirecting={redirecting}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop View */}
+            <div className="hidden md:block">
+              {loadingStates.sapsymphony ? (
+                <ProductCardSkeleton variant="spastudio" />
+              ) : (
+                sapSymphonyProducts.map((product, index) => (
+                  <SapSymphonyCard
+                    key={`spa-${product.id || index}`}
                     product={product}
                     onClick={hanldeProductClick}
                     redirecting={redirecting}
                   />
-                ))}
+                ))
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+
+        {/* Bacterial Cellulose Products */}
+        {(loadingStates.bacterialcellulose ||
+          bacterialCelluloseProducts.length > 0) && (
+          <div className="w-full flex flex-col gap-5 md:gap-6">
+            <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
+              Bacterial Cellulose Products
+            </h2>
+
+            {/* Mobile View */}
+            <div className="md:hidden w-full">
+              {loadingStates.bacterialcellulose ? (
+                <div className="flex flex-col gap-4">
+                  {[1, 2].map((_, index) => (
+                    <ProductCardSkeleton
+                      key={`cellulose-mobile-skeleton-${index}`}
+                      variant="bacterialcellulose"
+                      isMobile={true}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Swiper
+                  spaceBetween={16}
+                  slidesPerView={1}
+                  centeredSlides={true}
+                  loop={bacterialCelluloseProducts.length > 1}
+                  autoplay={{
+                    delay: 2000,
+                    disableOnInteraction: false,
+                  }}
+                  pagination={false}
+                  modules={[Autoplay]}
+                  className="w-full"
+                >
+                  {bacterialCelluloseProducts.map((product, index) => (
+                    <SwiperSlide
+                      key={`cellulose-mobile-${product.id || index}`}
+                    >
+                      <BacterialCelluloseCard
+                        product={product}
+                        onClick={hanldeProductClick}
+                        redirecting={redirecting}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+            </div>
+
+            {/* Desktop Grid View */}
+            <div className="hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {loadingStates.bacterialcellulose
+                ? Array(4)
+                    .fill(0)
+                    .map((_, index) => (
+                      <ProductCardSkeleton
+                        key={`cellulose-skeleton-${index}`}
+                        variant="bacterialcellulose"
+                      />
+                    ))
+                : bacterialCelluloseProducts.map((product, index) => (
+                    <BacterialCelluloseCard
+                      key={`cellulose-${product.id || index}`}
+                      product={product}
+                      onClick={hanldeProductClick}
+                      redirecting={redirecting}
+                    />
+                  ))}
+            </div>
+          </div>
+        )}
+      </section>
+    </>
   );
 };
 
