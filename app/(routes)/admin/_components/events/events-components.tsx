@@ -172,7 +172,7 @@ export default function EventsTable() {
                 <Pencil className="w-4 h-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl">
+            <DialogContent className="w-[90%] md:max-w-3xl overflow-hidden">
               {selectedEvent && (
                 <EventsCard
                   setDialogOpen={setUpdateDialogOpen}
@@ -228,7 +228,7 @@ export default function EventsTable() {
                 <Plus className="size-5 shrink-0" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="md:max-w-3xl w-full !px-3 !py-2">
+            <DialogContent className="md:max-w-4xl w-full !px-3 !py-2">
               <EventsCard
                 setDialogOpen={setDialogOpen}
                 onSuccess={fetchEvents}

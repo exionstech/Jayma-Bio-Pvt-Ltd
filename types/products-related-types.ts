@@ -1,7 +1,9 @@
 export interface Products {
   id: string;
   name: string;
+  description: string;
   price: number;
+  discount: number;
   images: { url: string }[];
   isFeatured: boolean;
   isArchived: boolean;

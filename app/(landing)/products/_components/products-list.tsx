@@ -80,14 +80,14 @@ const BrewBuchaCard = ({ product }: { product: Products }) => (
         <h3 className="text-xl font-semibold text-green mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-green mb-4 line-clamp-2">{product.name}</p>
+        <p className="text-sm text-green mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between mt-5">
           <div className="flex items-baseline">
             <span className="text-lg font-semibold text-green">Rs</span>
             <span className="text-xl font-semibold text-green ml-1">
               {typeof product.price === "number"
-                ? product.price.toFixed(0)
-                : ""}
+              ? (product.price - (product?.discount || 0) / 100 * product.price).toFixed(0)
+              : ""}
               /-
             </span>
           </div>

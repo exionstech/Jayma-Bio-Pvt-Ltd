@@ -6,14 +6,22 @@ import "swiper/css/pagination";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Event } from "@/actions/events/get-events";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 interface EventsSliderProps {
   className?: string;
-  data: any;
+  data: Event[];
   title: string;
 }
 
 const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
+
+  const router = useRouter();
+  const handleEventClick = (id: string) => {
+    router.push(`/events/${id}`);
+  }
   return (
     <div
       className={cn(
@@ -58,11 +66,13 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
         >
           {data.map((event: any, index: number) => (
             <SwiperSlide key={index}>
-              <Card className="rounded-lg p-0 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <Card 
+              onClick={() => handleEventClick(event.id)}
+              className="rounded-lg p-0 overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                 <CardHeader className="p-0">
                   <div className="relative aspect-video">
                     <Image
-                      src={event.image}
+                      src={event.images[0]}
                       alt={event.title}
                       fill
                       className="object-cover"
@@ -71,12 +81,12 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
                   </div>
                 </CardHeader>
                 <CardDescription className="flex gap-4 p-4">
-                  <div className="flex flex-col items-center justify-start min-w-[40px] md:min-w-[50px]">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {event.eventMonth}
+                  <div className="flex flex-col items-center justify-start min-w-[30px] md:min-w-[40px]">
+                    <span className="text-sm font-medium text-muted-foreground uppercase">
+                      {format(new Date(event.date), "MMM")}
                     </span>
                     <span className="text-xl md:text-2xl text-green font-medium">
-                      {event.eventDate}
+                      {format(new Date(event.date), "d")}
                     </span>
                   </div>
                   <div className="flex flex-col items-start justify-start -mt-1">

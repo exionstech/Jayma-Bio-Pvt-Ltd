@@ -45,8 +45,8 @@ const UserComponent = () => {
   const [toggled, setToggled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ConfirmDialogue, confirm] = useConfirm(
-    "Delete Product",
-    "Are you sure you want to delete this product ? This action cannot be undone."
+    "Delete User",
+    "Are you sure you want to delete this user ? This action cannot be undone."
   );
 
   const fetchUserData = async () => {
@@ -55,10 +55,10 @@ const UserComponent = () => {
       if (response.success && response.users) {
         setData(response.users);
       } else {
-        toast.error("Failed to fetch products");
+        toast.error("Failed to fetch users");
       }
     } catch (error) {
-      toast.error("Error fetching products");
+      toast.error("Error fetching users");
     } finally {
       setLoading(false);
     }
@@ -185,7 +185,7 @@ const UserComponent = () => {
       </div>
       <div className="flex items-center justify-between">
         <Input
-          placeholder="Search products..."
+          placeholder="Search users..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className="max-w-sm"
