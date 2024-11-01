@@ -49,7 +49,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
               {prodcut.description}
             </p>
           </div>
-          <div className="w-full flex flex-row items-center justify-between py-2 md:py-3 mb-4 md:mb-0">
+          <div className="w-full flex flex-row items-center justify-between py-2 md:py-3 mb-4 md:mb-6">
             <div className="flex items-center justify-center gap-1">
               {prodcut.discount > 0 && (
                 <span className="text-sm md:text-xl font-medium text-[#CC0C39]">
@@ -68,7 +68,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 /-
               </h1>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap- md:gap-5">
               <Button
                 size={"lg"}
                 variant="outline"
@@ -146,7 +146,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
         </div>
         <div className="w-full md:w-3/5 flex flex-col gap-2">
           <h1 className="text-xl md:text-2xl font-semibold text-green">
-            What customers sayS
+            What customers says
           </h1>
           <p className="text-sm md:text-medium">{aboutProduct?.customerSay}</p>
         </div>
