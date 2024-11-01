@@ -166,7 +166,7 @@ const EventsForm = ({
     { label: "Open-source Sprints", value: "open_source_sprints" },
     { label: "Tech Panel Discussions", value: "tech_panel_discussions" },
   ];
-  
+
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
@@ -178,11 +178,11 @@ const EventsForm = ({
       date: initialData?.date || "",
       eventType: initialData?.eventType || "FEATURED",
       notify: initialData?.notify || false,
-      archived: initialData?.archived || true,
+      archived: initialData?.archived || false,
       tags: initialData?.tags || [],
     },
   });
-
+  
   useEffect(() => {
     setCharCount(form.getValues("description").length);
   }, []);
@@ -243,7 +243,7 @@ const EventsForm = ({
       setLoading(false);
     }
   };
-
+  
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     field: any

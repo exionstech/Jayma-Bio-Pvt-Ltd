@@ -110,7 +110,7 @@ model Event {
   image       String[]
   eventType   EventType
   notify      Boolean
-  archived    Boolean   @default(true)
+  archived    Boolean   @default(false)
   tags        String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -123,7 +123,7 @@ model Blog {
   content   Json
   likes     Int     @default(0)
   toggle    Boolean @default(false)
-  archived  Boolean @default(true)
+  archived  Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

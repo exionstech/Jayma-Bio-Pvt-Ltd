@@ -44,8 +44,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
-  const [blocks, setBlocks] = useState<any[]>(
-    simplifyBlockFormat(initialData?.content) || []
+  const [blocks, setBlocks] = useState<Block[]>(
+    simplifyBlockFormat(initialData?.content)
   );
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -185,10 +185,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <Editor
-                    setBlocks={setBlocks}
-                    initialContent={blocks || null}
-                  />
+                  <Editor setBlocks={setBlocks} initialContent={blocks} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
