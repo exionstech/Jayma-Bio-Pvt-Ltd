@@ -1,16 +1,22 @@
 "use server";
 
 import prismadb from "@/lib/prismadb";
+import { EventType } from "@prisma/client";
 
 export interface Event {
   id: string;
   title: string;
   description: string;
+  venue: string;
   date: string;
-  location: string;
-  type: string;
   link: string;
-  images: string[];
+  image: string[];
+  eventType: EventType;
+  notify: boolean;
+  archived: boolean;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const getAllEvents = async () => {
