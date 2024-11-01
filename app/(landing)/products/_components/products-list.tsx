@@ -113,13 +113,15 @@ const BrewBuchaCard = ({
       </div>
 
       <CardContent className="p-4 pb-6">
-        <h3 className="text-lg font-semibold text-green mb-2">
+       <div className="w-full flex flex-col gap-1 min-h-[9rem]">
+       <h3 className="text-lg font-semibold text-green mb-2">
           {product.name}
         </h3>
         <p className="text-sm text-green mb-4 line-clamp-2">
           {product.description}
         </p>
-        <div className="flex items-center justify-between mt-5">
+       </div>
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             {product.discount > 0 && (
               <span className="text-sm font-medium text-[#CC0C39] pt-1">
@@ -176,7 +178,7 @@ const SapSymphonyCard = ({
         </div>
 
         {/* Right Section with Content */}
-        <div className="flex-1 space-y-4 md:space-y-6 px-3 md:pb-0 md:p-3 pb-3">
+        <div className="flex-1 space-y-4 md:space-y-6 px-3 md:pb-0 md:p-4 pb-3">
           <div className="flex justify-between items-center">
             <h2 className="text-xl md:text-2xl font-medium md:font-semibold text-gray-800">
               {product.name}
@@ -248,13 +250,15 @@ const BacterialCelluloseCard = ({
       </div>
 
       <CardContent className="p-4 pb-6">
-        <h3 className="text-lg font-semibold text-green mb-2">
+       <div className="w-full flex flex-col gap-1 min-h-[9rem]">
+       <h3 className="text-lg font-semibold text-green mb-2">
           {product.name}
         </h3>
         <p className="text-sm text-green mb-4 line-clamp-2">
           {product.description}
         </p>
-        <div className="flex items-center justify-between mt-5">
+       </div>
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             {product.discount > 0 && (
               <span className="text-sm font-medium text-[#CC0C39] pt-1">
@@ -276,9 +280,9 @@ const BacterialCelluloseCard = ({
           </div>
           <Button
             variant="default"
-            onClick={() => onClick(product.id)}
             disabled={redirecting}
             className="bg-green text-white hover:bg-green/90 px-4 rounded-xl"
+            onClick={() => onClick(product.id)}
           >
             View Details
           </Button>
