@@ -17,8 +17,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
-import { sendNewsletter } from "@/lib/mail";
-import { sendEventMail } from "@/actions/event-newsletter";
 import { updateBlog } from "@/actions/blogs/update-blog";
 
 interface Blog {
@@ -135,7 +133,7 @@ const BlogComponent = () => {
                 <TableHead>Title</TableHead>
                 <TableHead className="text-center">Likes</TableHead>
                 <TableHead className="text-center">Newsletter</TableHead>
-                <TableHead className="text-right">Archive</TableHead>
+                <TableHead className="text-center">Archive</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
