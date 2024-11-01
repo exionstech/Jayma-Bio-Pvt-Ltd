@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,9 +18,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import EventsCard from "./events-card";
+import { ExternalLink, Pencil, Plus, Trash2, ArrowLeft } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -34,13 +31,15 @@ import Loader from "@/components/shared/loader";
 import { useConfirm } from "@/hooks/use-confirm";
 import { EventType } from "@prisma/client";
 import { getAllEvents } from "@/actions/events/get-events";
+import EventsForm from "./events-card";
+import { format } from "date-fns";
 
 export type Event = {
   id: string;
   title: string;
   description: string;
   venue: string;
-  date: string;
+  date: Date;
   link: string;
   image?: string[];
   eventType: EventType;
@@ -51,19 +50,12 @@ export type Event = {
   updatedAt: Date;
 };
 
-export interface EventsCardProps {
-  setDialogOpen: Dispatch<SetStateAction<boolean>>;
-  initialData?: Event;
-  onSuccess?: () => Promise<void>;
-}
-
-export default function EventsTable() {
+export default function EventsPage() {
   const [data, setData] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [ConfirmDialogue, confirm] = useConfirm(
     "Delete Event",
     "Are you sure you want to delete this event? This action cannot be undone."
@@ -117,6 +109,16 @@ export default function EventsTable() {
     }
   };
 
+  const handleEdit = (event: Event) => {
+    setSelectedEvent(event);
+    setShowForm(true);
+  };
+
+  const handleAddNew = () => {
+    setSelectedEvent(null);
+    setShowForm(true);
+  };
+
   const columns: ColumnDef<Event>[] = [
     {
       header: "Title",
@@ -131,7 +133,9 @@ export default function EventsTable() {
       header: "Date",
       accessorKey: "date",
       cell: ({ row }) => (
-        <span>{new Date(row.original.date).toLocaleDateString()}</span>
+        <span>
+          {format(new Date(row.original.date), "dd MMM yyyy, hh:mm a")}
+        </span>
       ),
     },
     {
@@ -169,26 +173,13 @@ export default function EventsTable() {
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex gap-2">
-          <Dialog open={updateDialogOpen} onOpenChange={setUpdateDialogOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setSelectedEvent(row.original)}
-              >
-                <Pencil className="w-4 h-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-3xl">
-              {selectedEvent && (
-                <EventsCard
-                  setDialogOpen={setUpdateDialogOpen}
-                  initialData={selectedEvent}
-                  onSuccess={fetchEvents}
-                />
-              )}
-            </DialogContent>
-          </Dialog>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleEdit(row.original)}
+          >
+            <Pencil className="w-4 h-4" />
+          </Button>
           <Button
             variant="destructive"
             size="sm"
@@ -223,124 +214,145 @@ export default function EventsTable() {
   }
 
   return (
-    <>
-      <ConfirmDialogue />
-      <div className="space-y-4">
-        <div className="w-full h-full py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">Events</h1>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-green hover:bg-green/90 px-6 flex items-center gap-2">
+    <div className="container mx-auto p-6 space-y-6">
+      {!showForm ? (
+        <>
+          <ConfirmDialogue />
+          <div className="space-y-4">
+            <div className="w-full h-full py-4 flex justify-between items-center">
+              <h1 className="text-2xl font-semibold">Events</h1>
+              <Button
+                onClick={handleAddNew}
+                className="bg-green hover:bg-green/90 px-6 flex items-center gap-2"
+              >
                 Add Event
                 <Plus className="size-5 shrink-0" />
               </Button>
-            </DialogTrigger>
-            <DialogContent className="md:max-w-4xl w-full">
-              <EventsCard
-                setDialogOpen={setDialogOpen}
-                onSuccess={fetchEvents}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <Input
+                placeholder="Search events..."
+                value={globalFilter}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                className="max-w-sm"
               />
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <Input
-            placeholder="Search events..."
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="max-w-sm"
-          />
-          <div className="flex items-center gap-2">
-            <Select
-              value={table.getState().pagination.pageSize.toString()}
-              onValueChange={(val) => {
-                table.setPageSize(Number(val));
-              }}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select page size" />
-              </SelectTrigger>
-              <SelectContent>
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={pageSize.toString()}>
-                    {pageSize} rows
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+              <div className="flex items-center gap-2">
+                <Select
+                  value={table.getState().pagination.pageSize.toString()}
+                  onValueChange={(val) => {
+                    table.setPageSize(Number(val));
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select page size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                      <SelectItem key={pageSize} value={pageSize.toString()}>
+                        {pageSize} rows
+                      </SelectItem>
                     ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No events found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id}>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No events found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  Next
+                </Button>
+              </div>
+              <span className="text-sm text-gray-500">
+                Page {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount()}
+              </span>
+            </div>
           </div>
-          <span className="text-sm text-gray-500">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </span>
+        </>
+      ) : (
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowForm(false)}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Events
+            </Button>
+            <h1 className="text-2xl font-semibold">
+              {selectedEvent ? "Edit Event" : "Add New Event"}
+            </h1>
+          </div>
+          <EventsForm
+            setDialogOpen={setShowForm}
+            initialData={selectedEvent || undefined}
+            onSuccess={async () => {
+              await fetchEvents();
+              setShowForm(false);
+            }}
+          />
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }
