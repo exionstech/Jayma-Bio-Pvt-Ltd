@@ -15,32 +15,24 @@ const ProductsSection = ({ categories, products }: ProductsProps) => {
       id="products"
       className="w-full flex flex-col gap-4 min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-12 max-w-screen-2xl mx-auto"
     >
-      <div className="w-full flex items-center justify-between pt-5">
-        <div className="flex items-center justify-center">
-          <Input
-            placeholder="Search a product"
-            className="rounded-full h-[40px] w-[340px] focus:border-black/30 px-4"
-          />
-        </div>
-        <div className="flex items-center gap-5">
+      <div className="w-full flex items-center justify-center md:justify-end pt-5">
+        <div className="flex items-center gap-3 md:gap-5">
           <div className="flex items-center justify-center">
             <CategotyFilter categories={categories} />
           </div>
-          <div className="w-10 flex items-center justify-center cursor-pointer">
-            <IoIosHeartEmpty className="size-7 shrink-0 fill-green" />
+          <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
+            <IoIosHeartEmpty className="size-6 md:size-7 shrink-0 fill-green" />
           </div>
-          <div className="w-10 flex items-center justify-center cursor-pointer">
+          <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
             <img
               src="/products/cart.svg"
               alt="cart-icon"
-              className="size-7 shrink-0"
+              className="size-5 md:size-7 shrink-0"
             />
           </div>
         </div>
       </div>
-      <div>
-        <ProductsList products={products} />
-      </div>
+      <ProductsList products={products} />
     </section>
   );
 };

@@ -10,6 +10,8 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/shared/loader";
 
 interface ProductsListProps {
   products: Products[];
@@ -34,11 +36,38 @@ const GlobalNoProductsCard = () => (
 // Product Card Skeleton Component
 const ProductCardSkeleton = ({
   variant,
+  isMobile = false,
 }: {
-  variant: "brewbucha" | "merchandise" | "starterkit";
+  variant: "brewbucha" | "spastudio" | "bacterialcellulose";
+  isMobile?: boolean;
 }) => {
+  if (variant === "spastudio") {
+    return (
+      <Card className="w-full bg-white overflow-hidden !p-0">
+        <div className={`flex ${isMobile ? "flex-col" : "flex-row"} gap-6`}>
+          <Skeleton className={`${isMobile ? "h-64" : "h-96"} w-full`} />
+          <div className="flex-1 space-y-6 p-4">
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-8 w-8 rounded-full" />
+            </div>
+            <Skeleton className="h-24 w-full" />
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-10 w-32" />
+            </div>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="overflow-hidden bg-white rounded-lg shadow-md">
+    <Card
+      className={`overflow-hidden bg-white rounded-lg shadow-md ${
+        isMobile ? "w-full" : ""
+      }`}
+    >
       <div className="relative">
         <div className="aspect-square relative">
           <Skeleton className="absolute inset-0 w-full h-full" />
@@ -46,7 +75,6 @@ const ProductCardSkeleton = ({
             <Skeleton className="size-10 rounded-full" />
           </div>
         </div>
-
         <CardContent className="p-4 pb-6">
           <Skeleton className="h-5 w-3/4 mb-2" />
           <Skeleton className="h-3 w-full mb-2" />
@@ -62,7 +90,15 @@ const ProductCardSkeleton = ({
 };
 
 // BrewBucha Card Component
-const BrewBuchaCard = ({ product }: { product: Products }) => (
+const BrewBuchaCard = ({
+  product,
+  onClick,
+  redirecting,
+}: {
+  product: Products;
+  redirecting: boolean;
+  onClick: (productId: string) => void;
+}) => (
   <Card className="overflow-hidden bg-white rounded-lg shadow-md">
     <div className="relative">
       <div className="aspect-square relative">
@@ -77,23 +113,37 @@ const BrewBuchaCard = ({ product }: { product: Products }) => (
       </div>
 
       <CardContent className="p-4 pb-6">
-        <h3 className="text-xl font-semibold text-green mb-2">
+        <h3 className="text-lg font-semibold text-green mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-green mb-4 line-clamp-2">{product.description}</p>
+        <p className="text-sm text-green mb-4 line-clamp-2">
+          {product.description}
+        </p>
         <div className="flex items-center justify-between mt-5">
-          <div className="flex items-baseline">
-            <span className="text-lg font-semibold text-green">Rs</span>
-            <span className="text-xl font-semibold text-green ml-1">
-              {typeof product.price === "number"
-              ? (product.price - (product?.discount || 0) / 100 * product.price).toFixed(0)
-              : ""}
-              /-
-            </span>
+          <div className="flex items-center gap-1">
+            {product.discount > 0 && (
+              <span className="text-sm font-medium text-[#CC0C39] pt-1">
+                - {product.discount}%
+              </span>
+            )}
+            <div className="flex items-baseline">
+              <span className="text-sm font-semibold text-green">Rs</span>
+              <span className="text-medium font-semibold text-green ml-1">
+                {typeof product.price === "number"
+                  ? (
+                      product.price -
+                      ((product?.discount || 0) / 100) * product.price
+                    ).toFixed(0)
+                  : ""}
+                /-
+              </span>
+            </div>
           </div>
           <Button
             variant="default"
-            className="bg-green text-white hover:bg-green/90 px-6 rounded-xl"
+            disabled={redirecting}
+            className="bg-green text-white hover:bg-green/90 px-4 rounded-xl"
+            onClick={() => onClick(product.id)}
           >
             View Details
           </Button>
@@ -103,87 +153,134 @@ const BrewBuchaCard = ({ product }: { product: Products }) => (
   </Card>
 );
 
-// Merchandise Card Component
-const MerchandiseCard = ({ product }: { product: Products }) => (
-  <Card className="overflow-hidden bg-slate-50 rounded-xl shadow-lg">
-    <div className="relative">
-      <div className="aspect-square relative">
-        <img
-          src={product.images[0].url}
-          alt={product.name}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <button className="absolute top-4 right-4 p-2 text-gray-700 hover:text-gray-900">
-          <Heart className="size-6 shrink-0 text-purple-600" />
-        </button>
-      </div>
-
-      <CardContent className="p-6">
-        <h3 className="text-2xl font-bold text-purple-800 mb-3">
-          {product.name}
-        </h3>
-        <p className="text-sm text-purple-600 mb-4 line-clamp-2">
-          {product.name}
-        </p>
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-baseline">
-            <span className="text-xl font-bold text-purple-800">
-              Rs{" "}
-              {typeof product.price === "number"
-                ? product.price.toFixed(0)
-                : ""}
-              /-
-            </span>
-          </div>
-          <Button
-            variant="default"
-            className="bg-purple-600 text-white hover:bg-purple-700 px-8 rounded-full"
-          >
-            Shop Now
-          </Button>
+// SapStudio Card Component
+const SapSymphonyCard = ({
+  product,
+  onClick,
+  redirecting,
+}: {
+  product: Products;
+  onClick: (productId: string) => void;
+  redirecting: boolean;
+}) => {
+  return (
+    <Card className="bg-white overflow-hidden !p-0">
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-center justify-center">
+        {/* Left Section with Images */}
+        <div className="flex-1 space-y-4 object-contain">
+          <img
+            src={product.images[0].url}
+            alt={product.name}
+            className="w-full object-cover h-auto"
+          />
         </div>
-      </CardContent>
-    </div>
-  </Card>
-);
 
-// Starter Kit Card Component
-const StarterKitCard = ({ product }: { product: Products }) => (
-  <Card className="overflow-hidden bg-orange-50 rounded-2xl shadow-md">
+        {/* Right Section with Content */}
+        <div className="flex-1 space-y-4 md:space-y-6 px-3 md:pb-0 md:p-3 pb-3">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl md:text-2xl font-medium md:font-semibold text-gray-800">
+              {product.name}
+            </h2>
+            <div className="flex items-center justify-center cursor-pointer">
+              <Heart className="size-5 md:size-6 text-green -mt-1" />
+            </div>
+          </div>
+
+          <p className="text-gray-700 leading-relaxed text-sm md:text-medium">
+            {product.description}
+          </p>
+
+          <div className="flex items-center justify-between md:pt-4">
+            <div className="flex items-center gap-2">
+              {product.discount > 0 && (
+                <span className="text-sm font-medium text-[#CC0C39] pt-1">
+                  - {product.discount}%
+                </span>
+              )}
+              <div className="flex items-baseline">
+                <span className="text-lg font-semibold text-green">Rs</span>
+                <span className="text-xl font-semibold text-green ml-1">
+                  {typeof product.price === "number"
+                    ? (
+                        product.price -
+                        ((product?.discount || 0) / 100) * product.price
+                      ).toFixed(0)
+                    : ""}
+                  /-
+                </span>
+              </div>
+            </div>
+            <Button
+              onClick={() => onClick(product.id)}
+              disabled={redirecting}
+              className="bg-green hover:bg-green/90 text-white px-4 md:px-8 py-2 rounded-xl"
+            >
+              View Details
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+// Bacterial Cellulose Card Component
+const BacterialCelluloseCard = ({
+  product,
+  onClick,
+  redirecting,
+}: {
+  product: Products;
+  onClick: (productId: string) => void;
+  redirecting: boolean;
+}) => (
+  <Card className="overflow-hidden bg-white rounded-lg shadow-md">
     <div className="relative">
       <div className="aspect-square relative">
         <img
-          src={product.images[0].url}
+          src={product.images[0]?.url}
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <button className="absolute top-4 right-4 p-2 text-gray-700 hover:text-gray-900">
-          <Heart className="size-6 shrink-0 text-orange-600" />
+        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon">
+          <Heart className="size-6 shrink-0 text-green" />
         </button>
       </div>
 
-      <CardContent className="p-5">
-        <h3 className="text-xl font-bold text-orange-800 mb-2">
+      <CardContent className="p-4 pb-6">
+        <h3 className="text-lg font-semibold text-green mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-orange-600 mb-3 line-clamp-2">
-          {product.name}
+        <p className="text-sm text-green mb-4 line-clamp-2">
+          {product.description}
         </p>
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-baseline">
-            <span className="text-lg font-bold text-orange-800">
-              Rs{" "}
-              {typeof product.price === "number"
-                ? product.price.toFixed(0)
-                : ""}
-              /-
-            </span>
+        <div className="flex items-center justify-between mt-5">
+          <div className="flex items-center gap-1">
+            {product.discount > 0 && (
+              <span className="text-sm font-medium text-[#CC0C39] pt-1">
+                - {product.discount}%
+              </span>
+            )}
+            <div className="flex items-baseline">
+              <span className="text-sm font-semibold text-green">Rs</span>
+              <span className="text-medium font-semibold text-green ml-1">
+                {typeof product.price === "number"
+                  ? (
+                      product.price -
+                      ((product?.discount || 0) / 100) * product.price
+                    ).toFixed(0)
+                  : ""}
+                /-
+              </span>
+            </div>
           </div>
           <Button
             variant="default"
-            className="bg-orange-600 text-white hover:bg-orange-700 px-6 rounded-lg"
+            onClick={() => onClick(product.id)}
+            disabled={redirecting}
+            className="bg-green text-white hover:bg-green/90 px-4 rounded-xl"
           >
-            Explore Kit
+            View Details
           </Button>
         </div>
       </CardContent>
@@ -192,33 +289,52 @@ const StarterKitCard = ({ product }: { product: Products }) => (
 );
 
 const ProductsList = ({ products }: ProductsListProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [redirecting, setRedirecting] = useState(false);
+  const router = useRouter();
+  const [loadingStates, setLoadingStates] = useState({
+    brewbucha: true,
+    sapsymphony: true,
+    bacterialcellulose: true,
+  });
   const [displayedProducts, setDisplayedProducts] = useState<Products[]>([]);
 
   useEffect(() => {
-    setIsLoading(true);
+    // Reset loading states when products change
+    setLoadingStates({
+      brewbucha: true,
+      sapsymphony: true,
+      bacterialcellulose: true,
+    });
 
-    const timer = setTimeout(() => {
-      setDisplayedProducts(products);
-      setIsLoading(false);
-    }, 1000);
+    // Simulate different loading times for each category
+    const timers = [
+      setTimeout(() => {
+        setLoadingStates((prev) => ({ ...prev, brewbucha: false }));
+      }, 800),
+      setTimeout(() => {
+        setLoadingStates((prev) => ({ ...prev, sapsymphony: false }));
+      }, 1200),
+      setTimeout(() => {
+        setLoadingStates((prev) => ({ ...prev, bacterialcellulose: false }));
+      }, 1000),
+    ];
 
-    return () => clearTimeout(timer);
+    setDisplayedProducts(products);
+
+    return () => timers.forEach((timer) => clearTimeout(timer));
   }, [products]);
 
   const brewBuchaProducts = displayedProducts.filter(
     (product) => product.category === "BrewBucha" && !product.isArchived
   );
-  const merchandiseProducts = displayedProducts.filter(
-    (product) => product.category === "Merchandise"
+  const sapSymphonyProducts = displayedProducts.filter(
+    (product) => product.category === "SapSymphony"
   );
-  const starterKitProducts = displayedProducts.filter(
-    (product) => product.category === "StarterKit"
+  const bacterialCelluloseProducts = displayedProducts.filter(
+    (product) => product.category === "Bacterial Cellulose"
   );
 
-  const hasNoProducts = products.length === 0;
-
-  if (hasNoProducts) {
+  if (products.length === 0) {
     return (
       <section className="w-full py-16 px-4">
         <GlobalNoProductsCard />
@@ -226,58 +342,54 @@ const ProductsList = ({ products }: ProductsListProps) => {
     );
   }
 
-  const customStyles = `
-  .swiper-pagination{
-    margin-top:2rem;
-   }
-  .swiper-pagination-bullet {
-    width: 8px !important;
-    height: 8px !important;
-    background: #0D2A25;
-    opacity: 0.5 !important;
-  }
+  const hanldeProductClick = async (productId: string) => {
+    setRedirecting(true);
+    await router.push(`/products/${productId}`);
+    setRedirecting(false);
+  };
 
-  .swiper-pagination-bullet-active {
-    background: #0D2A25 !important;
-    opacity: 1 !important;
-  }
-`;
   return (
-    <section className="w-full py-8 flex flex-col gap-12 mb-10">
+    <section className="w-full py-6 md:py-8 flex flex-col gap-7 mb-8 md:mb-10">
       {/* BrewBucha Products */}
-      {(isLoading || brewBuchaProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-6">
-          <h2 className="text-2xl md:text-3xl font-semibold text-green px-4">
+      {(loadingStates.brewbucha || brewBuchaProducts.length > 0) && (
+        <div className="w-full flex flex-col gap-4 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
             BrewBucha Beverages
           </h2>
 
-          {/* Mobile Swiper View */}
+          {/* Mobile View */}
           <div className="md:hidden w-full">
-            <style>{customStyles}</style>
-            {isLoading ? (
-              <div className="px-4">
-                <ProductCardSkeleton variant="brewbucha" />
+            {loadingStates.brewbucha ? (
+              <div className="flex flex-col gap-4">
+                {[1, 2].map((_, index) => (
+                  <ProductCardSkeleton
+                    key={`brew-mobile-skeleton-${index}`}
+                    variant="brewbucha"
+                    isMobile={true}
+                  />
+                ))}
               </div>
             ) : (
               <Swiper
                 spaceBetween={16}
                 slidesPerView={1}
                 centeredSlides={true}
-                loop={true}
+                loop={brewBuchaProducts.length > 1}
                 autoplay={{
                   delay: 2000,
                   disableOnInteraction: false,
                 }}
-                pagination={{
-                  dynamicBullets: true,
-                  clickable: true,
-                }}
+                pagination={false}
                 modules={[Autoplay, Pagination]}
-                className="w-full px-4"
+                className="w-full"
               >
                 {brewBuchaProducts.map((product, index) => (
                   <SwiperSlide key={`brew-mobile-${product.id || index}`}>
-                    <BrewBuchaCard product={product} />
+                    <BrewBuchaCard
+                      product={product}
+                      onClick={hanldeProductClick}
+                      redirecting={redirecting}
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -285,9 +397,9 @@ const ProductsList = ({ products }: ProductsListProps) => {
           </div>
 
           {/* Desktop Grid View */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-            {isLoading
-              ? Array(3)
+          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {loadingStates.brewbucha
+              ? Array(4)
                   .fill(0)
                   .map((_, index) => (
                     <ProductCardSkeleton
@@ -299,58 +411,129 @@ const ProductsList = ({ products }: ProductsListProps) => {
                   <BrewBuchaCard
                     key={`brew-${product.id || index}`}
                     product={product}
+                    onClick={hanldeProductClick}
+                    redirecting={redirecting}
                   />
                 ))}
           </div>
         </div>
       )}
 
-      {/* Merchandise Products */}
-      {(isLoading || merchandiseProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-6">
-          <h2 className="text-3xl font-bold text-purple-800 px-4">
-            Our Merchandise
+      {/* SapStudio Products */}
+      {(loadingStates.sapsymphony || sapSymphonyProducts.length > 0) && (
+        <div className="w-full flex flex-col gap-4 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
+            SapStudio
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-            {isLoading
-              ? Array(3)
-                  .fill(0)
-                  .map((_, index) => (
-                    <ProductCardSkeleton
-                      key={`merch-skeleton-${index}`}
-                      variant="merchandise"
-                    />
-                  ))
-              : merchandiseProducts.map((product, index) => (
-                  <MerchandiseCard
-                    key={`merch-${product.id || index}`}
-                    product={product}
+
+          {/* Mobile View */}
+          <div className="md:hidden">
+            {loadingStates.sapsymphony ? (
+              <div className="flex flex-col gap-4">
+                {[1, 2].map((_, index) => (
+                  <ProductCardSkeleton
+                    key={`spa-mobile-skeleton-${index}`}
+                    variant="spastudio"
+                    isMobile={true}
                   />
                 ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {sapSymphonyProducts.map((product, index) => (
+                  <SapSymphonyCard
+                    key={`spa-mobile-${product.id || index}`}
+                    product={product}
+                    onClick={hanldeProductClick}
+                    redirecting={redirecting}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop View */}
+          <div className="hidden md:block">
+            {loadingStates.sapsymphony ? (
+              <ProductCardSkeleton variant="spastudio" />
+            ) : (
+              sapSymphonyProducts.map((product, index) => (
+                <SapSymphonyCard
+                  key={`spa-${product.id || index}`}
+                  product={product}
+                  onClick={hanldeProductClick}
+                  redirecting={redirecting}
+                />
+              ))
+            )}
           </div>
         </div>
       )}
 
-      {/* Starter Kit Products */}
-      {(isLoading || starterKitProducts.length > 0) && (
-        <div className="w-full flex flex-col gap-6">
-          <h2 className="text-3xl font-bold text-orange-800 px-4">
-            Starter Kits
+      {/* Bacterial Cellulose Products */}
+      {(loadingStates.bacterialcellulose ||
+        bacterialCelluloseProducts.length > 0) && (
+        <div className="w-full flex flex-col gap-5 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-medium md:font-semibold text-green">
+            Bacterial Cellulose Products
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-            {isLoading
-              ? Array(3)
+
+          {/* Mobile View */}
+          <div className="md:hidden w-full">
+            {loadingStates.bacterialcellulose ? (
+              <div className="flex flex-col gap-4">
+                {[1, 2].map((_, index) => (
+                  <ProductCardSkeleton
+                    key={`cellulose-mobile-skeleton-${index}`}
+                    variant="bacterialcellulose"
+                    isMobile={true}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Swiper
+                spaceBetween={16}
+                slidesPerView={1}
+                centeredSlides={true}
+                loop={bacterialCelluloseProducts.length > 1}
+                autoplay={{
+                  delay: 2000,
+                  disableOnInteraction: false,
+                }}
+                pagination={false}
+                modules={[Autoplay]}
+                className="w-full"
+              >
+                {bacterialCelluloseProducts.map((product, index) => (
+                  <SwiperSlide key={`cellulose-mobile-${product.id || index}`}>
+                    <BacterialCelluloseCard
+                      product={product}
+                      onClick={hanldeProductClick}
+                      redirecting={redirecting}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
+          </div>
+
+          {/* Desktop Grid View */}
+          <div className="hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {loadingStates.bacterialcellulose
+              ? Array(4)
                   .fill(0)
                   .map((_, index) => (
                     <ProductCardSkeleton
-                      key={`kit-skeleton-${index}`}
-                      variant="starterkit"
+                      key={`cellulose-skeleton-${index}`}
+                      variant="bacterialcellulose"
                     />
                   ))
-              : starterKitProducts.map((product, index) => (
-                  <StarterKitCard
-                    key={`kit-${product.id || index}`}
+              : bacterialCelluloseProducts.map((product, index) => (
+                  <BacterialCelluloseCard
+                    key={`cellulose-${product.id || index}`}
                     product={product}
+                    onClick={hanldeProductClick}
+                    redirecting={redirecting}
                   />
                 ))}
           </div>

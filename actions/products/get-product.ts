@@ -1,5 +1,5 @@
-import { Products } from "@prisma/client";
-import qs from "query-string";
+
+import { Products } from "@/types/products-related-types";
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/products`;
 
