@@ -7,6 +7,7 @@ import {
   LucideIcon,
   User,
   User2,
+  Cog,
 } from "lucide-react";
 
 type Submenu = {
@@ -45,6 +46,13 @@ export function getMenuList(pathname: string): Group[] {
     {
       groupLabel: "Management",
       menus: [
+        {
+          href: "/admin/endpoint",
+          label: "Endpoint",
+          active: pathname.includes("/admin/endpoint"),
+          icon: Cog,
+          submenus: [],
+        },
         {
           href: "https://ecommerce.jayma-bio.exions.tech/",
           label: "Products",
