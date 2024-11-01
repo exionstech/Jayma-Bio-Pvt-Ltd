@@ -108,7 +108,7 @@ const ImageGrid = ({ images, title }: ImageGridProps) => {
   };
 
   const SingleImageLayout = () => (
-    <div className="w-[450px] aspect-square overflow-hidden rounded-lg">
+    <div className="w-auto md:w-[450px] aspect-square overflow-hidden rounded-lg">
       <img
         src={images[0]?.url}
         alt={title}
@@ -119,7 +119,7 @@ const ImageGrid = ({ images, title }: ImageGridProps) => {
   );
 
   const DoubleImageLayout = () => (
-    <div className="w-[550px] h-[350px] flex gap-1 overflow-hidden rounded-lg">
+    <div className="w-auto md:w-[550px] h-[350px] flex gap-1 overflow-hidden rounded-lg">
       {images.slice(0, 2).map((image, idx) => (
         <img
           key={idx}
@@ -133,7 +133,7 @@ const ImageGrid = ({ images, title }: ImageGridProps) => {
   );
 
   const TripleImageLayout = () => (
-    <div className="w-[550px] h-[350px] overflow-hidden rounded-lg">
+    <div className="w-auto md:w-[550px] h-[350px] overflow-hidden rounded-lg">
       <div className="flex h-full">
         <div className="w-1/2 pr-1">
           <img
@@ -161,7 +161,7 @@ const ImageGrid = ({ images, title }: ImageGridProps) => {
   );
 
   const MultiImageLayout = () => (
-    <div className="w-[550px] h-[350px] overflow-hidden rounded-lg">
+    <div className="w-auto md:w-[550px] h-[350px] overflow-hidden rounded-lg">
       <div className="flex h-full">
         <div className="w-1/2 pr-1">
           <img

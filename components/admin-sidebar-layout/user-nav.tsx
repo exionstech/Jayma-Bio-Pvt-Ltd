@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cog, LayoutGrid, LogOut, User } from "lucide-react";
+import { Cog, LayoutDashboard, LayoutGrid, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -61,6 +61,18 @@ export async function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user?.role === "ADMIN" && (
+            <DropdownMenuItem className="hover:cursor-pointer" asChild>
+              <Link
+                href="https://ecommerce.jayma-bio.exions.tech"
+                target="_blank"
+                className="flex items-center"
+              >
+                <LayoutDashboard className="w-4 h-4 mr-3 text-muted-foreground" />
+                Manage Store
+              </Link>
+            </DropdownMenuItem>
+          )}
           {user?.role === "ADMIN" && (
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <Link href="/admin" className="flex items-center">

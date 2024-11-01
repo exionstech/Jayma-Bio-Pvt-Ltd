@@ -36,25 +36,29 @@ interface ProductDetailsProps {
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
   return (
     <div className="w-full h-full flex flex-col gap-4 max-w-screen-xl mx-auto">
-      <div className="w-full flex gap-10 items-start justify-start">
-        <div className="w-full  flex-1 items-start justify-start">
+      <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start md:items-center justify-start">
+        <div className="w-full flex-1 items-start justify-start">
           <ImageGrid images={prodcut.images} title={prodcut.name} />
         </div>
-        <div className="w-full flex flex-col items-start justify-start py-3 px-3 gap-8">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-semibold">{prodcut.name}</h1>
-            <p className="text-lg font-medium">{prodcut.description}</p>
+        <div className="w-full flex flex-col items-start justify-start py-1 md:py-3 md:px-3 gap-4 md:gap-8">
+          <div className="flex flex-col gap-2 md:gap-4">
+            <h1 className="text-2xl md:text-4xl font-semibold">
+              {prodcut.name}
+            </h1>
+            <p className="text-sm md:text-lg font-medium">
+              {prodcut.description}
+            </p>
           </div>
-          <div className="w-full flex items-center justify-between py-3">
-            <div className="flex items-center justify-center gap-2">
+          <div className="w-full flex flex-row items-center justify-between py-2 md:py-3 mb-4 md:mb-6">
+            <div className="flex items-center justify-center gap-1">
               {prodcut.discount > 0 && (
-                <span className="text-xl font-medium text-[#CC0C39]">
+                <span className="text-sm md:text-xl font-medium text-[#CC0C39]">
                   {" "}
                   - {prodcut.discount}%
                 </span>
               )}
-              <h1 className="text-2xl md:text-3xl font-medium md:font-semibold text-green flex items-start ml-2">
-                <span className="text-xl -pt-2 pr-">₹</span>
+              <h1 className="text-xl md:text-3xl font-medium md:font-semibold text-green flex items-start ml-1 md:ml-2">
+                <span className="text-xl -pt-2 pr-1">₹</span>
                 {typeof prodcut.price === "number"
                   ? (
                       prodcut.price -
@@ -64,13 +68,20 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 /-
               </h1>
             </div>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4 md:gap-5">
               <Button
                 size={"lg"}
                 variant="outline"
-                className="px-4 rounded-lg flex items-center gap-2 text-green"
+                className="px-3 md:px-4 rounded-lg items-center gap-2 text-green hidden md:flex"
               >
                 Add to cart
+                <ShoppingCart className="size-5 shrink-0 text-green" />
+              </Button>
+              <Button
+                size={"lg"}
+                variant="outline"
+                className="px-4 rounded-lg items-center gap-2 text-green md:hidden"
+              >
                 <ShoppingCart className="size-5 shrink-0 text-green" />
               </Button>
               <Button size={"lg"} className="px-4 rounded-lg">
@@ -78,24 +89,24 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
               </Button>
             </div>
           </div>
-          <div className="w-full flex flex-col gap-4">
-            <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
-              About this item
-            </h1>
-            <div className="flex flex-col gap-3">
-              {aboutProduct?.aboutItems.map((item, index) => (
-                <li key={index} className="">
-                  <span className="font-semibold pr-1">{item.title}</span>{" "}
-                  <span>{item.description}</span>
-                </li>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
-      <div className="w-full flex items-center gap-4">
-        <div className="w-2/5 flex flex-col gap-2">
-          <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
+      <div className="w-full md:w-[70%] flex flex-col gap-3 md:gap-4 md:mt-5">
+        <h1 className="text-xl md:text-2xl font-semibold text-green">
+          About this item
+        </h1>
+        <div className="flex flex-col gap-2 md:gap-4">
+          {aboutProduct?.aboutItems.map((item, index) => (
+            <li key={index} className="text-sm md:text-medium">
+              <span className="font-medium pr-1">{item.title}</span>{" "}
+              <span className="font-normal">{item.description}</span>
+            </li>
+          ))}
+        </div>
+      </div>
+      <div className="w-full flex flex-col md:flex-row items-center gap-3 md:gap-4">
+        <div className="w-full md:w-2/5 flex flex-col gap-2">
+          <h1 className="text-xl md:text-2xl font-semibold text-green">
             Customer Reviews
           </h1>
           <div className="flex items-center gap-3">
@@ -106,7 +117,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 return (
                   <IoStar
                     key={i}
-                    className="size-6 fill-rating text-rating shrink-0"
+                    className="size-5 md:size-6 fill-rating text-rating shrink-0"
                   />
                 );
               } else if (
@@ -116,12 +127,15 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 return (
                   <IoStarHalfOutline
                     key={i}
-                    className="size-6 fill-rating text-rating shrink-0"
+                    className="size-5 md:size-6 fill-rating text-rating shrink-0"
                   />
                 );
               } else {
                 return (
-                  <IoStar key={i} className="size-6 fill-lightGreen shrink-0" />
+                  <IoStar
+                    key={i}
+                    className="size-5 md:size-6 fill-lightGreen shrink-0"
+                  />
                 );
               }
             })}
@@ -130,11 +144,11 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
             {aboutProduct?.rating} out of 5
           </p>
         </div>
-        <div className="w-3/5 flex flex-col gap-2">
-          <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
-            What customers say
+        <div className="w-full md:w-3/5 flex flex-col gap-2">
+          <h1 className="text-xl md:text-2xl font-semibold text-green">
+            What customers says
           </h1>
-          <p className="text-medium">{aboutProduct?.customerSay}</p>
+          <p className="text-sm md:text-medium">{aboutProduct?.customerSay}</p>
         </div>
       </div>
     </div>
