@@ -43,7 +43,8 @@ const Navbar = () => {
           <div className="flex space-x-5">
             {MenuItem.map((item, index) => {
               const active =
-                pathname === item.href && pathname.includes(item.href);
+                pathname === item.href ||
+                (pathname.startsWith(item.href) && item.href !== "/");
               return (
                 <Link key={index} href={item.href}>
                   <div
@@ -82,7 +83,7 @@ const Navbar = () => {
             </Button>
           </Link>
         )}
-        <MobileNavbar  user={user}/>
+        <MobileNavbar user={user} />
       </div>
     </nav>
   );

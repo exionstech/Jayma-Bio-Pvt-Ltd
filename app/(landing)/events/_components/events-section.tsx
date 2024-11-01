@@ -1,11 +1,13 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { EvetsPageTopbanners } from "@/constants/events/events-top-banner";
-import { FeaturedEvents } from "@/constants/events/featured-event";
 import EventsSlider from "./events-slider";
+import { Event, getAllEvents } from "@/actions/events/get-events";
+import { EventType } from "@prisma/client";
 
 const customStyles = `
   .swiper-pagination-bullet {
@@ -22,6 +24,22 @@ const customStyles = `
 `;
 
 const EventsSection = () => {
+  const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [pastEvents, setPastEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const events = await getAllEvents();
+
+      setFeaturedEvents(events.filter((event) => event.type === "FEATURED"));
+      setUpcomingEvents(events.filter((event) => event.type === "UPCOMING"));
+      setPastEvents(events.filter((event) => event.type === "PAST"));
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
     <section className="w-full mt-5 md:mt-8 min-h-screen flex flex-col gap-3 md:gap-6">
       <style>{customStyles}</style>
@@ -64,10 +82,16 @@ const EventsSection = () => {
         </Swiper>
       </div>
 
-      {/* Featured Events Section */}
-      <EventsSlider data={FeaturedEvents} title="Featured Events" />
-      <EventsSlider data={FeaturedEvents} title="Upcoming Events" />
-      <EventsSlider data={FeaturedEvents} title="Past Events" />
+      {/* Featured, Upcoming, and Past Events Sections */}
+      {featuredEvents.length > 0 && (
+        <EventsSlider data={featuredEvents} title="Featured Events" />
+      )}
+      {upcomingEvents.length > 0 && (
+        <EventsSlider data={upcomingEvents} title="Upcoming Events" />
+      )}
+      {pastEvents.length > 0 && (
+        <EventsSlider data={pastEvents} title="Past Events" />
+      )}
     </section>
   );
 };
