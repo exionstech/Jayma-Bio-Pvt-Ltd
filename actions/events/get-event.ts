@@ -10,6 +10,7 @@ export interface Event {
   location: string;
   type: string;
   link: string;
+  tags: string[];
   images: string[];
 }
 
@@ -36,6 +37,7 @@ export const getEvent = async (eventId: string) => {
     location: event.venue,
     type: event.eventType,
     link: event.link,
+    tags: event.tags,
     images: event.image,
   };
 };
