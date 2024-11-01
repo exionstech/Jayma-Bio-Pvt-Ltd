@@ -108,7 +108,7 @@ const ImageGrid = ({ images, title }: ImageGridProps) => {
   };
 
   const SingleImageLayout = () => (
-    <div className="w-[450px] aspect-square overflow-hidden rounded-lg">
+    <div className="w-auto md:w-[450px] aspect-square overflow-hidden rounded-lg">
       <img
         src={images[0]?.url}
         alt={title}
