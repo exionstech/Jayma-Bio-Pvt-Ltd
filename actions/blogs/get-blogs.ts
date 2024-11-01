@@ -12,3 +12,18 @@ export async function getBlogs() {
     return { data: null, success: false };
   }
 }
+
+export async function getBlogById(id: string) {
+  try {
+    const blogs = await prismadb.blog.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return { data: blogs, success: true };
+  } catch (error) {
+    console.error(error);
+    return { data: null, success: false };
+  }
+}

@@ -2,13 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Mail, Archive } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 import { toast } from "sonner";
 import Link from "next/link";
 import { deleteBlog } from "@/actions/blogs/delete-blog";
 import { getBlogs } from "@/actions/blogs/get-blogs";
-import { Block } from "@blocknote/core";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Switch } from "@/components/ui/switch";
+import { sendNewsletter } from "@/lib/mail";
+import { sendEventMail } from "@/actions/event-newsletter";
+import { updateBlog } from "@/actions/blogs/update-blog";
 
 interface Blog {
   id: string;
@@ -16,6 +27,8 @@ interface Blog {
   title: string;
   content: any;
   likes: number;
+  toggle?: boolean;
+  archived?: boolean;
 }
 
 const BlogComponent = () => {
@@ -63,6 +76,40 @@ const BlogComponent = () => {
     }
   };
 
+  const handleNewsletterToggle = async (id: string, currentState: boolean) => {
+    try {
+      // Replace with your actual API call
+      // await updateBlogNewsletter(id, !currentState);
+      await updateBlog({ id: id, toggle: !currentState });
+      setBlogs(
+        blogs.map((blog) =>
+          blog.id === id ? { ...blog, toggle: !currentState } : blog
+        )
+      );
+      toast.success(
+        `Newsletter ${!currentState ? "enabled" : "disabled"} for this blog`
+      );
+    } catch (error) {
+      toast.error("Failed to update newsletter status");
+    }
+  };
+  
+  const handleArchive = async (id: string, currentState: boolean) => {
+    try {
+      // Replace with your actual API call
+      // await updateBlogNewsletter(id, !currentState);
+      await updateBlog({ id: id, archived: !currentState });
+      setBlogs(
+        blogs.map((blog) =>
+          blog.id === id ? { ...blog, archived: !currentState } : blog
+        )
+      );
+      toast.success(`${!currentState ? "Archived" : "Unarchived"} this blog`);
+    } catch (error) {
+      toast.error("Failed to update newsletter status");
+    }
+  };
+
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -70,7 +117,7 @@ const BlogComponent = () => {
   return (
     <>
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">Blogs</h1>
           <Link href="/admin/blogs/new">
             <Button className="bg-green hover:bg-green/90 flex items-center gap-2">
@@ -80,34 +127,66 @@ const BlogComponent = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogs.map((blog) => (
-            <div key={blog.id} className="border rounded-lg p-4 space-y-4">
-              <img
-                src={blog.thumbnail}
-                alt={blog.title}
-                className="w-full h-48 object-cover rounded-md"
-              />
-              <h2 className="text-xl font-semibold">{blog.title}</h2>
-              <div className="flex justify-between items-center">
-                <span>{blog.likes} likes</span>
-                <div className="flex gap-2">
-                  <Link href={`/admin/blogs/edit/${blog.id}`}>
-                    <Button variant="outline" size="sm">
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                  </Link>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(blog.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Thumbnail</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead className="text-center">Likes</TableHead>
+                <TableHead className="text-center">Newsletter</TableHead>
+                <TableHead className="text-right">Archive</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {blogs.map((blog) => (
+                <TableRow key={blog.id}>
+                  <TableCell>
+                    <img
+                      src={blog.thumbnail}
+                      alt={blog.title}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium">{blog.title}</TableCell>
+                  <TableCell className="text-center">{blog.likes}</TableCell>
+                  <TableCell className="text-center">
+                    <Switch
+                      checked={blog.toggle}
+                      onCheckedChange={() =>
+                        handleNewsletterToggle(blog.id, !!blog.toggle)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Switch
+                      checked={blog.archived}
+                      onCheckedChange={() =>
+                        handleArchive(blog.id, !!blog.archived)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Link href={`/admin/blogs/edit/${blog.id}`}>
+                        <Button variant="outline" size="sm">
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(blog.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
       <ConfirmDialog />
