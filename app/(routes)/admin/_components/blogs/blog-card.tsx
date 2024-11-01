@@ -26,6 +26,7 @@ const BlogSchema = z.object({
 });
 
 type BlogFormValues = {
+  id?: string;
   thumbnail: string;
   title: string;
   likes: number;
@@ -43,7 +44,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
-  const [blocks, setBlocks] = useState<Block[]>([]);
+  const [blocks, setBlocks] = useState<any[]>(
+    simplifyBlockFormat(initialData?.content) || []
+  );
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -56,9 +59,36 @@ const BlogCard: React.FC<BlogCardProps> = ({
     },
   });
 
+  function simplifyBlockFormat(blocks: any): any[] {
+    // Check if blocks is undefined or null
+    if (!blocks) {
+      return [];
+    }
+
+    // If blocks is not an array, wrap it in an array
+    const blocksArray = JSON.parse(blocks);
+
+    try {
+      return blocksArray.map((block: any) => {
+        // Get the content text if it exists
+        const content =
+          block.content && block.content[0]?.text ? block.content[0].text : "";
+
+        return {
+          type: block.type,
+          content: content,
+        };
+      });
+    } catch (error) {
+      console.error("Error in simplifyBlockFormat:", error);
+      return [];
+    }
+  }
+
   useEffect(() => {
     if (initialData) {
       form.reset(initialData);
+      setBlocks(simplifyBlockFormat(initialData.content));
     }
   }, [initialData, form]);
 
@@ -78,6 +108,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
 
       const updatedData = {
         ...data,
+        id: initialData?.id,
         content: blocks,
       };
 
@@ -154,7 +185,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <Editor setBlocks={setBlocks} />
+                  <Editor
+                    setBlocks={setBlocks}
+                    initialContent={blocks || null}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

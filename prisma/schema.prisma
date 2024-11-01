@@ -117,11 +117,15 @@ model Event {
 }
 
 model Blog {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   thumbnail String
   title     String
   content   Json
-  likes     Int    @default(0)
+  likes     Int     @default(0)
+  toggle    Boolean @default(false)
+  archived  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Newsletter {

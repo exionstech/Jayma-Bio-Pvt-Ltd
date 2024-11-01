@@ -13,10 +13,19 @@ import BlogCard from "../../../_components/blogs/blog-card";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getBlogById } from "@/actions/blogs/get-blogs";
+import { updateBlog } from "@/actions/blogs/update-blog";
+import Loader from "@/components/shared/loader";
 
 interface EditBlogFormProps {
   blogId: string;
-  initialBlog?: any; // Add proper typing based on your blog structure
+  initialBlog?: {
+    id: string;
+    thumbnail: string;
+    title: string;
+    content: any;
+    likes: number;
+  } | null;
 }
 
 const EditBlogForm = ({ blogId, initialBlog }: EditBlogFormProps) => {
@@ -28,40 +37,34 @@ const EditBlogForm = ({ blogId, initialBlog }: EditBlogFormProps) => {
     if (!initialBlog) {
       const fetchBlog = async () => {
         try {
-          const response = await fetch(`/api/blogs/${blogId}`);
-          const data = await response.json();
-          if (data.status === 200) {
-            setBlog(data.blog);
-          } else {
-            toast.error("Failed to fetch blog");
-          }
+          await getBlogById(blogId).then((data) => {
+            if (data.success) {
+              setBlog(data.data);
+            } else {
+              toast.error("Failed to fetch blog");
+            }
+          });
         } catch (error) {
           toast.error("Error fetching blog");
         } finally {
           setLoading(false);
         }
       };
-
+      
       fetchBlog();
     }
   }, [blogId, initialBlog]);
 
   const handleSubmit = async (data: any) => {
-    const response = await fetch(`/api/blogs/${blogId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    await updateBlog(data).then((data) => {
+      if (data.success) {
+        router.push("/admin/blogs");
+      }
     });
-
-    if (response.ok) {
-      router.push("/admin/blogs");
-    }
   };
-
+  
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
