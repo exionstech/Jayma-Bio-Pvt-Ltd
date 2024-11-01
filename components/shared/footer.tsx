@@ -82,7 +82,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="ccol-span-1 md:col-span-4 flex flex-col gap-4 md:pt-5 md:pl-4 w-full h-auto">
+        <div className="col-span-1 md:col-span-4 flex flex-col gap-4 md:pt-5 md:pl-4 w-full h-auto">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14770.632028233598!2d84.88188838715818!3d22.253051000000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a201f72bbd561c3%3A0xab5c70e76a7b5a!2sNational%20Institute%20of%20Technology%2C%20Rourkela!5e0!3m2!1sen!2sin!4v1730213691803!5m2!1sen!2sin"
             loading="lazy"
