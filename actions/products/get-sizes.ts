@@ -1,10 +1,19 @@
 import { Size } from "@/types/products-related-types";
 import qs from "query-string";
-
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/sizes`;
+import { getUrl } from "../get-url";
 
 const getSizes = async (): Promise<Size[]> => {
-  const res = await fetch(URL);
+  const URL = await getUrl().then((data) => {
+    if (data.data) {
+      return `${data.data.baseUrl}/${data.data.storeId}/categories`;
+    }
+  });
+
+  if (!URL) {
+    throw new Error("URL is undefined");
+  }
+
+  const res = await fetch(URL!);
 
   return res.json();
 };

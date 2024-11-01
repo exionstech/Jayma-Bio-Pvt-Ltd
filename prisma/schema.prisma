@@ -111,6 +111,7 @@ model Event {
   eventType   EventType
   notify      Boolean
   archived    Boolean   @default(true)
+  tags        String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -130,7 +131,9 @@ model Newsletter {
 }
 
 model EcommerceEndpoint {
-  id      String @id @default(cuid())
-  baseUrl String
-  storeId String
+  id        String   @id @default(cuid())
+  baseUrl   String
+  storeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
