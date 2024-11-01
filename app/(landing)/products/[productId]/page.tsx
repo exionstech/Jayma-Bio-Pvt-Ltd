@@ -3,6 +3,7 @@ import getProducts from "@/actions/products/get-products";
 import ProductDetails from "./_components/product-details";
 import { IoIosHeartEmpty } from "react-icons/io";
 import RecommendedProducts from "./_components/recommended-products";
+import { getProductAboutDetailsByCategory } from "@/lib/utils";
 
 interface ProductPageProps {
   params: {
@@ -21,6 +22,7 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
     (suggestedProduct) => suggestedProduct.id !== product.id
   );
 
+  const aboutProduct = getProductAboutDetailsByCategory(product.category);
   return (
     <section className="w-full h-full flex flex-col mt-8 md:mt-10 gap-6 min-h-screen px-5 md:px-10 lg:px-14 max-w-screen-2xl mx-auto">
       <div className="w-full flex items-center justify-center md:justify-end pt-5">
@@ -37,7 +39,7 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
           </div>
         </div>
       </div>
-      <ProductDetails prodcut={product} />
+      <ProductDetails prodcut={product} aboutProduct={aboutProduct} />
       {suggestedProducts.length > 0 && (
         <RecommendedProducts products={suggestedProducts} />
       )}
