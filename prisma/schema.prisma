@@ -105,7 +105,7 @@ model Event {
   title       String
   description String
   venue       String
-  date        String
+  date        DateTime
   link        String
   image       String[]
   eventType   EventType
@@ -117,13 +117,13 @@ model Event {
 }
 
 model Blog {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   thumbnail String
   title     String
   content   Json
-  likes     Int     @default(0)
-  toggle    Boolean @default(false)
-  archived  Boolean @default(false)
+  likes     Int      @default(0)
+  toggle    Boolean  @default(false)
+  archived  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

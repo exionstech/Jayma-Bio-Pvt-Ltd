@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -14,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2, Pencil, PlusCircle, X } from "lucide-react";
+import { CalendarIcon, Loader2, Pencil, PlusCircle, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -37,6 +42,10 @@ import { ClientUploadedFileData } from "uploadthing/types";
 import { sendEventMail } from "@/actions/event-newsletter";
 import { MultiSelect } from "@/components/ui/muti-select";
 import { EventType } from "@prisma/client";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { TimePicker12Demo } from "@/components/date-time-picker.tsx/time-picker-demo";
 
 const MAX_CHARS = 230;
 
@@ -46,7 +55,7 @@ type Event = {
   title: string;
   description: string;
   venue: string;
-  date: string;
+  date: Date;
   link: string;
   image?: string[];
   eventType: EventType;
@@ -62,7 +71,7 @@ const EventsSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   venue: z.string().min(1, "Venue is required"),
-  date: z.string().min(1, "Date is required"),
+  date: z.date(),
   link: z.string().url("Must be a valid URL"),
   image: z.array(z.string()).optional(),
   eventType: z.enum(["FEATURED", "UPCOMING", "PAST"]),
@@ -175,14 +184,14 @@ const EventsForm = ({
       venue: initialData?.venue || "",
       link: initialData?.link || "",
       image: initialData?.image || [],
-      date: initialData?.date || "",
+      date: initialData?.date ? new Date(initialData.date) : new Date(),
       eventType: initialData?.eventType || "FEATURED",
       notify: initialData?.notify || false,
       archived: initialData?.archived || false,
       tags: initialData?.tags || [],
     },
   });
-  
+
   useEffect(() => {
     setCharCount(form.getValues("description").length);
   }, []);
@@ -219,7 +228,7 @@ const EventsForm = ({
         const res = await sendEventMail(
           data.title,
           data.description,
-          data.date
+          data.date.toString()
         );
 
         if (!res.success) {
@@ -243,7 +252,7 @@ const EventsForm = ({
       setLoading(false);
     }
   };
-  
+
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     field: any
@@ -294,12 +303,7 @@ const EventsForm = ({
   };
 
   return (
-    <Card className="w-[90%] md:w-full h-[80vh] md:max-w-4xl mx-auto flex flex-col">
-      <CardHeader className="border-b">
-        <CardTitle className="text-2xl font-semibold">
-          {initialData ? "Update Event" : "Add New Event"}
-        </CardTitle>
-      </CardHeader>
+    <Card className="w-[90%] md:w-full h-full md:max-w-4xl mx-auto flex flex-col">
       <CardContent className="flex-1 overflow-y-auto p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -510,12 +514,42 @@ const EventsForm = ({
                     control={form.control}
                     name="date"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Event Date</FormLabel>
-                        <FormControl>
-                          <Input {...field} type="date" />
-                        </FormControl>
-                        <FormMessage />
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="text-left">DateTime</FormLabel>
+                        <Popover>
+                          <FormControl>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-start text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {field.value instanceof Date ? (
+                                  format(field.value, "PPP HH:mm:ss")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                          </FormControl>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              initialFocus
+                            />
+                            <div className="p-3 border-t border-border">
+                              <TimePicker12Demo
+                                setDate={field.onChange}
+                                date={field.value}
+                              />
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                       </FormItem>
                     )}
                   />
