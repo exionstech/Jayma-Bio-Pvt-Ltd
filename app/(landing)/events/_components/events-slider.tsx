@@ -72,7 +72,7 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
                 <CardHeader className="p-0">
                   <div className="relative aspect-video">
                     <Image
-                      src={event.images[0]}
+                      src={event.image[0]}
                       alt={event.title}
                       fill
                       className="object-cover"

@@ -46,7 +46,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
           modules={[Autoplay, Pagination]}
           className="w-full h-full"
         >
-          {event.images.map((img, index) => (
+          {event.image.map((img, index) => (
             <SwiperSlide key={index}>
               <div className="relative w-full h-full overflow-hidden">
                 <img

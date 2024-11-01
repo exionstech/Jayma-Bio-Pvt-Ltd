@@ -1,33 +1,31 @@
 "use server";
 
 import prismadb from "@/lib/prismadb";
+import { EventType } from "@prisma/client";
 
-
-export interface Event  {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    type: string;
-    link: string;
-    tags: string[];
-    images: string[];
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  venue: string;
+  date: string;
+  link: string;
+  image: string[];
+  eventType: EventType;
+  notify: boolean;
+  archived: boolean;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-
 export const getAllEvents = async () => {
-  const events = await prismadb.event.findMany();
-
-  return events.map((event) => ({
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    date: event.date,
-    location: event.venue,
-    type: event.eventType,
-    link: event.link,
-    tags: event.tags,
-    images: event.image,
-  }));
+  try {
+    const events = await prismadb.event.findMany();
+    console.log(events);
+    return { events: events, success: true };
+  } catch (err) {
+    console.error("Failed to fetch events:", err);
+    return { error: "Failed to fetch events", success: false };
+  }
 };
