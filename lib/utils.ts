@@ -15,3 +15,13 @@ export const scrollToNext = (id: string) => {
     });
   }
 };
+
+export const calculateDiscountedPrice = (
+  price: number,
+  discount: number
+): number => {
+  if (isNaN(price) || isNaN(discount)) {
+    throw new Error("Invalid input: price and discount must be valid numbers.");
+  }
+  return price - (discount / 100) * price;
+};
