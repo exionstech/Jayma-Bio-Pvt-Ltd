@@ -58,7 +58,7 @@ const CategotyFilter = ({ categories }: CategotyFilterProps) => {
 
   if (!categories) {
     return (
-      <div className="w-[250px] h-10 rounded-full flex items-center justify-center border border-green/40">
+      <div className="w-[160px] md:w-[250px] h-9 md:h-10 rounded-full flex items-center justify-center border border-green/40">
         <Loader2 className="size-6 shrink-0 text-green animate-spin" />
       </div>
     );
