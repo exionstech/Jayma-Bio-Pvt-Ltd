@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import Loader from "@/components/shared/loader";
 import { useConfirm } from "@/hooks/use-confirm";
 import { EventType } from "@prisma/client";
+import { getAllEvents } from "@/actions/events/get-events";
 
 export type Event = {
   id: string;
@@ -70,13 +71,17 @@ export default function EventsTable() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("/api/events/getAll");
-      const data = await response.json();
-      if (data.status === 200) {
-        setData(data.events);
-      } else {
-        toast.error("Failed to fetch events");
-      }
+      await getAllEvents().then((data) => {
+        if (data.success) {
+          if (data.events) {
+            setData(data.events);
+          } else {
+            setData([]);
+          }
+        } else {
+          toast.error("Failed to fetch events");
+        }
+      });
     } catch (error) {
       toast.error("Error fetching events");
     } finally {
