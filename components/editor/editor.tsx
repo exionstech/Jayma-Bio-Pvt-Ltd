@@ -1,6 +1,6 @@
 import { Block } from "@blocknote/core";
 import "@blocknote/core/fonts/inter.css";
-import { useBlockNote } from "@blocknote/react";
+import { useBlockNote, useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { SetStateAction } from "react";
@@ -11,9 +11,13 @@ interface EditorProps {
 }
 
 const Editor = ({ setBlocks, initialContent }: EditorProps) => {
-  
-  const editor = useBlockNote({
-    initialContent: initialContent || [],
+  const editor = useCreateBlockNote({
+    initialContent: initialContent || [
+      {
+        type: "paragraph",
+        content: "Enter your text here",
+      },
+    ],
   });
 
   return (
