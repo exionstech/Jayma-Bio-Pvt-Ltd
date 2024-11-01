@@ -120,11 +120,17 @@ model Blog {
   thumbnail String
   title     String
   content   Json
-  likes     Int   @default(0)
+  likes     Int    @default(0)
 }
 
 model Newsletter {
   id        String   @id @default(cuid())
   email     String   @unique
   createdAt DateTime @default(now())
+}
+
+model EcommerceEndpoint {
+  id      String @id @default(cuid())
+  baseUrl String
+  storeId String
 }
