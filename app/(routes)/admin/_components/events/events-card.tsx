@@ -33,6 +33,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { UploadDropzone } from "@/lib/uplaodthing";
 import { toast } from "sonner";
 import Image from "next/image";
+import { ClientUploadedFileData } from "uploadthing/types";
+import { sendEventMail } from "@/actions/event-newsletter";
 
 const MAX_CHARS = 230;
 
@@ -95,7 +97,7 @@ const EventsForm = ({
       date: initialData?.date || "",
       eventType: initialData?.eventType || "FEATURED",
       notify: initialData?.notify || false,
-      archived: initialData?.archived || false,
+      archived: initialData?.archived || true,
     },
   });
 
@@ -105,31 +107,39 @@ const EventsForm = ({
 
   const onSubmit = async (data: z.infer<typeof EventsSchema>) => {
     setLoading(true);
+    console.log(data);
     try {
       const endpoint = initialData ? "/api/events/update" : "/api/events/add";
+      const method = "POST";
+
       const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, id: initialData?.id }),
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          id: initialData?.id,
+        }),
       });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
+      const result = await response.json();
       if (data.notify) {
-        const res = await fetch("/api/events/notify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: data.title,
-            description: data.description,
-            date: data.date,
-          }),
-        });
+        //send mail to subscribed users
+        const res = await sendEventMail(
+          data.title,
+          data.description,
+          data.date
+        );
 
-        if (!res.ok) {
-          toast.error("Failed to send notifications");
+        if (!res.success) {
+          toast.error("Failed to send mail to subscribed users");
         } else {
-          toast.success("Notifications sent successfully");
+          toast.success("Mail sent successfully");
         }
       }
 
@@ -139,13 +149,62 @@ const EventsForm = ({
       if (onSuccess) await onSuccess();
       setDialogOpen(false);
     } catch (error) {
-      console.error("Operation failed:", error);
+      console.error("There was a problem with the operation:", error);
       toast.error(
         initialData ? "Failed to update event" : "Failed to add event"
       );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    field: any
+  ) => {
+    const input = e.target.value;
+
+    if (input.length <= MAX_CHARS) {
+      field.onChange(input);
+      setCharCount(input.length);
+      form.clearErrors("description");
+    } else {
+      const truncated = input.slice(0, MAX_CHARS);
+      field.onChange(truncated);
+      setCharCount(MAX_CHARS);
+
+      form.setError("description", {
+        type: "manual",
+        message: "Description cannot exceed 230 characters",
+      });
+    }
+  };
+
+  const handleImageUpload = (
+    res: ClientUploadedFileData<{ uploadedBy: string }>[]
+  ) => {
+    if (res && res.length > 0) {
+      const fileUrls = res.map((file) => file.url);
+      // Update both uploadedImages state and form value
+      const updatedImages = [...uploadedImages, ...fileUrls];
+      setUploadedImages(updatedImages);
+      form.setValue("image", updatedImages);
+      toast.success("Image uploaded successfully");
+    }
+  };
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setShowImageDialog(true);
+  };
+
+  const handleRemoveImage = async (indexToRemove: number, name: string) => {
+    const updatedImages = uploadedImages.filter(
+      (_, index) => index !== indexToRemove
+    );
+    setUploadedImages(updatedImages);
+    toast.success("Image deleted");
+    form.setValue("image", updatedImages);
   };
 
   return (
@@ -173,18 +232,7 @@ const EventsForm = ({
                         <div className="space-y-4">
                           <UploadDropzone
                             endpoint="imageUploader"
-                            onClientUploadComplete={(res) => {
-                              if (res && res.length > 0) {
-                                const fileUrls = res.map((file) => file.url);
-                                const updatedImages = [
-                                  ...uploadedImages,
-                                  ...fileUrls,
-                                ];
-                                setUploadedImages(updatedImages);
-                                form.setValue("image", updatedImages);
-                                toast.success("Images uploaded successfully");
-                              }
-                            }}
+                            onClientUploadComplete={handleImageUpload}
                             onUploadError={(error: Error) => {
                               toast.error("Image upload failed");
                             }}
