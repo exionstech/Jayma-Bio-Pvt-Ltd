@@ -30,11 +30,16 @@ const EventsSection = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const events = await getAllEvents();
-
-      setFeaturedEvents(events.filter((event) => event.type === "FEATURED"));
-      setUpcomingEvents(events.filter((event) => event.type === "UPCOMING"));
-      setPastEvents(events.filter((event) => event.type === "PAST"));
+      await getAllEvents().then((data) => {
+        if (data.success) {
+          if (data.events) {
+            console.log(data.events);
+            setFeaturedEvents(data.events.filter((event) => event.eventType === EventType.FEATURED));
+            setPastEvents(data.events.filter((event) => event.eventType === EventType.PAST));
+            setUpcomingEvents(data.events.filter((event) => event.eventType === EventType.UPCOMING));
+          }
+        }
+      });
     };
 
     fetchEvents();
