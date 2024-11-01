@@ -17,7 +17,7 @@ const EventsDetailsPage = async ({ params }: EventPageProps) => {
 
   return (
     <MaxWrapper>
-      <EventsDetails event={event} />
+      <EventsDetails event={event.event} />
     </MaxWrapper>
   );
 };
