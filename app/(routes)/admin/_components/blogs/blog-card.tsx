@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UploadDropzone } from "@/lib/uplaodthing";
+import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePlus, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -21,11 +22,15 @@ import * as z from "zod";
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
   title: z.string().min(1, "Title is required"),
-  content: z.array(z.string().optional()),
   likes: z.number(),
 });
 
-type BlogFormValues = z.infer<typeof BlogSchema>;
+type BlogFormValues = {
+  thumbnail: string;
+  title: string;
+  likes: number;
+  content: Block[];
+};
 
 interface BlogCardProps {
   initialData?: BlogFormValues;
@@ -38,6 +43,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +52,6 @@ const BlogCard: React.FC<BlogCardProps> = ({
     defaultValues: initialData || {
       thumbnail: "",
       title: "",
-      content: [],
       likes: 0,
     },
   });
@@ -67,26 +72,19 @@ const BlogCard: React.FC<BlogCardProps> = ({
     }
   };
 
-  // const handleImageClick = (imageUrl: string) => {
-  //   setSelectedImage(imageUrl);
-  //   setShowImageDialog(true);
-  // };
-
-  // const handleRemoveImage = async (indexToRemove: number, name: string) => {
-  //   const updatedImages = uploadedImages.filter(
-  //     (_, index) => index !== indexToRemove
-  //   );
-  //   setUploadedImage(updatedImages);
-  //   toast.success("Image deleted");
-  //   form.setValue("thumbnail", updatedImages);
-  // };
-
   const handleSubmit = async (data: BlogFormValues) => {
     try {
       setLoading(true);
+
+      const updatedData = {
+        ...data,
+        content: blocks,
+      };
+
       if (onSubmit) {
-        await onSubmit(data);
+        await onSubmit(updatedData);
       }
+
       toast.success(
         mode === "add"
           ? "Blog created successfully!"
@@ -149,7 +147,19 @@ const BlogCard: React.FC<BlogCardProps> = ({
             )}
           />
 
-          <Editor />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Content</FormLabel>
+                <FormControl>
+                  <Editor setBlocks={setBlocks} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </form>
       </Form>
     </div>

@@ -21,13 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Plus, Trash2, Copy } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
 import Loader from "@/components/shared/loader";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -62,25 +55,12 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
     e.preventDefault();
 
     try {
-      const url = initialData
-        ? "update"
-        : "create";
-
-      const payload = initialData
+      const isUpdate = !!initialData;
+      const payload = isUpdate
         ? { id: initialData.id, baseUrl, storeId }
         : { baseUrl, storeId };
 
-      if(url === "create") {
-        await addEndpoint(payload).then((data) => {
-          if (data.success) {
-            toast.success("Endpoint created successfully");
-            setDialogOpen(false);
-            onSuccess && onSuccess();
-          } else {
-            toast.error("Failed to create endpoint");
-          }
-        });
-      } else {
+      if (isUpdate) {
         await updateEndpoint(payload).then((data) => {
           if (data.success) {
             toast.success("Endpoint updated successfully");
@@ -90,8 +70,17 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
             toast.error("Failed to update endpoint");
           }
         });
+      } else {
+        await addEndpoint(payload).then((data) => {
+          if (data.success) {
+            toast.success("Endpoint created successfully");
+            setDialogOpen(false);
+            onSuccess && onSuccess();
+          } else {
+            toast.error("Failed to create endpoint");
+          }
+        });
       }
-      
     } catch (error) {
       toast.error("Error saving endpoint");
     }
@@ -295,118 +284,86 @@ export default function EndpointsTable() {
       <div className="space-y-4">
         <div className="w-full h-full py-4 flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Endpoints</h1>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Dialog
+            open={dialogOpen || (data.length === 1 && updateDialogOpen)}
+            onOpenChange={
+              data.length === 1 ? setUpdateDialogOpen : setDialogOpen
+            }
+          >
             <DialogTrigger asChild>
-              <Button className="bg-green hover:bg-green/90 px-6 flex items-center gap-2">
-                Add Endpoint
-                <Plus className="size-5 shrink-0" />
+              <Button
+                onClick={() => {
+                  if (data.length === 1) {
+                    setSelectedEndpoint(data[0]);
+                    setUpdateDialogOpen(true);
+                  } else {
+                    setDialogOpen(true);
+                  }
+                }}
+              >
+                {data.length === 1 ? "Update Endpoint" : "Add Endpoint"}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <EndpointCard
-                setDialogOpen={setDialogOpen}
+                setDialogOpen={
+                  data.length === 1 ? setUpdateDialogOpen : setDialogOpen
+                }
+                initialData={data.length === 1 ? data[0] : undefined}
                 onSuccess={fetchEndpoints}
               />
             </DialogContent>
           </Dialog>
         </div>
-
-        <div className="flex items-center justify-between">
+        <div className="flex w-full justify-start py-4">
           <Input
-            placeholder="Search endpoints..."
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="max-w-sm"
+            placeholder="Search..."
+            value={globalFilter ?? ""}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            className="max-w-xs"
           />
-          <div className="flex items-center gap-2">
-            <Select
-              value={table.getState().pagination.pageSize.toString()}
-              onValueChange={(val) => {
-                table.setPageSize(Number(val));
-              }}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select page size" />
-              </SelectTrigger>
-              <SelectContent>
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={pageSize.toString()}>
-                    {pageSize} rows
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
         </div>
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
                       {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                    </TableHead>
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No endpoints found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
-          <span className="text-sm text-gray-500">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </span>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </>
   );

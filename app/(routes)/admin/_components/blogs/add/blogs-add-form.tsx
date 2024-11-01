@@ -9,24 +9,23 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import BlogCard from "../../../_components/blogs/blog-card";
+import BlogCard from "../blog-card";
 import { useRouter } from "next/navigation";
+import addBlogs from "@/actions/blogs/add-blogs";
+import { toast } from "sonner";
 
 const AddBlogForm = () => {
   const router = useRouter();
 
   const handleSubmit = async (data: any) => {
-    const response = await fetch("/api/blogs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    await addBlogs(data).then((res) => {
+      if (res.success) {
+        toast.success("Blog added successfully");
+        router.push("/admin/blogs");
+      } else {
+        toast.error("Failed to add blog");
+      }
     });
-
-    if (response.ok) {
-      router.push("/admin/blogs");
-    }
   };
 
   return (

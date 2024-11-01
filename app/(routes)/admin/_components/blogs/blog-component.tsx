@@ -6,12 +6,15 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 import { toast } from "sonner";
 import Link from "next/link";
+import { deleteBlog } from "@/actions/blogs/delete-blog";
+import { getBlogs } from "@/actions/blogs/get-blogs";
+import { Block } from "@blocknote/core";
 
 interface Blog {
   id: string;
   thumbnail: string;
   title: string;
-  content: (string | undefined)[];
+  content: any;
   likes: number;
 }
 
@@ -25,33 +28,35 @@ const BlogComponent = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch("/api/blogs");
-      const data = await response.json();
-      if (data.status === 200) {
-        setBlogs(data.blogs);
-      } else {
-        toast.error("Failed to fetch blogs");
-      }
+      await getBlogs().then((data) => {
+        if (data.success) {
+          if (data.data) {
+            setBlogs(data.data);
+          } else {
+            setBlogs([]);
+          }
+        } else {
+          toast.error("Failed to fetch blogs");
+        }
+      });
     } catch (error) {
       toast.error("Error fetching blogs");
     } finally {
       setLoading(false);
     }
   };
-  
+
   const handleDelete = async (id: string) => {
     if (await confirm()) {
       try {
-        const response = await fetch(`/api/blogs/${id}`, {
-          method: "DELETE",
+        await deleteBlog(id).then((data) => {
+          if (data.success) {
+            toast.success("Blog deleted successfully");
+            fetchBlogs();
+          } else {
+            toast.error("Failed to delete blog");
+          }
         });
-        const data = await response.json();
-        if (data.status === 200) {
-          toast.success("Blog deleted successfully");
-          fetchBlogs();
-        } else {
-          toast.error("Failed to delete blog");
-        }
       } catch (error) {
         toast.error("Error deleting blog");
       }
@@ -64,11 +69,11 @@ const BlogComponent = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Blogs</h1>
-          <Link href="/admin/blogs/add">
-            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+          <Link href="/admin/blogs/new">
+            <Button className="bg-green hover:bg-green/90 flex items-center gap-2">
               Add Blog
               <Plus className="w-5 h-5" />
             </Button>
