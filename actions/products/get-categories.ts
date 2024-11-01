@@ -1,24 +1,33 @@
 import { Category } from "@/types/products-related-types";
-
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+import { getUrl } from "../get-url";
 
 const getCategories = async (): Promise<Category[]> => {
   try {
-    const res = await fetch(URL, {
+    const URL = await getUrl().then((data) => {
+      if (data.data) {
+        return `${data.data.baseUrl}/${data.data.storeId}/categories`;
+      }
+    });
+    
+    if (!URL) {
+      throw new Error("URL is undefined");
+    }
+
+    const categoryRes = await fetch(URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       cache: "no-store",
     });
-
-    if (!res.ok) {
+    
+    if (!categoryRes.ok) {
       throw new Error(
-        `Failed to fetch categories: ${res.status} ${res.statusText}`
+        `Failed to fetch categories: ${categoryRes.status} ${categoryRes.statusText}`
       );
     }
 
-    return await res.json();
+    return await categoryRes.json();
   } catch (error) {
     console.error("Error fetching categories:", error);
     throw error;
