@@ -5,7 +5,7 @@ const getCategories = async (): Promise<Category[]> => {
   try {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        return `${data.data.baseUrl}${data.data.storeId}/categories`;
+        return `${data.data.baseUrl}/${data.data.storeId}/categories`;
       }
     });
     

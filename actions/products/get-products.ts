@@ -11,7 +11,7 @@ interface Query {
 const getProducts = async (query: Query): Promise<Products[]> => {
   const URL = await getUrl().then((data) => {
     if (data.data) {
-      return `${data.data.baseUrl}${data.data.storeId}/products`;
+      return `${data.data.baseUrl}/${data.data.storeId}/products`;
     }
   });
 

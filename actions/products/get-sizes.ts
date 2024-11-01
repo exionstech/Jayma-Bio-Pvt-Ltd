@@ -5,7 +5,7 @@ import { getUrl } from "../get-url";
 const getSizes = async (): Promise<Size[]> => {
   const URL = await getUrl().then((data) => {
     if (data.data) {
-      return `${data.data.baseUrl}${data.data.storeId}/categories`;
+      return `${data.data.baseUrl}/${data.data.storeId}/categories`;
     }
   });
 

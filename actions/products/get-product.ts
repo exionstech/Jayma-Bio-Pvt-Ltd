@@ -4,7 +4,7 @@ import { getUrl } from "../get-url";
 const getProduct = async (id: string): Promise<Products> => {
   const URL = await getUrl().then((data) => {
     if (data.data) {
-      return `${data.data.baseUrl}${data.data.storeId}/products`;
+      return `${data.data.baseUrl}/${data.data.storeId}/products`;
     }
   });
 
