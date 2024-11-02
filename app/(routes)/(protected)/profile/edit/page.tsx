@@ -115,7 +115,7 @@ const ProfilePage = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="bio"
                   render={({ field }) => (
@@ -132,7 +132,7 @@ const ProfilePage = () => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <Button disabled={isPending} variant="link" size="sm" asChild className="px-0 font-normal text-xs">
                   <Link href="/profile/edit/picture">Want to edit profile picture?</Link>
                 </Button>
