@@ -6,6 +6,7 @@ import RecommendedProducts from "./_components/recommended-products";
 import { getProductAboutDetailsByCategory } from "@/lib/utils";
 import { Metadata } from "next";
 import { MaxWrapper } from "@/components/shared/max-wrapper";
+import CartActionButton from "../_components/cart-action";
 
 interface ProductPageProps {
   params: {
@@ -37,13 +38,7 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
             <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
               <IoIosHeartEmpty className="size-6 md:size-7 shrink-0 fill-green" />
             </div>
-            <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
-              <img
-                src="/products/cart.svg"
-                alt="cart-icon"
-                className="size-5 md:size-7 shrink-0"
-              />
-            </div>
+            <CartActionButton />
           </div>
         </div>
         <ProductDetails prodcut={product} aboutProduct={aboutProduct} />
