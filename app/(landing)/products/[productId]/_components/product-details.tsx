@@ -1,8 +1,21 @@
+"use client";
 import { IoStar } from "react-icons/io5";
 import { IoStarHalfOutline } from "react-icons/io5";
 import ImageGrid from "../../_components/image-grid";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import useCart from "@/hooks/products/use-carts";
+import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useUserData } from "@/hooks/user-data";
+import { useCurrentUser } from "@/hooks/use-current-user";
+
 type Product = {
   id: string;
   name: string;
@@ -34,6 +47,29 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
+  const [qty, setQty] = useState<number>(1);
+  const cart = useCart();
+
+  useEffect(() => {
+    const cartQty = cart.getItemQuantity(prodcut.id);
+    if (cartQty > 0) {
+      setQty(cartQty);
+    }
+  }, [cart, prodcut.id]);
+
+  const handleQty = (value: string) => {
+    const num = Number(value);
+    setQty(num);
+
+    if (cart.items.some((item) => item.id === prodcut.id)) {
+      cart.updateItemQuantity(prodcut.id, num);
+    }
+  };
+
+  const addToCart = (data: Product) => {
+    cart.addItem(data, qty);
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-4 max-w-screen-xl mx-auto">
       <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start md:items-center justify-start">
@@ -69,21 +105,42 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
               </h1>
             </div>
             <div className="flex items-center gap-4 md:gap-5">
+              <Select value={qty.toString()} onValueChange={handleQty}>
+                <SelectTrigger className="w-20">
+                  <SelectValue placeholder={qty.toString()} />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 5 }, (_, i) => i + 1).map((num) => (
+                    <SelectItem key={num} value={num.toString()}>
+                      {num}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <Button
                 size={"lg"}
                 variant="outline"
                 className="px-3 md:px-4 rounded-lg items-center gap-2 text-green hidden md:flex"
+                onClick={() => {
+                  addToCart(prodcut);
+                }}
               >
                 Add to cart
                 <ShoppingCart className="size-5 shrink-0 text-green" />
               </Button>
+
               <Button
                 size={"lg"}
                 variant="outline"
                 className="px-4 rounded-lg items-center gap-2 text-green md:hidden"
+                onClick={() => {
+                  addToCart(prodcut);
+                }}
               >
                 <ShoppingCart className="size-5 shrink-0 text-green" />
               </Button>
+
               <Button size={"lg"} className="px-4 rounded-lg">
                 Buy Now
               </Button>
