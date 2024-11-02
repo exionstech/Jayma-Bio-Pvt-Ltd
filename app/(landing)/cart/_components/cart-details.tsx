@@ -19,7 +19,10 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   const searchParams = useSearchParams();
 
   const totalPrice = cart.items.reduce((total: number, item) => {
-    return total + Number(item.price) * Number(item.qty);
+    const price = item.discount
+      ? Math.floor(item.price - (item.price * item.discount) / 100)
+      : Math.floor(item.price);
+    return total + price * Number(item.qty);
   }, 0);
 
   useEffect(() => {
@@ -84,10 +87,51 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               <Trash2 className="size-6 shrink-0 text-white" />
             </Button>
           </div>
-          <div className="w-full md:w-3/5 flex flex-col gap-4 pt-4">
-            {cart.items.map((item) => (
-              <CartItem key={item.id} item={item} />
-            ))}
+          <div className="w-full flex gap-3">
+            <div className="w-full md:w-3/5 flex flex-col gap-4 pt-4 px-6">
+              {cart.items.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+            </div>
+            <Separator
+              orientation="vertical"
+              className="min-h-[300px] h-full w-[1px] bg-green"
+            />
+            <div className="w-full md:w-2/5 flex flex-col gap-5 pt-5 px-3">
+              <h1 className="text-3xl font-medium text-green">Order Summary</h1>
+              <Separator className="h-[1px] w-full bg-green" />
+              <div className="w-full flex flex-col gap-5">
+                <div className="w-full flex  items-center justify-between">
+                  <h1 className="text-lg text-green/50">Subtotal</h1>
+                  <h1 className="text-medium text-green font-medium">
+                    <span className="mr-2">Rs</span>
+                    {totalPrice.toFixed(2)}
+                  </h1>
+                </div>
+                <div className="w-full flex items-center justify-between">
+                  <h1 className="text-lg text-green/50">Shipping</h1>
+                  <h1 className="text-lg text-green">Free</h1>
+                </div>
+                <div className="w-full flex items-center justify-between">
+                  <h1 className="text-lg text-green/50">Tax</h1>
+                  <h1 className="text-lg text-green">Rs. 15</h1>
+                </div>
+              </div>
+              <Separator className="h-[1px] w-full bg-green" />
+
+              <div className="w-full flex flex-col gap-6 mt-3 py-2">
+                <Button className="rounded-lg">Proceed to checkout</Button>
+                <Link href="/products">
+                  <Button
+                    className="w-full flex items-center gap-2"
+                    variant="ghost"
+                  >
+                    <ChevronLeft className="size-6 shrink-0 text-green" />
+                    Continue Shopping
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}

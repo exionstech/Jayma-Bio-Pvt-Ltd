@@ -58,7 +58,7 @@ const CartItem = ({ item }: CartItemProps) => {
   }, [item.id, item.price, item.discount]);
 
   return (
-    <div className="w-full h-full flex items-start justify-between gap-3 border-b-[1px] border-green/40 pb-3 pt-2">
+    <div className="w-full h-[100px] flex items-start justify-between gap-3 border-b-[1px] border-green/40 pb-3 pt-2">
       <div className="flex items-center gap-4">
         <Tooltip>
           <TooltipTrigger>
@@ -100,7 +100,7 @@ const CartItem = ({ item }: CartItemProps) => {
         </Button>
         <div className="flex items-center flex-col gap-1 mt-3">
           <h1 className="text-lg font-medium">
-            Rs: <span className="text-xl">{productPrice}</span>
+            Rs. <span className="text-xl">{productPrice}</span>
           </h1>
           <h1 className="text-xs font-medium text-lightText">
             Total: <span className="text-xs">{productPrice * qty}</span>
