@@ -19,6 +19,7 @@ interface CartDetailsProps {
   userId?: string;
 }
 const CartDetails = ({ userId }: CartDetailsProps) => {
+  const [paymentPrice, setPaymentPrice] = useState(0);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const router = useRouter();
   const cart = useCart();
@@ -37,6 +38,9 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   }, 0);
 
   const finalPrice = () => {
+    setPaymentPrice(
+      priceAfterDiscount + priceAfterDiscount * (tax / 100) + shipping
+    );
     return priceAfterDiscount + priceAfterDiscount * (tax / 100) + shipping;
   };
 
@@ -64,6 +68,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
 
     const response = await axios.post(`${URL}/checkout`, {
       products: cart.items,
+      paymentPrice: paymentPrice,
       userId,
     });
 
