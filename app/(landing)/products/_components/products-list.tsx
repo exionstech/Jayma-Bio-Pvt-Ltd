@@ -107,7 +107,7 @@ const BrewBuchaCard = ({
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon">
+        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full">
           <Heart className="size-6 shrink-0 text-green" />
         </button>
       </div>
@@ -183,8 +183,8 @@ const SapSymphonyCard = ({
             <h2 className="text-xl md:text-2xl font-medium md:font-semibold text-gray-800">
               {product.name}
             </h2>
-            <div className="flex items-center justify-center cursor-pointer">
-              <Heart className="size-5 md:size-6 text-green -mt-1" />
+            <div className="flex w-10 h-10 items-center justify-center cursor-pointer bg-lightGreen rounded-full ">
+              <Heart className="size-5 md:size-6 text-green" />
             </div>
           </div>
 
@@ -244,7 +244,7 @@ const BacterialCelluloseCard = ({
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon">
+        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full">
           <Heart className="size-6 shrink-0 text-green" />
         </button>
       </div>
