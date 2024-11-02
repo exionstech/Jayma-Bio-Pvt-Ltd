@@ -2,21 +2,28 @@
 
 import useCart from "@/hooks/products/use-carts";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import CartItem from "./cart-item";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import axios from "axios";
+import { getUrl } from "@/actions/get-url";
 
 interface CartDetailsProps {
   userId?: string;
 }
 const CartDetails = ({ userId }: CartDetailsProps) => {
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const router = useRouter();
   const cart = useCart();
   const searchParams = useSearchParams();
+
+  if (!userId) {
+    router.replace("/products");
+  }
 
   const totalPrice = cart.items.reduce((total: number, item) => {
     const price = item.discount
@@ -37,6 +44,23 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
 
   const clearCart = () => {
     cart.removeAll();
+  };
+
+  const onCheckOut = async () => {
+    setCheckoutLoading(true);
+    const URL = await getUrl().then((data) => {
+      if (data.data) {
+        return `${data.data.baseUrl}/${data.data.storeId}`;
+      }
+    });
+
+    const response = await axios.post(`${URL}/checkout`, {
+      products: cart.items,
+      userId,
+    });
+
+    router.push(response.data.url);
+    setCheckoutLoading(false);
   };
 
   return (
@@ -120,7 +144,16 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               <Separator className="h-[1px] w-full bg-green" />
 
               <div className="w-full flex flex-col gap-6 mt-3 py-2">
-                <Button className="rounded-lg">Proceed to checkout</Button>
+                <Button
+                  className="rounded-lg"
+                  onClick={onCheckOut}
+                  disabled={checkoutLoading}
+                >
+                  {checkoutLoading ? "Processing" : "Proceed to checkout"}
+                  {checkoutLoading && (
+                    <Loader2 className="size-6 shrink-0 text-white" />
+                  )}
+                </Button>
                 <Link href="/products">
                   <Button
                     className="w-full flex items-center gap-2"
