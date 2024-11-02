@@ -2,7 +2,7 @@
 
 import useCart from "@/hooks/products/use-carts";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { toast } from "sonner";
 import CartItem from "./cart-item";
 import Link from "next/link";
@@ -11,56 +11,64 @@ import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
 import { getUrl } from "@/actions/get-url";
+import { usePaymentManagement } from "@/hooks/use-payment-management";
+import { PiContactlessPaymentBold } from "react-icons/pi";
 
 interface CartDetailsProps {
   userId?: string;
 }
+
 const CartDetails = ({ userId }: CartDetailsProps) => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const router = useRouter();
   const cart = useCart();
+  const { shipping, tax, isLoading } = usePaymentManagement();
   const searchParams = useSearchParams();
 
-  if (!userId) {
-    router.replace("/products");
-  }
+  const priceAfterDiscount = useMemo(() => {
+    return cart.items.reduce((total: number, item) => {
+      const price = item.discount
+        ? item.price - (item.price * item.discount) / 100
+        : item.price;
+      return total + price * Number(item.qty);
+    }, 0);
+  }, [cart.items]);
 
-  const totalPrice = cart.items.reduce((total: number, item) => {
-    const price = item.discount
-      ? Math.floor(item.price - (item.price * item.discount) / 100)
-      : Math.floor(item.price);
-    return total + price * Number(item.qty);
-  }, 0);
+  const finalPrice = useMemo(() => {
+    return priceAfterDiscount + priceAfterDiscount * (tax / 100) + shipping;
+  }, [priceAfterDiscount, tax, shipping]);
 
   useEffect(() => {
     if (searchParams.get("success")) {
       toast.success("Payment Completed");
+      cart.removeAll();
     }
-
     if (searchParams.get("canceld")) {
-      toast.error("Something went wrong. Try agian later !");
+      toast.error("Something went wrong. Try again later!");
     }
-  }, [searchParams, cart.removeAll]);
-
-  const clearCart = () => {
-    cart.removeAll();
-  };
+  }, [searchParams, cart]);
 
   const onCheckOut = async () => {
-    setCheckoutLoading(true);
-    const URL = await getUrl().then((data) => {
-      if (data.data) {
-        return `${data.data.baseUrl}/${data.data.storeId}`;
-      }
-    });
+    try {
+      setCheckoutLoading(true);
+      const URL = await getUrl().then((data) => {
+        if (data.data) {
+          return `${data.data.baseUrl}/${data.data.storeId}`;
+        }
+      });
 
-    const response = await axios.post(`${URL}/checkout`, {
-      products: cart.items,
-      userId,
-    });
+      const response = await axios.post(`${URL}/checkout`, {
+        products: cart.items,
+        paymentPrice: finalPrice,
+        userId,
+      });
 
-    router.push(response.data.url);
-    setCheckoutLoading(false);
+      router.push(response.data.url);
+    } catch (error) {
+      toast.error("Checkout failed. Please try again.");
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
 
   return (
@@ -78,7 +86,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
           <div className="w-full flex flex-col gap-8">
             <div className="w-full flex items-center justify-center gap-6">
               <h1 className="text-4xl font-medium text-green">
-                Your Cart Is Emplty
+                Your Cart Is Empty
               </h1>
               <img
                 src="/cart/empty-cart.svg"
@@ -104,7 +112,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
           <div className="w-full flex items-center justify-between">
             <h1 className="text-3xl font-medium text-green">Your Cart</h1>
             <Button
-              onClick={clearCart}
+              onClick={() => cart.removeAll()}
               className="rounded-lg flex items-center gap-2 text-medium text-white"
             >
               Clear Cart
@@ -121,27 +129,35 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               orientation="vertical"
               className="min-h-[300px] h-full w-[1px] bg-green"
             />
-            <div className="w-full md:w-2/5 flex flex-col gap-5 pt-5 px-3">
+            <div className="w-full md:w-2/5 flex flex-col gap-4 pt-5 px-3">
               <h1 className="text-3xl font-medium text-green">Order Summary</h1>
               <Separator className="h-[1px] w-full bg-green" />
-              <div className="w-full flex flex-col gap-5">
-                <div className="w-full flex  items-center justify-between">
+              <div className="w-full flex flex-col gap-4">
+                <div className="w-full flex items-center justify-between">
                   <h1 className="text-lg text-green/50">Subtotal</h1>
                   <h1 className="text-medium text-green font-medium">
                     <span className="mr-2">Rs</span>
-                    {totalPrice.toFixed(2)}
+                    {priceAfterDiscount.toFixed(2)}
                   </h1>
                 </div>
                 <div className="w-full flex items-center justify-between">
                   <h1 className="text-lg text-green/50">Shipping</h1>
-                  <h1 className="text-lg text-green">Free</h1>
+                  <h1 className="text-lg text-green">
+                    {shipping ? `Rs. ${shipping} /-` : "Free"}
+                  </h1>
                 </div>
                 <div className="w-full flex items-center justify-between">
                   <h1 className="text-lg text-green/50">Tax</h1>
-                  <h1 className="text-lg text-green">Rs. 15</h1>
+                  <h1 className="text-lg text-green">
+                    {tax ? `Rs. ${tax} %` : "Free"}
+                  </h1>
                 </div>
               </div>
               <Separator className="h-[1px] w-full bg-green" />
+              <div className="w-full flex items-center justify-between -mt-1">
+                <h1 className="text-lg text-green">Total</h1>
+                <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
+              </div>
 
               <div className="w-full flex flex-col gap-6 mt-3 py-2">
                 <Button
@@ -150,8 +166,10 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                   disabled={checkoutLoading}
                 >
                   {checkoutLoading ? "Processing" : "Proceed to checkout"}
-                  {checkoutLoading && (
-                    <Loader2 className="size-6 shrink-0 text-white" />
+                  {checkoutLoading ? (
+                    <Loader2 className="size-6 shrink-0 text-white animate-spin" />
+                  ) : (
+                    <PiContactlessPaymentBold className="size-6 shrink-0 text-white" />
                   )}
                 </Button>
                 <Link href="/products">

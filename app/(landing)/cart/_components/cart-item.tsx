@@ -18,9 +18,7 @@ interface CartItemProps {
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const [productPrice, setProductPrice] = useState<number>(
-    Math.floor(item.price)
-  );
+  const [productPrice, setProductPrice] = useState<number>(item.price);
   const [qty, setQty] = useState(item.qty ?? 1);
 
   const cart = useCart();
@@ -28,18 +26,16 @@ const CartItem = ({ item }: CartItemProps) => {
   const increaseQuantity = () => {
     setQty(qty + 1);
     cart.updateItemQuantity(item.id, qty + 1);
-    toast.success("Quanity increased");
   };
+
   const decreaseQuantity = () => {
     setQty(qty - 1);
     cart.updateItemQuantity(item.id, qty - 1);
-    toast.success("Quanity decreased");
   };
 
   const handleRemove = (id: string) => {
     if (id) {
       cart.removeItem(item.id);
-      toast.success("Item removed from cart");
     } else {
       toast.error("Item not found");
     }
@@ -48,8 +44,7 @@ const CartItem = ({ item }: CartItemProps) => {
   const calculatePriceWithDiscount = (product: Products) => {
     const price = product.price;
     const discount = product.discount;
-    const finalPrice = discount ? price - (price * discount) / 100 : price;
-    return Math.floor(finalPrice);
+    return discount ? price - (price * discount) / 100 : price;
   };
 
   useEffect(() => {
@@ -85,7 +80,12 @@ const CartItem = ({ item }: CartItemProps) => {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button size={"icon"} variant={"ghost"} onClick={decreaseQuantity}>
+        <Button
+          disabled={qty === 1}
+          size={"icon"}
+          variant={"ghost"}
+          onClick={decreaseQuantity}
+        >
           <MinusCircle className="size-6 shrink-0 text-green" />
         </Button>
         <Button
@@ -100,10 +100,11 @@ const CartItem = ({ item }: CartItemProps) => {
         </Button>
         <div className="flex items-center flex-col gap-1 mt-3">
           <h1 className="text-lg font-medium">
-            Rs. <span className="text-xl">{productPrice}</span>
+            Rs. <span className="text-xl">{productPrice.toFixed(2)}</span>
           </h1>
           <h1 className="text-xs font-medium text-lightText">
-            Total: <span className="text-xs">{productPrice * qty}</span>
+            Total:{" "}
+            <span className="text-xs">{(productPrice * qty).toFixed(2)}</span>
           </h1>
         </div>
       </div>

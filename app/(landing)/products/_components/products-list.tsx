@@ -135,7 +135,7 @@ const BrewBuchaCard = ({
                   ? (
                       product.price -
                       ((product?.discount || 0) / 100) * product.price
-                    ).toFixed(0)
+                    ).toFixed(2)
                   : ""}
                 /-
               </span>

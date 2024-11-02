@@ -5,11 +5,11 @@ export const metadata: Metadata = {
 };
 
 const cartLayout = ({ children }: { children: React.ReactNode }) => {
-  return <>
-  <TooltipProvider>
-    {children}
-  </TooltipProvider>
-  </>
+  return (
+    <>
+      <TooltipProvider>{children}</TooltipProvider>
+    </>
+  );
 };
 
 export default cartLayout;

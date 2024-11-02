@@ -99,7 +99,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                   ? (
                       prodcut.price -
                       ((prodcut?.discount || 0) / 100) * prodcut.price
-                    ).toFixed(0)
+                    ).toFixed(2)
                   : ""}
                 /-
               </h1>

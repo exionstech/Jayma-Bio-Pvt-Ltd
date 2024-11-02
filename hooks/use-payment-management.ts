@@ -1,59 +1,64 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PaymentManagement } from "@prisma/client";
-import {
-  getManagement,
-  ManagementReturnProps,
-} from "@/actions/payment-management/get-management";
+import { getManagement } from "@/actions/payment-management/get-management";
 
-interface UsePaymentManagementReturn {
-  data: PaymentManagement[];
+interface PaymentCalculation {
+  shipping: number;
+  tax: number;
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
 }
 
-export const usePaymentManagement = (): UsePaymentManagementReturn => {
-  const [data, setData] = useState<PaymentManagement[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export const usePaymentManagement = (): PaymentCalculation => {
+  const [shipping, setShipping] = useState<number>(0);
+  const [tax, setTax] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  const fetchAndFormatData = useCallback(async () => {
     try {
-      const response: ManagementReturnProps = await getManagement();
+      setIsLoading(true);
+      setError(null);
 
-      if (response.success && response.data) {
-        // Ensure dates are properly converted to Date objects
-        const formattedData = response.data.map((item) => ({
-          ...item,
-          createdAt: new Date(item.createdAt),
-          updatedAt: new Date(item.updatedAt),
-        }));
-        setData(formattedData);
+      const response = await getManagement();
+
+      if (response.success && response.data && response.data.length > 0) {
+        // Get the latest payment management record
+        const latestManagement = response.data[0];
+
+        // Convert string values to numbers and handle potential invalid inputs
+        const shippingValue = parseFloat(
+          latestManagement.shipping.replace(/[^\d.]/g, "")
+        );
+        const taxValue = parseFloat(
+          latestManagement.tax.replace(/[^\d.]/g, "")
+        );
+
+        setShipping(isNaN(shippingValue) ? 0 : shippingValue);
+        setTax(isNaN(taxValue) ? 0 : taxValue);
       } else {
-        setError(response.message || "Failed to fetch data");
+        setError("No payment management data found");
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An unexpected error occurred"
+        err instanceof Error ? err.message : "Failed to fetch payment data"
       );
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  // Initial fetch on mount
+  // Initial fetch
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchAndFormatData();
+  }, [fetchAndFormatData]);
 
   return {
-    data,
+    shipping,
+    tax,
     isLoading,
     error,
-    refetch: fetchData,
+    refetch: fetchAndFormatData,
   };
 };
