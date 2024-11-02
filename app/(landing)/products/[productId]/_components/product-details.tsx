@@ -1,8 +1,10 @@
+"use client";
 import { IoStar } from "react-icons/io5";
 import { IoStarHalfOutline } from "react-icons/io5";
 import ImageGrid from "../../_components/image-grid";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import useCart from "@/hooks/products/use-carts";
 type Product = {
   id: string;
   name: string;
@@ -34,6 +36,12 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
+  const cart = useCart();
+
+  const addToCart = (data: Product) => {
+    cart.addItem({ ...data, qty: 1 });
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-4 max-w-screen-xl mx-auto">
       <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start md:items-center justify-start">
@@ -73,6 +81,9 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 size={"lg"}
                 variant="outline"
                 className="px-3 md:px-4 rounded-lg items-center gap-2 text-green hidden md:flex"
+                onClick={() => {
+                  addToCart(prodcut);
+                }}
               >
                 Add to cart
                 <ShoppingCart className="size-5 shrink-0 text-green" />

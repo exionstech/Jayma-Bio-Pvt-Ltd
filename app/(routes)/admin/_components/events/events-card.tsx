@@ -48,7 +48,7 @@ import { cn } from "@/lib/utils";
 import { TimePicker12Demo } from "@/components/date-time-picker.tsx/time-picker-demo";
 import { options } from "./event-tags";
 
-const MAX_CHARS = 230;
+const MAX_CHARS = 1200;
 
 // Event type definition
 type Event = {

@@ -3,6 +3,7 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import CategotyFilter from "./category-filter";
 import ProductsList from "./products-list";
 import { Category, Products } from "@/types/products-related-types";
+import CartActionButton from "./cart-action";
 
 interface ProductsProps {
   categories: Category[];
@@ -23,13 +24,7 @@ const ProductsSection = ({ categories, products }: ProductsProps) => {
           <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
             <IoIosHeartEmpty className="size-6 md:size-7 shrink-0 fill-green" />
           </div>
-          <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
-            <img
-              src="/products/cart.svg"
-              alt="cart-icon"
-              className="size-5 md:size-7 shrink-0"
-            />
-          </div>
+          <CartActionButton />
         </div>
       </div>
       <ProductsList products={products} />
