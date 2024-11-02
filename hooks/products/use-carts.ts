@@ -4,22 +4,23 @@ import { Products } from "@/types/products-related-types";
 import { toast } from "sonner";
 
 interface CartItem extends Products {
-  quantity: number;
+  qty: number;
 }
 
 interface CartStore {
   items: CartItem[];
-  addItem: (data: Products) => void;
+  addItem: (data: Products, qty?:number) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
-  updateItemQuantity: (id: string, quantity: number) => void;
+  updateItemQuantity: (id: string, qty: number) => void;
+  getItemQuantity: (id: string) => number;
 }
 
 const useCart = create(
   persist<CartStore>(
     (set, get) => ({
       items: [],
-      addItem: (data: Products) => {
+      addItem: (data: Products, qty?:number) => {
         const currentItems = get().items;
         const existingItem = currentItems.find((item) => item.id === data.id);
 
@@ -28,7 +29,7 @@ const useCart = create(
           return;
         }
 
-        set({ items: [...currentItems, { ...data, quantity: 1 }] });
+        set({ items: [...currentItems, { ...data, qty: qty || 1 }] });
         toast.success("Item added to cart");
       },
       removeItem: (id: string) => {
@@ -40,17 +41,21 @@ const useCart = create(
         set({ items: [] });
         toast.success("All items removed from cart");
       },
-      updateItemQuantity: (id: string, quantity: number) => {
-        if (quantity < 1) {
+      updateItemQuantity: (id: string, qty: number) => {
+        if (qty < 1) {
           toast.error("Quantity must be at least 1");
           return;
         }
 
         const updatedItems = get().items.map((item) =>
-          item.id === id ? { ...item, quantity } : item
+          item.id === id ? { ...item, qty } : item
         );
         set({ items: updatedItems });
         toast.success("Item quantity updated");
+      },
+      getItemQuantity: (id: string) => {
+        const item = get().items.find((item) => item.id === id);
+        return item?.qty || 0;
       },
     }),
     {
