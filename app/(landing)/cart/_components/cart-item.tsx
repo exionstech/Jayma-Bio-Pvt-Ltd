@@ -18,7 +18,6 @@ interface CartItemProps {
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  // Initialize with the calculated price instead of Math.floor
   const [productPrice, setProductPrice] = useState<number>(item.price);
   const [qty, setQty] = useState(item.qty ?? 1);
 
@@ -27,19 +26,16 @@ const CartItem = ({ item }: CartItemProps) => {
   const increaseQuantity = () => {
     setQty(qty + 1);
     cart.updateItemQuantity(item.id, qty + 1);
-    toast.success("Quantity increased");
   };
 
   const decreaseQuantity = () => {
     setQty(qty - 1);
     cart.updateItemQuantity(item.id, qty - 1);
-    toast.success("Quantity decreased");
   };
 
   const handleRemove = (id: string) => {
     if (id) {
       cart.removeItem(item.id);
-      toast.success("Item removed from cart");
     } else {
       toast.error("Item not found");
     }
@@ -48,7 +44,6 @@ const CartItem = ({ item }: CartItemProps) => {
   const calculatePriceWithDiscount = (product: Products) => {
     const price = product.price;
     const discount = product.discount;
-    // Keep the decimal calculation
     return discount ? price - (price * discount) / 100 : price;
   };
 
