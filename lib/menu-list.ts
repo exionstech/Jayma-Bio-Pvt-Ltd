@@ -74,6 +74,20 @@ export function getMenuList(pathname: string): Group[] {
           icon: User2,
           submenus: [],
         },
+        {
+          href: "/admin/payment-management",
+          label: "Payment Management",
+          active: pathname.includes("/admin/payment-management"),
+          icon: SquarePen,
+          submenus: [],
+        },
+        {
+          href: "/admin/payment-gateway",
+          label: "Payment Gateway",
+          active: pathname.includes("/admin/payment-gateway"),
+          icon: SquarePen,
+          submenus: [],
+        },
       ],
     },
     {
