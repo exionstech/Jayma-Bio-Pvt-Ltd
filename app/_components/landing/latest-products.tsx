@@ -72,7 +72,7 @@ const LatestProductsSm = () => {
                 alt={product.name}
                 width={800}
                 height={100}
-                className="h-[80%] w-full"
+                className={cn("h-[80%] w-full rounded-3xl", index%2 === 0 && "rounded-[25px]")}
               />
             </div>
             <div className="w-full flex flex-col items-center justify-center gap-5 md:px-10">
