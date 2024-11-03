@@ -1,5 +1,5 @@
-"use client"
-import { MenuItem } from "@/constants/landing/menuItem";
+"use client";
+import { FooterMenuItems, MenuItem } from "@/constants/landing/menuItem";
 import { Socials } from "@/constants/landing/socials";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,7 +53,7 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h1 className="text-xl font-semibold text-green">Quick Links</h1>
             <div className="flex flex-col gap-2">
-              {MenuItem.map((item, index) => (
+              {FooterMenuItems.map((item, index) => (
                 <Link
                   key={index}
                   href={item.href}
@@ -84,7 +84,7 @@ const Footer = () => {
 
         <div className="col-span-1 md:col-span-4 flex flex-col gap-4 md:pt-5 md:pl-4 w-full h-auto">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14770.632028233598!2d84.88188838715818!3d22.253051000000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a201f72bbd561c3%3A0xab5c70e76a7b5a!2sNational%20Institute%20of%20Technology%2C%20Rourkela!5e0!3m2!1sen!2sin!4v1730213691803!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1047.141967854423!2d84.90339052101089!3d22.255074631223646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a201e7655555555%3A0x35b1742b3b7b95d3!2sFoundation%20for%20Technology%20and%20Business%20Incubation!5e0!3m2!1sen!2sin!4v1730643858516!5m2!1sen!2sin"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen={true}
