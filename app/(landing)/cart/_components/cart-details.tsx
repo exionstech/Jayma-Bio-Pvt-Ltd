@@ -24,6 +24,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   const cart = useCart();
   const { shipping, tax, isLoading } = usePaymentManagement();
   const searchParams = useSearchParams();
+  const [hasHandledSuccess, setHasHandledSuccess] = useState(false);
 
   const priceAfterDiscount = useMemo(() => {
     return cart.items.reduce((total: number, item) => {
@@ -39,14 +40,15 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   }, [priceAfterDiscount, tax, shipping]);
 
   useEffect(() => {
-    if (searchParams.get("success")) {
-      toast.success("Payment Completed");
+    if (searchParams.get("success") && !hasHandledSuccess) {
+      setHasHandledSuccess(true);
       cart.removeAll();
+      toast.success("Order Checkout Successful!");
     }
     if (searchParams.get("canceld")) {
       toast.error("Something went wrong. Try again later!");
     }
-  }, [searchParams, cart]);
+  }, [searchParams, cart, hasHandledSuccess]);
 
   const onCheckOut = async () => {
     try {
@@ -110,7 +112,9 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
       ) : (
         <div className="w-full flex flex-col gap-4 pt-2 md:pt-5">
           <div className="w-full flex items-center justify-between">
-            <h1 className="text-2xl md:text-3xl font-medium text-green">Your Cart</h1>
+            <h1 className="text-2xl md:text-3xl font-medium text-green">
+              Your Cart
+            </h1>
             <Button
               onClick={() => cart.removeAll()}
               className="rounded-lg flex items-center gap-2 text-medium text-white"
@@ -130,7 +134,9 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               className="min-h-[300px] h-full w-[1px] bg-green hidden md:block"
             />
             <div className="w-full md:w-2/5 flex flex-col gap-4 pt-3 md:pt-5 md:px-3">
-              <h1 className="text-2xl md:text-3xl font-medium text-green">Order Summary</h1>
+              <h1 className="text-2xl md:text-3xl font-medium text-green">
+                Order Summary
+              </h1>
               <Separator className="h-[1px] w-full bg-green" />
               <div className="w-full flex flex-col gap-4">
                 <div className="w-full flex items-center justify-between">
