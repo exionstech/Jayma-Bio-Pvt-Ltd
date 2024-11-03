@@ -1,5 +1,5 @@
 "use client";
-import { MenuItem } from "@/constants/landing/menuItem";
+import { FooterMenuItems, MenuItem } from "@/constants/landing/menuItem";
 import { Socials } from "@/constants/landing/socials";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,7 +53,7 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h1 className="text-xl font-semibold text-green">Quick Links</h1>
             <div className="flex flex-col gap-2">
-              {MenuItem.map((item, index) => (
+              {FooterMenuItems.map((item, index) => (
                 <Link
                   key={index}
                   href={item.href}
