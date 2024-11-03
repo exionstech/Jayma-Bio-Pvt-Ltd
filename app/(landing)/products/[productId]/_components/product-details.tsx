@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { useUserData } from "@/hooks/user-data";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: string;
@@ -49,6 +50,7 @@ interface ProductDetailsProps {
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
   const [qty, setQty] = useState<number>(1);
   const cart = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const cartQty = cart.getItemQuantity(prodcut.id);
@@ -68,6 +70,11 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
 
   const addToCart = (data: Product) => {
     cart.addItem(data, qty);
+  };
+
+  const onClickBuyNow = (data: Product) => {
+    cart.buyNow(data, qty);
+    router.push("/cart");
   };
 
   return (
@@ -141,7 +148,13 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 <ShoppingCart className="size-5 shrink-0 text-green" />
               </Button>
 
-              <Button size={"lg"} className="px-4 rounded-lg">
+              <Button
+                size={"lg"}
+                className="px-4 rounded-lg"
+                onClick={() => {
+                  onClickBuyNow(prodcut);
+                }}
+              >
                 Buy Now
               </Button>
             </div>

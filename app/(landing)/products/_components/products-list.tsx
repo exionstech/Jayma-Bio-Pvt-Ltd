@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, PackageSearch } from "lucide-react";
+import { Heart, PackageSearch, Pencil } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/types/products-related-types";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,6 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/shared/loader";
+import useWishlist from "@/hooks/products/use-wishlist";
 
 interface ProductsListProps {
   products: Products[];
@@ -94,10 +95,14 @@ const BrewBuchaCard = ({
   product,
   onClick,
   redirecting,
+  addToWishlist,
+  wishlist,
 }: {
   product: Products;
   redirecting: boolean;
   onClick: (productId: string) => void;
+  addToWishlist: (data: Products) => void;
+  wishlist: any;
 }) => (
   <Card className="overflow-hidden bg-white rounded-lg shadow-md">
     <div className="relative">
@@ -107,8 +112,15 @@ const BrewBuchaCard = ({
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full">
-          <Heart className="size-6 shrink-0 text-green" />
+        <button
+          onClick={() => addToWishlist(product)}
+          className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full"
+        >
+          {wishlist.checkItem(product.id) ? (
+            <Heart className="size-6 shrink-0 fill-green" />
+          ) : (
+            <Heart className="size-6 shrink-0 text-green" />
+          )}
         </button>
       </div>
 
@@ -160,10 +172,14 @@ const SapSymphonyCard = ({
   product,
   onClick,
   redirecting,
+  addToWishlist,
+  wishlist,
 }: {
   product: Products;
   onClick: (productId: string) => void;
   redirecting: boolean;
+  addToWishlist: (data: Products) => void;
+  wishlist: any;
 }) => {
   return (
     <Card className="bg-white overflow-hidden !p-0">
@@ -183,8 +199,15 @@ const SapSymphonyCard = ({
             <h2 className="text-xl md:text-2xl font-medium md:font-semibold text-gray-800">
               {product.name}
             </h2>
-            <div className="flex w-10 h-10 items-center justify-center cursor-pointer bg-lightGreen rounded-full ">
-              <Heart className="size-5 md:size-6 text-green" />
+            <div
+              onClick={() => addToWishlist(product)}
+              className="flex w-10 h-10 items-center justify-center cursor-pointer bg-lightGreen rounded-full "
+            >
+              {wishlist.checkItem(product.id) ? (
+                <Heart className="size-6 shrink-0 fill-green" />
+              ) : (
+                <Heart className="size-6 shrink-0 text-green" />
+              )}
             </div>
           </div>
 
@@ -231,10 +254,14 @@ const BacterialCelluloseCard = ({
   product,
   onClick,
   redirecting,
+  wishlist,
+  addToWishlist,
 }: {
   product: Products;
   onClick: (productId: string) => void;
   redirecting: boolean;
+  wishlist: any;
+  addToWishlist: (data: Products) => void;
 }) => (
   <Card className="overflow-hidden bg-white rounded-lg shadow-md">
     <div className="relative">
@@ -244,8 +271,15 @@ const BacterialCelluloseCard = ({
           alt={product.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <button className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full">
-          <Heart className="size-6 shrink-0 text-green" />
+        <button
+          onClick={() => addToWishlist(product)}
+          className="absolute top-4 right-4 p-2 text-green hover:text-green heart-icon bg-lightGreen rounded-full"
+        >
+          {wishlist.checkItem(product.id) ? (
+            <Heart className="size-6 shrink-0 fill-green" />
+          ) : (
+            <Heart className="size-6 shrink-0 text-green" />
+          )}
         </button>
       </div>
 
@@ -295,6 +329,7 @@ const BacterialCelluloseCard = ({
 const ProductsList = ({ products }: ProductsListProps) => {
   const [redirecting, setRedirecting] = useState(false);
   const router = useRouter();
+  const wishlist = useWishlist();
   const [loadingStates, setLoadingStates] = useState({
     brewbucha: true,
     sapsymphony: true,
@@ -355,6 +390,13 @@ const ProductsList = ({ products }: ProductsListProps) => {
       setRedirecting(false);
     }
   };
+  const addToWishlist = (data: Products) => {
+    if (wishlist.checkItem(data.id)) {
+      wishlist.removeItem(data.id);
+    } else {
+      wishlist.addItem(data);
+    }
+  };
 
   return (
     <>
@@ -399,6 +441,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                         product={product}
                         onClick={hanldeProductClick}
                         redirecting={redirecting}
+                        addToWishlist={addToWishlist}
+                        wishlist={wishlist}
                       />
                     </SwiperSlide>
                   ))}
@@ -423,6 +467,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                       product={product}
                       onClick={hanldeProductClick}
                       redirecting={redirecting}
+                      addToWishlist={addToWishlist}
+                      wishlist={wishlist}
                     />
                   ))}
             </div>
@@ -456,6 +502,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                       product={product}
                       onClick={hanldeProductClick}
                       redirecting={redirecting}
+                      addToWishlist={addToWishlist}
+                      wishlist={wishlist}
                     />
                   ))}
                 </div>
@@ -473,6 +521,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                     product={product}
                     onClick={hanldeProductClick}
                     redirecting={redirecting}
+                    addToWishlist={addToWishlist}
+                    wishlist={wishlist}
                   />
                 ))
               )}
@@ -522,6 +572,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                         product={product}
                         onClick={hanldeProductClick}
                         redirecting={redirecting}
+                        addToWishlist={addToWishlist}
+                        wishlist={wishlist}
                       />
                     </SwiperSlide>
                   ))}
@@ -546,6 +598,8 @@ const ProductsList = ({ products }: ProductsListProps) => {
                       product={product}
                       onClick={hanldeProductClick}
                       redirecting={redirecting}
+                      addToWishlist={addToWishlist}
+                      wishlist={wishlist}
                     />
                   ))}
             </div>

@@ -1,17 +1,19 @@
-import { Input } from "@/components/ui/input";
-import { IoIosHeartEmpty } from "react-icons/io";
-import CategotyFilter from "./category-filter";
-import ProductsList from "./products-list";
-import { Category, Products } from "@/types/products-related-types";
-import CartActionButton from "./cart-action";
-import WhictListButton from "./wishlist-action";
+"use client";
 
-interface ProductsProps {
+import useWishlist from "@/hooks/products/use-wishlist";
+import ProductsList from "../../products/_components/products-list";
+import CategotyFilter from "../../products/_components/category-filter";
+import WhictListButton from "../../products/_components/wishlist-action";
+import CartActionButton from "../../products/_components/cart-action";
+import { Category } from "@/types/products-related-types";
+
+interface WishlistDetailsProps {
   categories: Category[];
-  products: Products[];
 }
 
-const ProductsSection = ({ categories, products }: ProductsProps) => {
+const WishlistDetails = ({ categories }: WishlistDetailsProps) => {
+  const wishlist = useWishlist();
+  const products = wishlist.items;
   return (
     <section
       id="products"
@@ -31,4 +33,4 @@ const ProductsSection = ({ categories, products }: ProductsProps) => {
   );
 };
 
-export default ProductsSection;
+export default WishlistDetails;

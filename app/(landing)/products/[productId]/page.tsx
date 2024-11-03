@@ -7,6 +7,7 @@ import { getProductAboutDetailsByCategory } from "@/lib/utils";
 import { Metadata } from "next";
 import { MaxWrapper } from "@/components/shared/max-wrapper";
 import CartActionButton from "../_components/cart-action";
+import WhictListButton from "../_components/wishlist-action";
 
 interface ProductPageProps {
   params: {
@@ -35,9 +36,7 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
       <section className="w-full h-full flex flex-col mt-6 md:mt-8 gap-5 min-h-screen px-4 md:px-10 lg:px-14 max-w-screen-2xl mx-auto">
         <div className="w-full flex items-center justify-end pt-3 md:pt-5">
           <div className="flex items-center gap-3 md:gap-5">
-            <div className="w-8 md:w-10 flex items-center justify-center cursor-pointer">
-              <IoIosHeartEmpty className="size-6 md:size-7 shrink-0 fill-green" />
-            </div>
+            <WhictListButton />
             <CartActionButton />
           </div>
         </div>
