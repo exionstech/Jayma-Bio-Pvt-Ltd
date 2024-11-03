@@ -9,18 +9,19 @@ interface CartItem extends Products {
 
 interface CartStore {
   items: CartItem[];
-  addItem: (data: Products, qty?:number) => void;
+  addItem: (data: Products, qty?: number) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
   updateItemQuantity: (id: string, qty: number) => void;
   getItemQuantity: (id: string) => number;
+  buyNow: (data: Products, qty?: number) => void;
 }
 
 const useCart = create(
   persist<CartStore>(
     (set, get) => ({
       items: [],
-      addItem: (data: Products, qty?:number) => {
+      addItem: (data: Products, qty?: number) => {
         const currentItems = get().items;
         const existingItem = currentItems.find((item) => item.id === data.id);
 
@@ -31,6 +32,13 @@ const useCart = create(
 
         set({ items: [...currentItems, { ...data, qty: qty || 1 }] });
         toast.success("Item added to cart");
+      },
+      buyNow: (data: Products, qty?: number) => {
+        const currentItems = get().items;
+        const existingItem = currentItems.find((item) => item.id === data.id);
+        if (!existingItem) {
+          set({ items: [...currentItems, { ...data, qty: qty || 1 }] });
+        }
       },
       removeItem: (id: string) => {
         const updatedItems = get().items.filter((item) => item.id !== id);
