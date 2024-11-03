@@ -32,7 +32,8 @@ export async function updateBlog(data: BlogFormValues) {
       const res = await sendEventMail(
         blog.title,
         blog.title,
-        new Date(blog.updatedAt).toDateString()
+        new Date(blog.updatedAt).toDateString(),
+        blog.id,
       );
     }
 

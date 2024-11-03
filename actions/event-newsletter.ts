@@ -1,12 +1,13 @@
 "use server";
 
-import { sendNewsletter } from "@/lib/mail";
+import { sendEventNewsletter } from "@/lib/mail";
 import prismadb from "@/lib/prismadb";
 
 export async function sendEventMail(
   title: string,
   description: string,
-  date: string
+  date: string,
+  eventId: string
 ) {
   // Send an email to all users about the event
   try {
@@ -15,7 +16,7 @@ export async function sendEventMail(
     let accepted = [];
     await Promise.all(
       emails.map(async (email) => {
-        const res = await sendNewsletter(email!, title, description, date);
+        const res = await sendEventNewsletter(email!, title, description, date, eventId);
 
         if (res.accepted) {
           accepted.push(res.accepted);
