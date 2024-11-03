@@ -53,7 +53,7 @@ export function UserNav({ user }: UserNavProps) {
         </Tooltip>
       </TooltipProvider>
 
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-60" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none"> {user?.name}</p>

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { useUserData } from "@/hooks/user-data";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: string;
@@ -49,6 +50,7 @@ interface ProductDetailsProps {
 const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
   const [qty, setQty] = useState<number>(1);
   const cart = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const cartQty = cart.getItemQuantity(prodcut.id);
@@ -70,6 +72,11 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
     cart.addItem(data, qty);
   };
 
+  const onClickBuyNow = (data: Product) => {
+    cart.buyNow(data, qty);
+    router.push("/cart");
+  };
+
   return (
     <div className="w-full h-full flex flex-col gap-4 max-w-screen-xl mx-auto">
       <div className="w-full flex flex-col lg:flex-row gap-6 md:gap-10 items-start md:items-center justify-start">
@@ -86,9 +93,9 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
             </p>
           </div>
           <div className="w-full flex flex-row items-center justify-between py-2 md:py-3 mb-4 md:mb-6">
-            <div className="flex items-center justify-center gap-1">
+            <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-center gap-1">
               {prodcut.discount > 0 && (
-                <span className="text-sm md:text-xl font-medium text-[#CC0C39]">
+                <span className="text-xs md:text-lg font-medium text-[#CC0C39]">
                   {" "}
                   - {prodcut.discount}%
                 </span>
@@ -104,9 +111,9 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 /-
               </h1>
             </div>
-            <div className="flex items-center gap-4 md:gap-5">
+            <div className="flex items-center gap-2 md:gap-3">
               <Select value={qty.toString()} onValueChange={handleQty}>
-                <SelectTrigger className="w-20">
+                <SelectTrigger className="w-[60px] md:w-[80px]">
                   <SelectValue placeholder={qty.toString()} />
                 </SelectTrigger>
                 <SelectContent>
@@ -141,7 +148,13 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 <ShoppingCart className="size-5 shrink-0 text-green" />
               </Button>
 
-              <Button size={"lg"} className="px-4 rounded-lg">
+              <Button
+                size={"lg"}
+                className="px-4 rounded-lg"
+                onClick={() => {
+                  onClickBuyNow(prodcut);
+                }}
+              >
                 Buy Now
               </Button>
             </div>

@@ -23,6 +23,7 @@ import { addManagement } from "@/actions/payment-management/add-management";
 import { getManagement } from "@/actions/payment-management/get-management";
 import { deleteManagement } from "@/actions/payment-management/delete-manangement";
 import { toast } from "sonner";
+import { useConfirm } from "@/hooks/use-confirm";
 
 type PaymentManagement = {
   id: string;
@@ -35,6 +36,10 @@ type PaymentManagement = {
 const PaymentManagementComponent = () => {
   const [data, setData] = useState<PaymentManagement[]>([]);
   const [loading, setLoading] = useState(false);
+  const [ConfirmDialogue, confirm] = useConfirm(
+    "Delete Order Charges",
+    "Are you sure you want to delete this charges? This action cannot be undone."
+  );
   const [formData, setFormData] = useState({
     shipping: "",
     tax: "",
@@ -133,95 +138,106 @@ const PaymentManagementComponent = () => {
 
   const handleDelete = async (id: string) => {
     setLoading(true);
-    try {
-      // Delete data
-      await deleteManagement({ id }).then(async (res) => {
-        if (res.success) {
-          toast.success(res.message);
-          await fetchData();
-        }
-      });
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      toast.error("An error occurred");
-    } finally {
-      setLoading(false);
+    const ok = await confirm();
+    if (ok) {
+      try {
+        // Delete data
+        await deleteManagement({ id }).then(async (res) => {
+          if (res.success) {
+            toast.success(res.message);
+            await fetchData();
+          }
+        });
+      } catch (error) {
+        console.error("Error deleting data:", error);
+        toast.error("An error occurred");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <Card className="w-full mx-auto mt-8">
-      <CardHeader>
-        <CardTitle>Payment Management</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex gap-4">
-            <Input
-              placeholder="Shipping Charge"
-              name="shipping"
-              value={formData.shipping}
-              onChange={handleInputChange}
-              disabled={loading}
-            />
-            <Input
-              placeholder="Tax Charge"
-              name="tax"
-              value={formData.tax}
-              onChange={handleInputChange}
-              disabled={loading}
-            />
-            <Button onClick={handleSubmit} disabled={loading}>
-              {loading ? "Loading..." : data.length === 0 ? "Add" : "Update"}
-            </Button>
-          </div>
+    <>
+      <ConfirmDialogue />
+      <Card className="w-full mx-auto mt-8">
+        <CardHeader>
+          <CardTitle>Payment Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex gap-4">
+              <Input
+                placeholder="Shipping Charge in Rs."
+                name="shipping"
+                value={formData.shipping}
+                onChange={handleInputChange}
+                disabled={loading}
+              />
+              <Input
+                placeholder="Tax Charge in %"
+                name="tax"
+                value={formData.tax}
+                onChange={handleInputChange}
+                disabled={loading}
+              />
+              <Button
+                className="h-[45px]"
+                onClick={handleSubmit}
+                disabled={loading}
+                size={"lg"}
+              >
+                {loading ? "Loading..." : data.length === 0 ? "Add" : "Update"}
+              </Button>
+            </div>
 
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.length > 0 ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id}>
                           {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                            header.column.columnDef.header,
+                            header.getContext()
                           )}
-                        </TableCell>
+                        </TableHead>
                       ))}
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No data
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows.length > 0 ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No data
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </>
   );
 };
 
