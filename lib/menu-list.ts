@@ -32,25 +32,41 @@ type Group = {
 export function getMenuList(pathname: string): Group[] {
   return [
     {
-      groupLabel: "",
+      groupLabel: "Store Management",
+      menus: [
+        {
+          href: "/admin/endpoint",
+          label: "Store",
+          active: false,
+          icon: Cog,
+          submenus: [
+            {
+              href: "/admin/endpoint",
+              label: "Store Endpoint",
+              active: pathname.includes("/admin/endpoint"),
+            },
+            {
+              href: "/admin/payment-management",
+              label: "Order Charges",
+              active: pathname.includes("/admin/payment-management"),
+            },
+            {
+              href: "/admin/payment-gateway",
+              label: "Payment Gateway",
+              active: pathname.includes("/admin/payment-gateway"),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      groupLabel: "Site Management",
       menus: [
         {
           href: "/admin",
           label: "Dashboard",
           active: pathname.includes("/admin") && pathname === "/admin",
           icon: LayoutGrid,
-          submenus: [],
-        },
-      ],
-    },
-    {
-      groupLabel: "Management",
-      menus: [
-        {
-          href: "/admin/endpoint",
-          label: "Endpoint",
-          active: pathname.includes("/admin/endpoint"),
-          icon: Cog,
           submenus: [],
         },
         {
@@ -72,20 +88,6 @@ export function getMenuList(pathname: string): Group[] {
           label: "Users",
           active: pathname.includes("/admin/users"),
           icon: User2,
-          submenus: [],
-        },
-        {
-          href: "/admin/payment-management",
-          label: "Payment Management",
-          active: pathname.includes("/admin/payment-management"),
-          icon: SquarePen,
-          submenus: [],
-        },
-        {
-          href: "/admin/payment-gateway",
-          label: "Payment Gateway",
-          active: pathname.includes("/admin/payment-gateway"),
-          icon: SquarePen,
           submenus: [],
         },
       ],

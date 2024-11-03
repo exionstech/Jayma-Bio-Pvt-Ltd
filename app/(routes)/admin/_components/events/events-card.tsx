@@ -101,8 +101,6 @@ const EventsForm = ({
   const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-
-
   const form = useForm<z.infer<typeof EventsSchema>>({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
@@ -155,7 +153,8 @@ const EventsForm = ({
         const res = await sendEventMail(
           data.title,
           data.description,
-          data.date.toString()
+          data.date.toString(),
+          initialData?.id || result.id
         );
 
         if (!res.success) {
