@@ -61,7 +61,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
                   loading={index === 0 ? "eager" : "lazy"}
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-start">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium text-white px-4 transform transition-all duration-300 hover:scale-105 pl-14 w-[55%] text-left">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium text-white px-4 transform transition-all duration-300 hover:scale-105 pl-14 w-[55%] text-left leading-[2.4rem]">
                     {event.title}
                   </h1>
                 </div>
@@ -77,7 +77,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
             <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
               Description
             </h1>
-            <p className="text-sm font-medium text-green w-full md:w-[90%]">
+            <p className="text-sm md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
               {event.description}
             </p>
           </div>
@@ -111,11 +111,11 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
           </div>
           <div className="flex flex-col gap-2 mt-3">
             <h1 className="text-lg md:text-2xl font-medium md:font-semibold text-green">
-              Kolkata, West Bengal
+              NIT Rourkela,Odisha
             </h1>
             <p className="text-sm font-medium text-green">
-              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-              labore et dolore Lorem ipsum
+              T1-109, First floor, FTBI Building, NIT Rourkela, Sector-1,
+              Rourkela, Odisha, PIN: 769008
             </p>
           </div>
           {event.tags.length > 0 && (
