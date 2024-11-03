@@ -19,7 +19,7 @@ const CartActionButton = () => {
   }
   return (
     <div
-      className="relative bg-lightGreen w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
+      className="relative bg-lightGreen w-12 md:w-14 h-12 md:h-14 rounded-full flex items-center justify-center cursor-pointer"
       onClick={() => {
         router.push("/cart");
       }}

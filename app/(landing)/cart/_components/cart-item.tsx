@@ -53,12 +53,12 @@ const CartItem = ({ item }: CartItemProps) => {
   }, [item.id, item.price, item.discount]);
 
   return (
-    <div className="w-full h-[100px] flex items-start justify-between gap-3 border-b-[1px] border-green/40 pb-3 pt-2">
+    <div className="w-full h-full md:h-[100px] flex flex-col md:flex-row items-start justify-between gap-3 border-b-[1px] border-green/40 pb-3 pt-2">
       <div className="flex items-center gap-4">
         <Tooltip>
           <TooltipTrigger>
             <RxCross1
-              className="size-5 shrink-0 fill-green/60 cursor-pointer"
+              className="size-4 md:size-5 shrink-0 fill-green/60 cursor-pointer"
               onClick={() => {
                 handleRemove(item.id);
               }}
@@ -71,36 +71,36 @@ const CartItem = ({ item }: CartItemProps) => {
         <img
           src={item.images[0].url}
           alt={item.name}
-          className="w-20 h-20 rounded-md ml-4"
+          className="w-14 md:w-20 h-14 md:h-1/4 rounded-md ml-2 md:ml-4"
         />
         <div className="flex flex-col gap-2">
-          <h1 className="text-medium text-green font-medium w-60 -mt-3">
+          <h1 className="text-sm md:text-medium text-green font-medium w-full md:w-60 md:-mt-3">
             {item.name}
           </h1>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center -ml-2 gap-1 md:gap-2">
         <Button
           disabled={qty === 1}
           size={"icon"}
           variant={"ghost"}
           onClick={decreaseQuantity}
         >
-          <MinusCircle className="size-6 shrink-0 text-green" />
+          <MinusCircle className="size-3 md:size-6 shrink-0 text-green" />
         </Button>
         <Button
           size={"icon"}
           variant={"ghost"}
-          className="text-lg font-medium cursor-pointer pointer-events-none"
+          className="text-sm md:text-lg font-medium cursor-pointer pointer-events-none"
         >
           {qty}
         </Button>
         <Button size={"icon"} variant={"ghost"} onClick={increaseQuantity}>
-          <PlusCircle className="size-6 shrink-0 text-green" />
+          <PlusCircle className="size-3 md:size-6 shrink-0 text-green" />
         </Button>
-        <div className="flex items-center flex-col gap-1 mt-3">
+        <div className="flex items-center flex-row md:flex-col gap-2 md:mt-3">
           <h1 className="text-lg font-medium">
-            Rs. <span className="text-xl">{productPrice.toFixed(2)}</span>
+            Rs. <span className="text-sm md:text-lg">{productPrice.toFixed(2)}</span>
           </h1>
           <h1 className="text-xs font-medium text-lightText">
             Total:{" "}
