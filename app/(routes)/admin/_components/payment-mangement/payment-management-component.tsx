@@ -18,10 +18,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Trash2 } from "lucide-react";
 import { addManagement } from "@/actions/payment-management/add-management";
 import { getManagement } from "@/actions/payment-management/get-management";
 import { deleteManagement } from "@/actions/payment-management/delete-manangement";
+import { updateManagement } from "@/actions/payment-management/update-management";
 import { toast } from "sonner";
 import { useConfirm } from "@/hooks/use-confirm";
 
@@ -36,6 +44,12 @@ type PaymentManagement = {
 const PaymentManagementComponent = () => {
   const [data, setData] = useState<PaymentManagement[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [updateFormData, setUpdateFormData] = useState({
+    id: "",
+    shipping: "",
+    tax: "",
+  });
   const [ConfirmDialogue, confirm] = useConfirm(
     "Delete Order Charges",
     "Are you sure you want to delete this charges? This action cannot be undone."
@@ -50,7 +64,6 @@ const PaymentManagementComponent = () => {
     try {
       const response = await getManagement();
       if (response.success && response.data) {
-        // Ensure dates are properly converted to Date objects
         const formattedData = response.data.map((item) => ({
           ...item,
           createdAt: new Date(item.createdAt),
@@ -63,7 +76,6 @@ const PaymentManagementComponent = () => {
     }
   };
 
-  // Initial data fetch
   useEffect(() => {
     fetchData();
   }, []);
@@ -91,9 +103,9 @@ const PaymentManagementComponent = () => {
       header: "Action",
       cell: (info) => (
         <Button
-          size={"icon"}
-          variant={"destructive"}
-          onClick={() => handleDelete(info.getValue().toLocaleString())}
+          size="icon"
+          variant="destructive"
+          onClick={() => handleDelete(info.getValue())}
         >
           <Trash2 className="h-4 w-4" />
         </Button>
@@ -115,6 +127,52 @@ const PaymentManagementComponent = () => {
     }));
   };
 
+  const handleUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUpdateFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmitClick = () => {
+    if (data.length > 0) {
+      // If data exists, open update dialog with existing data
+      setUpdateFormData({
+        id: data[0].id,
+        shipping: data[0].shipping,
+        tax: data[0].tax,
+      });
+      setIsUpdateDialogOpen(true);
+    } else {
+      // If no data, proceed with add
+      handleSubmit();
+    }
+  };
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    try {
+      const response = await updateManagement(updateFormData);
+      if (response.success) {
+        toast.success(response.message);
+        setIsUpdateDialogOpen(false);
+        setFormData({
+          shipping: "",
+          tax: "",
+        });
+        await fetchData();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+      toast.error("An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -125,7 +183,6 @@ const PaymentManagementComponent = () => {
           shipping: "",
           tax: "",
         });
-        // Fetch updated data after successful submission
         await fetchData();
       }
     } catch (error) {
@@ -141,7 +198,6 @@ const PaymentManagementComponent = () => {
     const ok = await confirm();
     if (ok) {
       try {
-        // Delete data
         await deleteManagement({ id }).then(async (res) => {
           if (res.success) {
             toast.success(res.message);
@@ -155,11 +211,48 @@ const PaymentManagementComponent = () => {
         setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   return (
     <>
       <ConfirmDialogue />
+      <Dialog open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Payment Management</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <Input
+              placeholder="Shipping Charge in Rs."
+              name="shipping"
+              value={updateFormData.shipping}
+              onChange={handleUpdateInputChange}
+              disabled={loading}
+            />
+            <Input
+              placeholder="Tax Charge in %"
+              name="tax"
+              value={updateFormData.tax}
+              onChange={handleUpdateInputChange}
+              disabled={loading}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUpdateDialogOpen(false)}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate} disabled={loading}>
+              {loading ? "Updating..." : "Update"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Card className="w-full mx-auto mt-8">
         <CardHeader>
           <CardTitle>Payment Management</CardTitle>
@@ -167,25 +260,29 @@ const PaymentManagementComponent = () => {
         <CardContent>
           <div className="space-y-4">
             <div className="flex gap-4">
-              <Input
-                placeholder="Shipping Charge in Rs."
-                name="shipping"
-                value={formData.shipping}
-                onChange={handleInputChange}
-                disabled={loading}
-              />
-              <Input
-                placeholder="Tax Charge in %"
-                name="tax"
-                value={formData.tax}
-                onChange={handleInputChange}
-                disabled={loading}
-              />
+              {data.length === 0 && (
+                <>
+                  <Input
+                    placeholder="Shipping Charge in Rs."
+                    name="shipping"
+                    value={formData.shipping}
+                    onChange={handleInputChange}
+                    disabled={loading}
+                  />
+                  <Input
+                    placeholder="Tax Charge in %"
+                    name="tax"
+                    value={formData.tax}
+                    onChange={handleInputChange}
+                    disabled={loading}
+                  />
+                </>
+              )}
               <Button
                 className="h-[45px]"
-                onClick={handleSubmit}
+                onClick={handleSubmitClick}
                 disabled={loading}
-                size={"lg"}
+                size="lg"
               >
                 {loading ? "Loading..." : data.length === 0 ? "Add" : "Update"}
               </Button>

@@ -61,7 +61,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
                   loading={index === 0 ? "eager" : "lazy"}
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-start">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium text-white px-4 transform transition-all duration-300 hover:scale-105 pl-14 w-[55%] text-left leading-[2.4rem]">
+                  <h1 className="text-2xl md:text-4xl lg:text-5xl font-medium text-white px-4 transform transition-all duration-300 hover:scale-105 pl-14 w-full md:w-[55%] text-left leading-[2.4rem]">
                     {event.title}
                   </h1>
                 </div>
@@ -77,7 +77,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
             <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
               Description
             </h1>
-            <p className="text-sm md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
+            <p className="text-medium md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
               {event.description}
             </p>
           </div>
@@ -127,7 +127,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
                 {event.tags.map((tag, index) => (
                   <Badge
                     variant="outline"
-                    className="px-3 md:px-5 py-1 md:py-2 rounded-xl text-sm border-green"
+                    className="px-3 md:px-5 py-1 md:py-2 rounded-xl text-sm border-green font-normal"
                     key={index}
                   >
                     {tagLabelByValue(tag)}
