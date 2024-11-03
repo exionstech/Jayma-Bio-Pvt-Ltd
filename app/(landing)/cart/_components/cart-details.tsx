@@ -13,6 +13,7 @@ import axios from "axios";
 import { getUrl } from "@/actions/get-url";
 import { usePaymentManagement } from "@/hooks/use-payment-management";
 import { PiContactlessPaymentBold } from "react-icons/pi";
+import { createOrder } from "@/actions/payment";
 
 interface CartDetailsProps {
   userId?: string;
@@ -59,13 +60,16 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
         }
       });
 
-      const response = await axios.post(`${URL}/checkout`, {
+      const response = await createOrder({
         products: cart.items,
-        paymentPrice: finalPrice,
-        userId,
+        userId: userId,
+        paymentPrice: Number(finalPrice.toFixed(2)),
       });
 
-      router.push(response.data.url);
+      console.log(response);
+
+      const session_id = response.payment_session_id;
+      router.push(`http://localhost:5173?session_id=${session_id}`);
     } catch (error) {
       toast.error("Checkout failed. Please try again.");
     } finally {
@@ -168,8 +172,8 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               <div className="w-full flex flex-col gap-6 mt-2 md:mt-3 py-2">
                 <Button
                   className="rounded-lg"
-                  onClick={onCheckOut}
                   disabled={checkoutLoading}
+                  onClick={onCheckOut}
                 >
                   {checkoutLoading ? "Processing" : "Proceed to checkout"}
                   {checkoutLoading ? (
