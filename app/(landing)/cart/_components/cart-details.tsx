@@ -73,7 +73,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
 
   return (
     <section className="min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-14 flex flex-col gap-5">
-      <div className="w-full pt-8">
+      <div className="w-full pt-4 md:pt-8">
         <Link href="/products">
           <Button variant="ghost" className="flex items-center gap-1">
             <ChevronLeft className="size-6 shrink-0 text-green" />
@@ -82,22 +82,22 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
         </Link>
       </div>
       {cart.items.length === 0 ? (
-        <div className="w-full flex pt-5 min-h-svh md:min-h-[50vh] items-center justify-center">
-          <div className="w-full flex flex-col gap-8">
-            <div className="w-full flex items-center justify-center gap-6">
-              <h1 className="text-4xl font-medium text-green">
+        <div className="w-full flex pt-3 md:pt-5 h-full md:min-h-[50vh] items-center justify-center">
+          <div className="w-full flex flex-col gap-5 md:gap-8 pt-10 md:pt-0">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6">
+              <h1 className="text-3xl md:text-4xl font-medium text-green">
                 Your Cart Is Empty
               </h1>
               <img
                 src="/cart/empty-cart.svg"
                 alt="cart"
-                className="w-64 select-none -mt-4"
+                className="w-64 select-none md:-mt-4"
               />
             </div>
             <div className="w-fill flex items-center justify-center mt-7">
               <Link href="/products">
                 <Button
-                  className="w-[200px] flex items-center gap-2"
+                  className="w-[140px] md:w-[200px] flex items-center gap-2"
                   variant="ghost"
                 >
                   <ChevronLeft className="size-6 shrink-0 text-green" />
@@ -108,9 +108,9 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
           </div>
         </div>
       ) : (
-        <div className="w-full flex flex-col gap-4 pt-5">
+        <div className="w-full flex flex-col gap-4 pt-2 md:pt-5">
           <div className="w-full flex items-center justify-between">
-            <h1 className="text-3xl font-medium text-green">Your Cart</h1>
+            <h1 className="text-2xl md:text-3xl font-medium text-green">Your Cart</h1>
             <Button
               onClick={() => cart.removeAll()}
               className="rounded-lg flex items-center gap-2 text-medium text-white"
@@ -119,18 +119,18 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               <Trash2 className="size-6 shrink-0 text-white" />
             </Button>
           </div>
-          <div className="w-full flex gap-3">
-            <div className="w-full md:w-3/5 flex flex-col gap-4 pt-4 px-6">
+          <div className="w-full flex flex-col md:flex-row gap-3">
+            <div className="w-full md:w-3/5 flex flex-col gap-4 pt-4 md:px-6">
               {cart.items.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
             </div>
             <Separator
               orientation="vertical"
-              className="min-h-[300px] h-full w-[1px] bg-green"
+              className="min-h-[300px] h-full w-[1px] bg-green hidden md:block"
             />
-            <div className="w-full md:w-2/5 flex flex-col gap-4 pt-5 px-3">
-              <h1 className="text-3xl font-medium text-green">Order Summary</h1>
+            <div className="w-full md:w-2/5 flex flex-col gap-4 pt-3 md:pt-5 md:px-3">
+              <h1 className="text-2xl md:text-3xl font-medium text-green">Order Summary</h1>
               <Separator className="h-[1px] w-full bg-green" />
               <div className="w-full flex flex-col gap-4">
                 <div className="w-full flex items-center justify-between">
@@ -159,7 +159,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                 <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
               </div>
 
-              <div className="w-full flex flex-col gap-6 mt-3 py-2">
+              <div className="w-full flex flex-col gap-6 mt-2 md:mt-3 py-2">
                 <Button
                   className="rounded-lg"
                   onClick={onCheckOut}

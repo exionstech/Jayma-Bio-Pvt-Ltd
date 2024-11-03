@@ -86,9 +86,9 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
             </p>
           </div>
           <div className="w-full flex flex-row items-center justify-between py-2 md:py-3 mb-4 md:mb-6">
-            <div className="flex items-center justify-center gap-1">
+            <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-center gap-1">
               {prodcut.discount > 0 && (
-                <span className="text-sm md:text-xl font-medium text-[#CC0C39]">
+                <span className="text-xs md:text-lg font-medium text-[#CC0C39]">
                   {" "}
                   - {prodcut.discount}%
                 </span>
@@ -104,9 +104,9 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
                 /-
               </h1>
             </div>
-            <div className="flex items-center gap-4 md:gap-5">
+            <div className="flex items-center gap-2 md:gap-3">
               <Select value={qty.toString()} onValueChange={handleQty}>
-                <SelectTrigger className="w-20">
+                <SelectTrigger className="w-14 md:w-[60px]">
                   <SelectValue placeholder={qty.toString()} />
                 </SelectTrigger>
                 <SelectContent>
