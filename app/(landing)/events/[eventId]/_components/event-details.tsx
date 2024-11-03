@@ -77,7 +77,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
             <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
               Description
             </h1>
-            <p className="text-sm md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
+            <p className="text-medium md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
               {event.description}
             </p>
           </div>

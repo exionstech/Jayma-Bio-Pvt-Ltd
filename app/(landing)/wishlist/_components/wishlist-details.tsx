@@ -37,7 +37,7 @@ const WishlistDetails = ({ categories }: WishlistDetailsProps) => {
       {products.length > 0 ? (
         <ProductsList products={products} />
       ) : (
-        <div className="w-full flex pt-5 md:pt-20 h-full md:min-h-[50vh] items-center justify-center">
+        <div className="w-full flex pt-5 md:pt-20 h-full min-h-[70vh] md:min-h-[50vh] items-center justify-center">
           <div className="w-full flex flex-col gap-5 md:gap-8 pt-10 md:pt-0">
             <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6">
               <h1 className="text-3xl md:text-4xl font-medium text-green">
@@ -52,7 +52,7 @@ const WishlistDetails = ({ categories }: WishlistDetailsProps) => {
             <div className="w-fill flex items-center justify-center mt-7">
               <Link href="/products">
                 <Button
-                  className="w-[160px] md:w-[200px] flex items-center gap-2"
+                  className="w-[240px] md:w-[280px] flex items-center gap-2 border-none"
                   variant="ghost"
                 >
                   <ChevronLeft className="size-6 shrink-0 text-green" />
