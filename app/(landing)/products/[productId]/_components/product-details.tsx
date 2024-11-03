@@ -106,7 +106,7 @@ const ProductDetails = ({ prodcut, aboutProduct }: ProductDetailsProps) => {
             </div>
             <div className="flex items-center gap-2 md:gap-3">
               <Select value={qty.toString()} onValueChange={handleQty}>
-                <SelectTrigger className="w-14 md:w-[60px]">
+                <SelectTrigger className="w-[60px] md:w-[80px]">
                   <SelectValue placeholder={qty.toString()} />
                 </SelectTrigger>
                 <SelectContent>
