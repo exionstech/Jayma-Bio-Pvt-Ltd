@@ -20,7 +20,6 @@ const Page = () => {
   const handleWebhook = async () => {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        // return `${data.data.baseUrl}/${data.data.storeId}`;
         return `${data.data.storeId}`;
       }
     });
