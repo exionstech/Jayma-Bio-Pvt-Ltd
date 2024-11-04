@@ -13,11 +13,30 @@ import axios from "axios";
 import { getUrl } from "@/actions/get-url";
 import { usePaymentManagement } from "@/hooks/use-payment-management";
 import { PiContactlessPaymentBold } from "react-icons/pi";
-import { createOrder } from "@/actions/payment";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CartDetailsProps {
   userId?: string;
 }
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  address: z.string().min(10, "Address must be at least 10 characters"),
+});
 
 const CartDetails = ({ userId }: CartDetailsProps) => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -26,6 +45,16 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   const { shipping, tax, isLoading } = usePaymentManagement();
   const searchParams = useSearchParams();
   const [hasHandledSuccess, setHasHandledSuccess] = useState(false);
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+  });
 
   const priceAfterDiscount = useMemo(() => {
     return cart.items.reduce((total: number, item) => {
@@ -51,7 +80,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
     }
   }, [searchParams, cart, hasHandledSuccess]);
 
-  const onCheckOut = async () => {
+  const onCheckOut = async (formData: z.infer<typeof formSchema>) => {
     try {
       setCheckoutLoading(true);
       const URL = await getUrl().then((data) => {
@@ -64,18 +93,19 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
         userId,
         products: cart.items,
         paymentPrice: finalPrice.toFixed(2),
-        name: "Atmajo Chowdhury",
-        phone: "6291240981",
-        email: "atmajoc@gmail.com",
-        address: "Vivekananda Road, Mitrapara, Panihati",
+        ...formData,
       });
-      
+
       router.push(response.data.url);
     } catch (error) {
       toast.error("Checkout failed. Please try again.");
     } finally {
       setCheckoutLoading(false);
     }
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await onCheckOut(values);
   };
 
   return (
@@ -139,50 +169,137 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               className="min-h-[300px] h-full w-[1px] bg-green hidden md:block"
             />
             <div className="w-full md:w-2/5 flex flex-col gap-4 pt-3 md:pt-5 md:px-3">
-              <h1 className="text-2xl md:text-3xl font-medium text-green">
-                Order Summary
-              </h1>
-              <Separator className="h-[1px] w-full bg-green" />
               <div className="w-full flex flex-col gap-4">
-                <div className="w-full flex items-center justify-between">
-                  <h1 className="text-lg text-green/50">Subtotal</h1>
-                  <h1 className="text-medium text-green font-medium">
-                    <span className="mr-2">Rs</span>
-                    {priceAfterDiscount.toFixed(2)}
-                  </h1>
+                <h1 className="text-2xl md:text-3xl font-medium text-green">
+                  Order Summary
+                </h1>
+                <Separator className="h-[1px] w-full bg-green" />
+                <div className="w-full flex flex-col gap-4">
+                  <div className="w-full flex items-center justify-between">
+                    <h1 className="text-lg text-green/50">Subtotal</h1>
+                    <h1 className="text-medium text-green font-medium">
+                      <span className="mr-2">Rs</span>
+                      {priceAfterDiscount.toFixed(2)}
+                    </h1>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <h1 className="text-lg text-green/50">Shipping</h1>
+                    <h1 className="text-lg text-green">
+                      {shipping && shipping !== 0
+                        ? `Rs. ${shipping} /-`
+                        : "Free"}
+                    </h1>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <h1 className="text-lg text-green/50">Tax</h1>
+                    <h1 className="text-lg text-green">
+                      {tax ? `Rs. ${tax} %` : "Free"}
+                    </h1>
+                  </div>
                 </div>
-                <div className="w-full flex items-center justify-between">
-                  <h1 className="text-lg text-green/50">Shipping</h1>
+                <Separator className="h-[1px] w-full bg-green" />
+                <div className="w-full flex items-center justify-between -mt-1">
+                  <h1 className="text-lg text-green">Total</h1>
                   <h1 className="text-lg text-green">
-                    {shipping ? `Rs. ${shipping} /-` : "Free"}
+                    {finalPrice.toFixed(2)}
                   </h1>
                 </div>
-                <div className="w-full flex items-center justify-between">
-                  <h1 className="text-lg text-green/50">Tax</h1>
-                  <h1 className="text-lg text-green">
-                    {tax ? `Rs. ${tax} %` : "Free"}
-                  </h1>
-                </div>
-              </div>
-              <Separator className="h-[1px] w-full bg-green" />
-              <div className="w-full flex items-center justify-between -mt-1">
-                <h1 className="text-lg text-green">Total</h1>
-                <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
-              </div>
 
-              <div className="w-full flex flex-col gap-6 mt-2 md:mt-3 py-2">
-                <Button
-                  className="rounded-lg"
-                  disabled={checkoutLoading}
-                  onClick={onCheckOut}
-                >
-                  {checkoutLoading ? "Processing" : "Proceed to checkout"}
-                  {checkoutLoading ? (
-                    <Loader2 className="size-6 shrink-0 text-white animate-spin" />
-                  ) : (
-                    <PiContactlessPaymentBold className="size-6 shrink-0 text-white" />
-                  )}
-                </Button>
+                <div className="w-full flex flex-col gap-4">
+                  <h1 className="text-2xl md:text-3xl font-medium text-green">
+                    Billing Information
+                  </h1>
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-4"
+                    >
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter your full name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter your email"
+                                type="email"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter your phone number"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Address</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="h-[80px] resize-none"
+                                placeholder="Enter your address"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        className="w-full rounded-lg"
+                        disabled={checkoutLoading}
+                      >
+                        {checkoutLoading ? "Processing" : "Proceed to checkout"}
+                        {checkoutLoading ? (
+                          <Loader2 className="ml-2 size-6 shrink-0 text-white animate-spin" />
+                        ) : (
+                          <PiContactlessPaymentBold className="ml-2 size-6 shrink-0 text-white" />
+                        )}
+                      </Button>
+                    </form>
+                  </Form>
+                </div>
+
                 <Link href="/products">
                   <Button
                     className="w-full flex items-center gap-2 border-none"
