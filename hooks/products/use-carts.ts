@@ -15,6 +15,7 @@ interface CartStore {
   updateItemQuantity: (id: string, qty: number) => void;
   getItemQuantity: (id: string) => number;
   buyNow: (data: Products, qty?: number) => void;
+  removeAllAfterPurchase: () => void;
 }
 
 const useCart = create(
@@ -48,6 +49,9 @@ const useCart = create(
       removeAll: () => {
         set({ items: [] });
         toast.success("All items removed from cart");
+      },
+      removeAllAfterPurchase: () => {
+        set({ items: [] });
       },
       updateItemQuantity: (id: string, qty: number) => {
         if (qty < 1) {
