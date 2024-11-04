@@ -43,7 +43,7 @@ const Page = () => {
 
     if (response.data.status === 200) {
       localStorage.removeItem("url");
-      cart.removeAll();
+      cart.removeAllAfterPurchase();
     }
   };
 
