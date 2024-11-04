@@ -1,12 +1,15 @@
 "use client";
 
 import { getUrl } from "@/actions/get-url";
+import useCart from "@/hooks/products/use-carts";
 import axios from "axios";
 import React, { useEffect } from "react";
 
 const Page = () => {
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("order_id");
+
+  const cart = useCart();
 
   useEffect(() => {
     if (!orderId) {
@@ -30,8 +33,8 @@ const Page = () => {
     );
 
     if (response.data.status === 200) {
-      console.log("Webhook sent");
       localStorage.removeItem("url");
+      cart.removeAll();
     }
   };
 
