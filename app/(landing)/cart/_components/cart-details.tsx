@@ -57,19 +57,21 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
       const URL = await getUrl().then((data) => {
         if (data.data) {
           return `${data.data.baseUrl}/${data.data.storeId}`;
+          // return `http://localhost:3001/api/${data.data.storeId}`;
         }
       });
 
-      const response = await createOrder({
+      const response = await axios.post(`${URL}/checkout`, {
+        userId,
         products: cart.items,
-        userId: userId,
-        paymentPrice: Number(finalPrice.toFixed(2)),
+        paymentPrice: finalPrice.toFixed(2),
+        name: "Atmajo Chowdhury",
+        phone: "6291240981",
+        email: "atmajoc@gmail.com",
+        address: "Vivekananda Road, Mitrapara, Panihati",
       });
-
-      console.log(response);
-
-      const session_id = response.payment_session_id;
-      router.push(`http://localhost:5173?session_id=${session_id}`);
+      
+      router.push(response.data.url);
     } catch (error) {
       toast.error("Checkout failed. Please try again.");
     } finally {
