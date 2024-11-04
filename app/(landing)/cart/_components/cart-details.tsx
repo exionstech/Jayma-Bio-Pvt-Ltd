@@ -184,7 +184,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                 </Button>
                 <Link href="/products">
                   <Button
-                    className="w-full flex items-center gap-2"
+                    className="w-full flex items-center gap-2 border-none"
                     variant="ghost"
                   >
                     <ChevronLeft className="size-6 shrink-0 text-green" />
