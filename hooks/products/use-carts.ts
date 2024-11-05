@@ -52,6 +52,7 @@ const useCart = create(
       },
       removeAllAfterPurchase: () => {
         set({ items: [] });
+        toast.success("Order placed successfully");
       },
       updateItemQuantity: (id: string, qty: number) => {
         if (qty < 1) {
