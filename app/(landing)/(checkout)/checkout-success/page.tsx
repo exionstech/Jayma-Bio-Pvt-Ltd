@@ -13,6 +13,8 @@ import React, { useEffect } from "react";
 const Page = () => {
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("order_id");
+  const paymentId = params.get("payment_id");
+  const status = params.get("status");
   const router = useRouter();
 
   if (!orderId) {
@@ -38,6 +40,8 @@ const Page = () => {
       `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${URL}/webhook`,
       {
         orderId: orderId,
+        paymentId: paymentId,
+        status: status
       }
     );
 
