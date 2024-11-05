@@ -81,7 +81,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
           // return `http://localhost:3001/api/${data.data.storeId}`;
         }
       });
-      
+
       const response = await axios.post(`${URL}/checkout`, {
         userId,
         products: cart.items,
@@ -95,6 +95,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
       router.push(response.data.url);
     } catch (error) {
       toast.error("Checkout failed. Please try again.");
+      router.replace("/checkout-failed");
     } finally {
       setCheckoutLoading(false);
     }
