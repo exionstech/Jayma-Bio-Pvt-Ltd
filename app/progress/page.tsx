@@ -44,13 +44,15 @@ const Page = () => {
             "&status=" +
             response.data.data.payment_status
         );
-      } else {
+      } else if (response.data.data.payment_status === "FAILURE") {
         router.push("/checkout-failed");
+      } else {
+        router.push("/checkout-cancelled");
       }
       localStorage.removeItem("url");
     }
   };
-  
+
   useEffect(() => {
     handleWebhook();
   }, []);
