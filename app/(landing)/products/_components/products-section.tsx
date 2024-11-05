@@ -15,7 +15,7 @@ const ProductsSection = ({ categories, products }: ProductsProps) => {
   return (
     <section
       id="products"
-      className="w-full flex flex-col gap-4 min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-12 max-w-screen-2xl mx-auto"
+      className="w-full flex flex-col gap-2 min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-12 max-w-screen-2xl mx-auto"
     >
       <div className="w-full flex items-center justify-center md:justify-end pt-5">
         <div className="flex items-center gap-2 md:gap-5">
