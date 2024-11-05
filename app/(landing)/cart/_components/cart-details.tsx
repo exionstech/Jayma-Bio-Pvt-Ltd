@@ -78,9 +78,10 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
       const URL = await getUrl().then((data) => {
         if (data.data) {
           return `${data.data.baseUrl}/${data.data.storeId}`;
+          // return `http://localhost:3001/api/${data.data.storeId}`;
         }
       });
-
+      
       const response = await axios.post(`${URL}/checkout`, {
         userId,
         products: cart.items,
