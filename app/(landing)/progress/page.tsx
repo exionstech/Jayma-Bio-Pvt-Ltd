@@ -1,15 +1,16 @@
 "use client";
 
 import { getUrl } from "@/actions/get-url";
-import useCart from "@/hooks/products/use-carts";
+import Loader from "@/components/shared/loader";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Page = () => {
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("order_id");
 
-  const cart = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     if (!orderId) {
@@ -20,13 +21,13 @@ const Page = () => {
   const handleWebhook = async () => {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        // return `${data.data.baseUrl}/${data.data.storeId}`;
-        return `${data.data.storeId}`;
+        return `${data.data.baseUrl}/${data.data.storeId}`;
+        // return `${data.data.storeId}`;
       }
     });
 
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${URL}/webhook`,
+      `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${URL}/status`,
       {
         orderId: orderId,
       }
@@ -34,7 +35,13 @@ const Page = () => {
 
     if (response.data.status === 200) {
       localStorage.removeItem("url");
-      cart.removeAll();
+      console.log(response.data.data);
+
+      if (response.data.data[0].payment_status === "SUCCESS") {
+        router.push("/checkout-success?orderId=" + orderId);
+      } else {
+        router.push("/checkout-failed?orderId=" + orderId);
+      }
     }
   };
 
@@ -42,7 +49,7 @@ const Page = () => {
     handleWebhook();
   }, []);
 
-  return <div className="mt-40">Success</div>;
+  return <Loader />;
 };
 
 export default Page;
