@@ -4,7 +4,7 @@ import { ListTextPrivacy } from "@/components/shared/list-text";
 
 const PageDetails = () => {
   return (
-    <section className="w-full h-full flex flex-col gap-4 px-5 md:px-10 lg:px-14">
+    <section className="w-full h-full flex flex-col gap-4 px-5 md:px-10 lg:px-14 max-w-screen-2xl mx-auto">
       <div className="w-full flex items-center justify-center flex-col gap-5 mt-4 md:mt-10">
         <div className="w-full h-full pt-4 pb-4 md:py-6 flex flex-col items-start justify-center gap-5 md:gap-8 md:mt-5">
           <div className="w-full flex flex-col gap-4 md:gap-6">

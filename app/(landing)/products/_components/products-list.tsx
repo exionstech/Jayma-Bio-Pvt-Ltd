@@ -385,11 +385,11 @@ const ProductsList = ({ products }: ProductsListProps) => {
     setRedirecting(true);
     try {
       await router.push(`/products/${productId}`);
-      setRedirecting(false);
     } finally {
-      setRedirecting(false);
+      setTimeout(() => setRedirecting(false), 3000);
     }
   };
+
   const addToWishlist = (data: Products) => {
     if (wishlist.checkItem(data.id)) {
       wishlist.removeItem(data.id);
@@ -398,9 +398,11 @@ const ProductsList = ({ products }: ProductsListProps) => {
     }
   };
 
+  if (redirecting) {
+    return <Loader />;
+  }
   return (
     <>
-      {redirecting && <Loader />}
       <section className="w-full py-4 md:py-6 flex flex-col gap-7 md:gap-12 mb-8 md:mb-10">
         {/* BrewBucha Products */}
         {(loadingStates.brewbucha || brewBuchaProducts.length > 0) && (
