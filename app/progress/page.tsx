@@ -42,7 +42,7 @@ const Page = () => {
             "&payment_id=" +
             response.data.data.cf_payment_id +
             "&status=" +
-            response.data.data.payment_status
+            response.data.data.payment_status.toLowerCase()
         );
       } else if (response.data.data.payment_status === "FAILURE") {
         router.push("/checkout-failed");
