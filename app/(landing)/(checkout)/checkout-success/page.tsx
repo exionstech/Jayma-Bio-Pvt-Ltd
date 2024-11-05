@@ -44,8 +44,9 @@ const Page = () => {
         status: status
       }
     );
-
+    
     if (response.data.status === 200) {
+      // sendSuccessMail();
       localStorage.removeItem("url");
       cart.removeAllAfterPurchase();
     }
