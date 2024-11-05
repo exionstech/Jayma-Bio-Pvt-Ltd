@@ -21,7 +21,6 @@ const Page = () => {
   const handleWebhook = async () => {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        // return `${data.data.baseUrl}/${data.data.storeId}`;
         return `${data.data.storeId}`;
       }
     });
@@ -36,15 +35,22 @@ const Page = () => {
     if (response.data.status === 200) {
       console.log(response.data.data);
 
-      if (response.data.data[0].payment_status === "SUCCESS") {
-        router.push("/checkout-success?orderId=" + orderId);
+      if (response.data.data.payment_status === "SUCCESS") {
+        router.push(
+          "/checkout-success?order_id=" +
+            orderId +
+            "&payment_id=" +
+            response.data.data.cf_payment_id +
+            "&status=" +
+            response.data.data.payment_status
+        );
       } else {
-        router.push("/checkout-failed?orderId=" + orderId);
+        router.push("/checkout-failed");
       }
       localStorage.removeItem("url");
     }
   };
-
+  
   useEffect(() => {
     handleWebhook();
   }, []);
