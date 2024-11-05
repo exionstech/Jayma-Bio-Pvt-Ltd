@@ -18,9 +18,9 @@ const Page = () => {
   if (!orderId) {
     router.replace("/products");
   }
-
+  
   const cart = useCart();
-
+  
   useEffect(() => {
     if (!orderId) {
       return;

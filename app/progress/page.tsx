@@ -34,7 +34,6 @@ const Page = () => {
     );
 
     if (response.data.status === 200) {
-      localStorage.removeItem("url");
       console.log(response.data.data);
 
       if (response.data.data[0].payment_status === "SUCCESS") {
@@ -42,6 +41,7 @@ const Page = () => {
       } else {
         router.push("/checkout-failed?orderId=" + orderId);
       }
+      localStorage.removeItem("url");
     }
   };
 
