@@ -1,13 +1,13 @@
 "use client";
 
 import useCart from "@/hooks/products/use-carts";
-import { useRouter, } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import CartItem from "./cart-item";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
+import { ChevronLeft, Info, Loader2, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
 import { getUrl } from "@/actions/get-url";
@@ -26,6 +26,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CartDetailsProps {
   userId?: string;
@@ -195,10 +200,23 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                   </h1>
                 </div>
 
-                <div className="w-full flex flex-col gap-4">
-                  <h1 className="text-2xl md:text-3xl font-medium text-green">
-                    Billing Information
-                  </h1>
+                <div className="w-full flex flex-col gap-4 mt-5">
+                  <div className="w-full flex items-center justify-between">
+                    <h1 className="text-2xl md:text-3xl font-medium text-green">
+                      Billing Information
+                    </h1>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <Info className="size-6 shrink-0 text-green" />
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="w-40 mr-10">
+                        <p>
+                          These details will be used for further order
+                          processing.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                   <Separator className="h-[1px] w-full bg-green" />
                   <Form {...form}>
                     <form
@@ -262,7 +280,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                         name="address"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Address</FormLabel>
+                            <FormLabel>Shipping Address</FormLabel>
                             <FormControl>
                               <Textarea
                                 className="h-[80px] resize-none"
