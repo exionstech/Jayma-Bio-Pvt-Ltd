@@ -15,6 +15,8 @@ export const publicRoutes = [
   "/events",
   "/products/.*/",
   "/terms-of-service",
+  "/cancellation-refund",
+  "/terms-conditions",
   "/api/products/add",
   "/api/products/getById",
   "/api/products/getAll",
