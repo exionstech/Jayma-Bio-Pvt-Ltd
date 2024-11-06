@@ -7,18 +7,10 @@ import { SetStateAction } from "react";
 
 interface EditorProps {
   setBlocks: React.Dispatch<SetStateAction<Block[]>>;
-  initialContent?: Block[] | null;
 }
 
-const Editor = ({ setBlocks, initialContent }: EditorProps) => {
-  const editor = useCreateBlockNote({
-    initialContent: initialContent || [
-      {
-        type: "paragraph",
-        content: "Enter your text here",
-      },
-    ],
-  });
+const AddEditor = ({ setBlocks }: EditorProps) => {
+  const editor = useCreateBlockNote();
 
   return (
     <div className="w-full min-h-[200px] border rounded-md">
@@ -33,4 +25,4 @@ const Editor = ({ setBlocks, initialContent }: EditorProps) => {
   );
 };
 
-export default Editor;
+export default AddEditor;

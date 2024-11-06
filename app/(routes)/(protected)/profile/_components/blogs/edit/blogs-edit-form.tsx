@@ -13,8 +13,8 @@ import BlogCard from "../../../_components/blogs/blog-card";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getBlogById } from "@/actions/blogs/get-blogs";
-import { updateBlog } from "@/actions/blogs/update-blog";
+import { getBlogById } from "@/actions/user-blogs/get-blogs";
+import { updateBlog } from "@/actions/user-blogs/update-blog";
 import Loader from "@/components/shared/loader";
 
 interface EditBlogFormProps {
@@ -32,7 +32,7 @@ const EditBlogForm = ({ blogId, initialBlog }: EditBlogFormProps) => {
   const router = useRouter();
   const [blog, setBlog] = useState(initialBlog);
   const [loading, setLoading] = useState(!initialBlog);
-  
+
   useEffect(() => {
     if (!initialBlog) {
       const fetchBlog = async () => {
@@ -54,11 +54,11 @@ const EditBlogForm = ({ blogId, initialBlog }: EditBlogFormProps) => {
       fetchBlog();
     }
   }, [blogId, initialBlog]);
-  
+
   const handleSubmit = async (data: any) => {
     await updateBlog(data).then((data) => {
       if (data.success) {
-        router.push("/admin/blogs");
+        router.push("/profile/blogs");
       }
     });
   };
@@ -73,13 +73,13 @@ const EditBlogForm = ({ blogId, initialBlog }: EditBlogFormProps) => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/admin">Dashboard</Link>
+              <Link href="/">Home</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/admin/blogs">Blogs</Link>
+              <Link href="/profile/blogs">Blogs</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
