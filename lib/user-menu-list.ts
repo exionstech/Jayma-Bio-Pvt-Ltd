@@ -1,4 +1,4 @@
-import { Settings, LucideIcon, User } from "lucide-react";
+import { Settings, LucideIcon, User, ShoppingBag } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -36,6 +36,18 @@ export function getUserMenuList(pathname: string): Group[] {
           label: "Settings",
           active: pathname.includes("/settings"),
           icon: Settings,
+          submenus: [],
+        },
+      ],
+    },
+    {
+      groupLabel: "Orders",
+      menus: [
+        {
+          href: "/orders",
+          label: "Orders",
+          active: pathname.includes("/orders"),
+          icon: ShoppingBag,
           submenus: [],
         },
       ],

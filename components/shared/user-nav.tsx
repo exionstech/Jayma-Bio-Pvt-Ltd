@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cog, LayoutDashboard, LayoutGrid, LogOut, User } from "lucide-react";
+import { Cog, LayoutDashboard, LogOut, User } from "lucide-react";
 import { GiShoppingBag } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

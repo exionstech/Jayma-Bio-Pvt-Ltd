@@ -2,12 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { useUserData } from "@/hooks/user-data";
 import { Orders } from "@/types/products-related-types";
-import { orderColumns } from "@tanstack/react-table";
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useState } from "react";
 import OrderListItem from "./order-list-item";
 
 interface OrderListpageProps {
@@ -16,7 +13,7 @@ interface OrderListpageProps {
 
 const OrderListpage = ({ orders }: OrderListpageProps) => {
   const { user } = useUserData();
-  // const formatedOrders = orders.filter((order) => order.userId === user?.id);
+  const formatedOrders = orders.filter((order) => order.userId === user?.id);
   return (
     <section className="w-full min-h-screen h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-12 py-4 md:py-6">
       <div className="w-full flex flex-col gap-2 md:gap-4">
@@ -35,7 +32,7 @@ const OrderListpage = ({ orders }: OrderListpageProps) => {
         <Separator className="w-full h-[1px] bg-separator" />
       </div>
       <div className="w-full flex flex-col">
-        {orders.map((order) => (
+        {formatedOrders.map((order) => (
           <OrderListItem key={order.id} order={order} />
         ))}
       </div>
