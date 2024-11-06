@@ -1,4 +1,4 @@
-import { Settings, LucideIcon, User } from "lucide-react";
+import { Settings, LucideIcon, User, Tag } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -21,6 +21,18 @@ type Group = {
 
 export function getUserMenuList(pathname: string): Group[] {
   const menuList: Group[] = [
+    {
+      groupLabel: "Contributions",
+      menus: [
+        {
+          href: "/profile/blogs",
+          label: "Blogs",
+          active: pathname.includes("/blogs"),
+          icon: Tag,
+          submenus: [],
+        },
+      ],
+    },
     {
       groupLabel: "Account",
       menus: [

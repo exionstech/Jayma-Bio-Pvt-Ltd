@@ -8,6 +8,7 @@ import {
   User,
   User2,
   Cog,
+  TagsIcon,
 } from "lucide-react";
 
 type Submenu = {
@@ -81,6 +82,13 @@ export function getMenuList(pathname: string): Group[] {
           label: "Blogs",
           active: pathname.includes("/admin/blogs"),
           icon: Tag,
+          submenus: [],
+        },
+        {
+          href: "/admin/user-blogs",
+          label: "User Blogs",
+          active: pathname.includes("/admin/user-blogs"),
+          icon: TagsIcon,
           submenus: [],
         },
         {

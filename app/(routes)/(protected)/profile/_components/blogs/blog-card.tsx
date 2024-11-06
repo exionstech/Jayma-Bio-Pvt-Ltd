@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { UploadDropzone } from "@/lib/uplaodthing";
 import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { ImagePlus, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -50,7 +50,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   );
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  
+
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(BlogSchema),
     defaultValues: initialData || {
@@ -59,7 +59,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       likes: 0,
     },
   });
-  
+
   function simplifyBlockFormat(blocks: any): any[] {
     // Check if blocks is undefined or null
     if (!blocks) {
