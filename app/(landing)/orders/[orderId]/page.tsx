@@ -18,9 +18,13 @@ export const revalidate = 0;
 const OrderDetailsPage = async ({ params }: OrderDetailsPageProps) => {
   const order = await getOreder(params.orderId);
 
+  if (!order) {
+    window.location.pathname = "/orders";
+  }
+
   return (
     <MaxWrapper>
-        <OrderDetails order={order} />
+      <OrderDetails order={order} />
     </MaxWrapper>
   );
 };

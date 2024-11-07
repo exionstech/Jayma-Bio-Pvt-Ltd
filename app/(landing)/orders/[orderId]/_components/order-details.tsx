@@ -2,19 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Orders } from "@/types/products-related-types";
-import { CheckCircle, ChevronLeft, XCircle } from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 import OrderDetailsItem from "./order-details-item";
 import { usePaymentManagement } from "@/hooks/use-payment-management";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import OrderStatusProgressBar from "./order-status-bar";
 import Link from "next/link";
-
+import useCart from "@/hooks/products/use-carts";
+import { useRouter } from "next/navigation";
 
 interface OrderDetailsPageProps {
   order: Orders;
 }
 const OrderDetails = ({ order }: OrderDetailsPageProps) => {
+  const router = useRouter();
+  const cart = useCart();
   const { shipping, tax } = usePaymentManagement();
   const priceAfterDiscount = useMemo(() => {
     return order.orderItems.reduce((total: number, item) => {
@@ -28,6 +31,13 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
   const finalPrice = useMemo(() => {
     return priceAfterDiscount + priceAfterDiscount * (tax / 100) + shipping;
   }, [priceAfterDiscount, tax, shipping]);
+
+  const onBuyAgain = () => {
+    order.orderItems.forEach((item) => {
+      cart.addItem(item);
+    });
+    router.push("/cart");
+  };
 
   return (
     <section className="w-full min-h-screen h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-8 py-4 md:py-6">
@@ -116,28 +126,51 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
           </div>
         </div>
       </div>
+      <Separator className="w-full h-[1px] bg-separator mt-2" />
+      <div
+        className="w-full flex items-center justify-between pt-3 cursor-pointer group"
+        onClick={onBuyAgain}
+      >
+        <Button className="text-lg md:text-xl" variant="ghost">
+          But It Again
+        </Button>
+        <ChevronRight className="size-6 md:size-7 shrink-0 text-green group-hover:translate-x-2 transition  duration-300" />
+      </div>
+      <Separator className="w-full h-[1px] bg-separator mt-2" />
+
       {order.order_status == "Payment Failed" ||
       order?.order_status === "Order Cancelled" ? (
         ""
       ) : (
         <>
-          <>
-            <Separator className="w-full h-[1px] bg-separator mt-2 md:mt-4" />
-            <div className="w-full flex flex-col gap-5 mt-4">
-              <div className="w-full flex items-center justify-start">
-                <h1 className="text-2xl md:text-3xl font-medium text-green">
-                  Order Status
-                </h1>
-              </div>
-              <OrderStatusProgressBar order_status={order.order_status} />
-
-              <div className="w-full flex items-center justify-end md:mt-4">
-                <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
-                  Cancel Order
-                </Button>
-              </div>
+          <div className="w-full flex flex-col gap-5 mt-4">
+            <div className="w-full flex items-center justify-start">
+              <h1 className="text-2xl md:text-3xl font-medium text-green">
+                Order Status
+              </h1>
             </div>
-          </>
+            <OrderStatusProgressBar order_status={order.order_status} />
+
+            {order.order_status !== "Order Shipped" &&
+              order.order_status !== "Order Delivered" && (
+                <div className="w-full flex items-center justify-end md:mt-4">
+                  <Link href={`/orders/${order?.id}/cancel`}>
+                    <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
+                      Cancel Order
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            {order.order_status === "Order Delivered" && (
+              <div className="w-full flex items-center justify-end md:mt-4">
+                <Link href={`/orders/${order?.id}/cancel`}>
+                  <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
+                    Return Order
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
         </>
       )}
       <div className="w-full flex items-center justify-center mt-6 md:mt-14">
