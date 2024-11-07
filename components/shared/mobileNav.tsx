@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { logout } from "@/actions/logout";
 import { useState } from "react";
+import { GiShoppingBag } from "react-icons/gi";
 
 interface MobileNavbarProps {
   user: any;
@@ -94,6 +95,14 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                         height={20}
                         className="shrink-0"
                       />
+                    </Button>
+                  </Link>
+                  <Link href={"/orders"}>
+                    <Button className="px-4 py-2 bg-white border border-green/60 hover:bg-white flex items-center justify-between rounded-xl w-full">
+                      <span className="text-green text-medium">
+                        Track Orders
+                      </span>
+                      <GiShoppingBag className="size-9 shrink-0 text-green" />
                     </Button>
                   </Link>
                   {user?.role === "ADMIN" && (
