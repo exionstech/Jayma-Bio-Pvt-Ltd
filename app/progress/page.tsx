@@ -35,6 +35,11 @@ const Page = () => {
     if (response.data.status === 200) {
       console.log(response.data.data);
 
+      if (response.data.data.cf_payment_id === null || "") {
+        router.push("/checkout-cancelled");
+        return;
+      }
+
       if (response.data.data.payment_status === "SUCCESS") {
         router.push(
           "/checkout-success?order_id=" +
