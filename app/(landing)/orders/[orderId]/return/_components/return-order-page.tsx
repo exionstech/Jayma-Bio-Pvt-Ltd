@@ -64,7 +64,8 @@ const REASON_LIST = [
   "Issue with payment or checkout process",
 ] as const;
 
-const DEFAULT_IMAGE = "https://utfs.io/f/zmMrmPqMHjqfj67gCsYgQYtZS6hKH2RwclkrTa4JxVXui3fW";
+const DEFAULT_IMAGE =
+  "https://utfs.io/f/zmMrmPqMHjqfj67gCsYgQYtZS6hKH2RwclkrTa4JxVXui3fW";
 
 const ReturnOrderPage = ({
   order,
@@ -89,10 +90,10 @@ const ReturnOrderPage = ({
 
   const watchedCategory = form.watch("category");
   const watchedReason = form.watch("reason");
-  const isDefectiveOrWrongItem = 
-    watchedReason === "Defective Product/Item received" || 
+  const isDefectiveOrWrongItem =
+    watchedReason === "Defective Product/Item received" ||
     watchedReason === "Received wrong Item/Product";
-  const isSapStudioCategory = watchedCategory === "Sap Studio";
+  const isSapStudioCategory = watchedCategory === "SapSymphony";
 
   const filteredOrderItems = order.orderItems.filter(
     (item) => item.category === watchedCategory
@@ -111,7 +112,9 @@ const ReturnOrderPage = ({
   };
 
   const removeImage = (indexToRemove: number) => {
-    const updatedImages = uploadedImages.filter((_, index) => index !== indexToRemove);
+    const updatedImages = uploadedImages.filter(
+      (_, index) => index !== indexToRemove
+    );
     setUploadedImages(updatedImages);
     form.setValue("images", updatedImages);
     toast.success("Image removed");
@@ -136,15 +139,15 @@ const ReturnOrderPage = ({
             </Button>
           </Link>
         </div>
-        
+
         <div className="w-full flex items-center justify-start mt-2 md:mt-5">
           <h1 className="text-xl md:text-4xl font-medium">
-            Cancel Order Request
+            Retrun Order Rquest
           </h1>
         </div>
-        
+
         <Separator className="w-full h-[1px] bg-separator" />
-        
+
         <div className="w-full h-full flex flex-col md:flex-row gap-3 mt-6 min-h-[70vh]">
           <div className="w-full md:w-1/2 flex flex-col gap-3 items-start justify-normal">
             <Form {...form}>
@@ -158,7 +161,7 @@ const ReturnOrderPage = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Select The Category Of The Product You Want To Cancel
+                        Select The Category Of The Product You Want To Return
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
@@ -171,7 +174,7 @@ const ReturnOrderPage = ({
                         </FormControl>
                         <SelectContent>
                           {categories.map((category) => (
-                            <SelectItem 
+                            <SelectItem
                               key={category.name}
                               value={category.name}
                             >
@@ -193,7 +196,7 @@ const ReturnOrderPage = ({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Select The Product You Want To Cancel
+                            Select The Product You Want To Retrun
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -207,10 +210,7 @@ const ReturnOrderPage = ({
                             <SelectContent>
                               {filteredOrderItems.length > 0 ? (
                                 filteredOrderItems.map((item) => (
-                                  <SelectItem
-                                    key={item.id}
-                                    value={item.name}
-                                  >
+                                  <SelectItem key={item.id} value={item.name}>
                                     {item.name}
                                   </SelectItem>
                                 ))
@@ -232,7 +232,7 @@ const ReturnOrderPage = ({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Select The Reason For Cancelling The Order
+                            Select The Reason For Return The Order
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -245,10 +245,7 @@ const ReturnOrderPage = ({
                             </FormControl>
                             <SelectContent>
                               {REASON_LIST.map((reason) => (
-                                <SelectItem 
-                                  key={reason}
-                                  value={reason}
-                                >
+                                <SelectItem key={reason} value={reason}>
                                   {reason}
                                 </SelectItem>
                               ))}

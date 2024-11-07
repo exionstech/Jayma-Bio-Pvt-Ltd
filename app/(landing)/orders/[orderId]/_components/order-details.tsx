@@ -17,7 +17,7 @@ import OrderStatusProgressBar from "./order-status-bar";
 import Link from "next/link";
 import useCart from "@/hooks/products/use-carts";
 import { useRouter } from "next/navigation";
-import { IoReload } from "react-icons/io5";
+
 
 interface OrderDetailsPageProps {
   order: Orders;
@@ -174,7 +174,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               )}
             {order.order_status === "Order Delivered" && (
               <div className="w-full flex items-center justify-end md:mt-4">
-                <Link href={`/orders/${order?.id}/cancel`}>
+                <Link href={`/orders/${order?.id}/return`}>
                   <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
                     Return Order
                   </Button>
