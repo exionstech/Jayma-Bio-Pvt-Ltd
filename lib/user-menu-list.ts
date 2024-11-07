@@ -1,5 +1,5 @@
 
-import { Settings, LucideIcon, User, ShoppingBag } from "lucide-react";
+import { Settings, LucideIcon, User, ShoppingBag, Tag } from "lucide-react";
 
 
 type Submenu = {
