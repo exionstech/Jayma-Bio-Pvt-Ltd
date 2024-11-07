@@ -44,7 +44,7 @@ const Page = () => {
             "&status=" +
             response.data.data.payment_status.toLowerCase()
         );
-      } else if (response.data.data.payment_status === "FAILURE") {
+      } else if (response.data.data.payment_status === "FAILED") {
         router.push("/checkout-failed");
       } else {
         router.push("/checkout-cancelled");
