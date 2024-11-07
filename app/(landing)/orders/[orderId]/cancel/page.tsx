@@ -1,7 +1,8 @@
 import { MaxWrapper } from "@/components/shared/max-wrapper";
 import { Metadata } from "next";
 import getOrder from "@/actions/orders/get-order";
-import CancelOrderPage from "./_components/cancel-order-page";
+import getCategories from "@/actions/products/get-categories";
+import CencelOrderPage from "./_components/cancel-order-page";
 
 export const metadata: Metadata = {
   title: "Cancel Order | Jayma Bio Innovations",
@@ -17,7 +18,7 @@ const OrderCancelPage = async ({ params }: OrderCancelPageProps) => {
   const order = await getOrder(params.orderId);
   return (
     <MaxWrapper>
-      <CancelOrderPage order={order} />
+      <CencelOrderPage order={order}  />
     </MaxWrapper>
   );
 };

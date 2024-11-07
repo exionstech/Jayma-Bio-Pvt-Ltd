@@ -179,53 +179,18 @@ const EventsForm = ({
     }
   };
 
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    field: any
-  ) => {
-    const input = e.target.value;
 
-    if (input.length <= MAX_CHARS) {
-      field.onChange(input);
-      setCharCount(input.length);
-      form.clearErrors("description");
-    } else {
-      const truncated = input.slice(0, MAX_CHARS);
-      field.onChange(truncated);
-      setCharCount(MAX_CHARS);
-
-      form.setError("description", {
-        type: "manual",
-        message: "Description cannot exceed 230 characters",
-      });
-    }
-  };
 
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
   ) => {
     if (res && res.length > 0) {
       const fileUrls = res.map((file) => file.url);
-      // Update both uploadedImages state and form value
       const updatedImages = [...uploadedImages, ...fileUrls];
       setUploadedImages(updatedImages);
       form.setValue("image", updatedImages);
       toast.success("Image uploaded successfully");
     }
-  };
-
-  const handleImageClick = (imageUrl: string) => {
-    setSelectedImage(imageUrl);
-    setShowImageDialog(true);
-  };
-
-  const handleRemoveImage = async (indexToRemove: number, name: string) => {
-    const updatedImages = uploadedImages.filter(
-      (_, index) => index !== indexToRemove
-    );
-    setUploadedImages(updatedImages);
-    toast.success("Image deleted");
-    form.setValue("image", updatedImages);
   };
 
   return (
