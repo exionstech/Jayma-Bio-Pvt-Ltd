@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { PaymentManagement } from "@prisma/client";
 import { getManagement } from "@/actions/payment-management/get-management";
 
 interface PaymentCalculation {

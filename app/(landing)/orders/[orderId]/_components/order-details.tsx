@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import OrderStatusProgressBar from "./order-status-bar";
 import Link from "next/link";
 
+
 interface OrderDetailsPageProps {
   order: Orders;
 }
@@ -32,13 +33,15 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
     <section className="w-full min-h-screen h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-8 py-4 md:py-6">
       <div className="w-full flex flex-col gap-2 md:gap-4">
         <div className="w-full flex items-center justify-start mt-2 md:mt-4">
-          <Button
-            className="flex items-center gap-2 text-green"
-            variant="outline"
-          >
-            <ChevronLeft className="size-5 shrink-0 text-green" />
-            Back
-          </Button>
+          <Link href="/products">
+            <Button
+              className="flex items-center gap-2 text-green"
+              variant="outline"
+            >
+              <ChevronLeft className="size-5 shrink-0 text-green" />
+              Back
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="w-full flex flex-col md:flex-row gap-3">
@@ -86,7 +89,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
             </div>
             <Separator className="h-[1px] w-full bg-separator" />
             <div className="w-full flex items-center justify-between">
-              <h1 className="text-lg text-green">Total Payment Amount</h1>
+              <h1 className="text-lg text-green">TotalPaid Amount</h1>
               <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
             </div>
             <Button
@@ -118,7 +121,6 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
         ""
       ) : (
         <>
-          (
           <>
             <Separator className="w-full h-[1px] bg-separator mt-2 md:mt-4" />
             <div className="w-full flex flex-col gap-5 mt-4">
@@ -136,7 +138,6 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               </div>
             </div>
           </>
-          )
         </>
       )}
       <div className="w-full flex items-center justify-center mt-6 md:mt-14">
