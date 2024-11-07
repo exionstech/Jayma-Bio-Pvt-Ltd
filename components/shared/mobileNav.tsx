@@ -102,7 +102,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                       <span className="text-green text-medium">
                         Track Orders
                       </span>
-                      <GiShoppingBag className="size-9 shrink-0 text-green" />
+                      <GiShoppingBag className="size-14 shrink-0 text-green" />
                     </Button>
                   </Link>
                   {user?.role === "ADMIN" && (
@@ -111,7 +111,7 @@ export const MobileNavbar = ({ user }: MobileNavbarProps) => {
                         <span className="text-green text-medium">
                           Admin Dashboard
                         </span>
-                        <Cog className="size-8 shrink-0 text-green" />
+                        <Cog className="size-14 shrink-0 text-green" />
                       </Button>
                     </Link>
                   )}

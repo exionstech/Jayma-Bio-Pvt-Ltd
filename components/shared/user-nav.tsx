@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "../auth/logout-button";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 interface UserNavProps {
   user: any;
@@ -65,31 +66,39 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {user?.role === "ADMIN" && (
-            <DropdownMenuItem className="hover:cursor-pointer" asChild>
-              <Link href="/admin" className="flex items-center">
-                <Cog className="w-4 h-4 mr-3 text-muted-foreground" />
-                Admin Dashboard
-              </Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link href="/admin" className="flex items-center">
+                  <Cog className="w-4 h-4 mr-3 text-muted-foreground" />
+                  Admin Dashboard
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
           )}
           {user?.role === "ADMIN" && (
-            <DropdownMenuItem className="hover:cursor-pointer" asChild>
-              <Link
-                href="https://ecommerce.jayma-bio.exions.tech"
-                target="_blank"
-                className="flex items-center"
-              >
-                <LayoutDashboard className="w-4 h-4 mr-3 text-muted-foreground" />
-                Manage Store
-              </Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link
+                  href="https://ecommerce.jayma-bio.exions.tech"
+                  target="_blank"
+                  className="flex items-center"
+                >
+                  <LayoutDashboard className="w-4 h-4 mr-3 text-muted-foreground" />
+                  Manage Store
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
           )}
+
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/orders" className="flex items-center">
               <GiShoppingBag className="w-4 h-4 mr-3 text-muted-foreground" />
               Track Orders
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/profile" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
