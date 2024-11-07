@@ -2,7 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Orders } from "@/types/products-related-types";
-import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import {
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
+  XCircle,
+} from "lucide-react";
 import OrderDetailsItem from "./order-details-item";
 import { usePaymentManagement } from "@/hooks/use-payment-management";
 import { useMemo } from "react";
@@ -11,6 +17,7 @@ import OrderStatusProgressBar from "./order-status-bar";
 import Link from "next/link";
 import useCart from "@/hooks/products/use-carts";
 import { useRouter } from "next/navigation";
+import { IoReload } from "react-icons/io5";
 
 interface OrderDetailsPageProps {
   order: Orders;
@@ -131,8 +138,12 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
         className="w-full flex items-center justify-between pt-3 cursor-pointer group"
         onClick={onBuyAgain}
       >
-        <Button className="text-lg md:text-xl" variant="ghost">
-          But It Again
+        <Button
+          className="text-lg md:text-xl flex items-center gap-2"
+          variant="ghost"
+        >
+          <RotateCcw className="text-green size-5 shrink-0 -rotate-90" /> Buy
+          Again
         </Button>
         <ChevronRight className="size-6 md:size-7 shrink-0 text-green group-hover:translate-x-2 transition  duration-300" />
       </div>
