@@ -64,7 +64,7 @@ export async function UserNav() {
           {user?.role === "ADMIN" && (
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <Link
-                href="https://ecommerce.jayma-bio.exions.tech"
+                href="https://ecommerce.jaymabioinnovations.com/"
                 target="_blank"
                 className="flex items-center"
               >

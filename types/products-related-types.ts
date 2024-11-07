@@ -27,10 +27,25 @@ export interface Size {
 
 export interface Orders {
   id: string;
+  userId: string;
+  name: string;
+  email: string;
   isPaid: boolean;
   phone: string;
   orderItems: Products[];
   address: string;
   order_status: string;
-  userId: string;
+  amount: number;
+  sent_email: boolean;
+  paymentId: string;
+}
+
+
+export interface CancelOrders{
+  id: string;
+  orderId: string;
+  itemName: string;
+  images: string[];
+  reason: string;
+  items: Products[];
 }
