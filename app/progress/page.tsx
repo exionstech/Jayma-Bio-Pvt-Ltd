@@ -31,6 +31,9 @@ const Page = () => {
         orderId: orderId,
       }
     );
+    if (response.data === null) {
+      router.push("/checkout-failed");
+    }
 
     if (response.data.status === 200) {
       console.log(response.data.data);
@@ -44,7 +47,7 @@ const Page = () => {
             "&status=" +
             response.data.data.payment_status.toLowerCase()
         );
-      } else if (response.data.data.payment_status === "FAILED") {
+      } else if (response.data.data.payment_status === "FAILED" || "FAILURE") {
         router.push("/checkout-failed");
       } else {
         router.push("/checkout-cancelled");
