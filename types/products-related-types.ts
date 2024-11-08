@@ -35,6 +35,7 @@ export interface Orders {
   orderItems: Products[];
   address: string;
   order_status: string;
+  session_id: string;
   amount: number;
   sent_email: boolean;
   paymentId: string;

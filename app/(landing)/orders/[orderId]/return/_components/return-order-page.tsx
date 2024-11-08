@@ -64,8 +64,6 @@ const REASON_LIST = [
   "Issue with payment or checkout process",
 ] as const;
 
-const DEFAULT_IMAGE =
-  "https://utfs.io/f/zmMrmPqMHjqfj67gCsYgQYtZS6hKH2RwclkrTa4JxVXui3fW";
 
 const ReturnOrderPage = ({
   order,
@@ -73,7 +71,7 @@ const ReturnOrderPage = ({
   categories,
 }: OrderReturnPageProps) => {
   const [uploadedImages, setUploadedImages] = useState<string[]>(
-    cancelledOrder?.images || [DEFAULT_IMAGE]
+    cancelledOrder?.images || []
   );
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
