@@ -140,7 +140,7 @@ const ReturnOrderPage = ({
 
         <div className="w-full flex items-center justify-start mt-2 md:mt-5">
           <h1 className="text-xl md:text-4xl font-medium">
-            Retrun Order Rquest
+            Return Order Request
           </h1>
         </div>
 
@@ -194,7 +194,7 @@ const ReturnOrderPage = ({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Select The Product You Want To Retrun
+                            Select The Product You Want To Return
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}

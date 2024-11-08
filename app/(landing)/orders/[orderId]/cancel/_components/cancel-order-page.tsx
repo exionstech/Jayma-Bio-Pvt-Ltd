@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,13 +26,17 @@ import {
 import Image from "next/image";
 import { Orders } from "@/types/products-related-types";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { getUrl } from "@/actions/get-url";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface CencelOrderPageProps {
   order: Orders;
 }
 
 const formSchema = z.object({
-  itemName: z.string().min(1, {
+  item: z.array(z.string()).min(1, {
     message: "Please select the product you want to cancel",
   }),
   reason: z.string().min(1, {
@@ -48,18 +52,67 @@ const REASON_LIST = [
 ] as const;
 
 const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      itemName: "",
+      item: [],
       reason: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    toast.success(`
-        ${values.itemName} has been successfully cancelled due to ${values.reason}`);
+  const router = useRouter();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setLoading(true);
+      const storeId = await getUrl().then((data) => {
+        if (data.data) {
+          return `${data.data.storeId}`;
+        }
+      });
+
+      let data;
+      if (values.item.length === order.orderItems.length) {
+        data = {
+          cancelled_items: order.orderItems,
+          cancelwholeorder: true,
+          reason: values.reason,
+        };
+      } else {
+        data = {
+          cancelledprice: order.orderItems.reduce((total, item) => {
+            if (values.item.includes(item.id)) {
+              return total + item.price;
+            }
+            return total;
+          }, 0),
+          reason: values.reason,
+          cancelwholeorder: false,
+          cancelled_items: order.orderItems.filter((item) =>
+            values.item.includes(item.id)
+          ),
+          orderItems: order.orderItems.filter((item) =>
+            values.item.includes(item.id)
+          ),
+        };
+      }
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${storeId}/orders/${order.id}/cancel`,
+        data
+      );
+
+      if (response.status === 200) {
+        toast.success("Order cancelled successfully");
+        router.push(`/cancel-successful`);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to cancel order");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -94,29 +147,31 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
               >
                 <FormField
                   control={form.control}
-                  name="itemName"
+                  name="item"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
                         Select The Product You Want To Cancel
                       </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="h-10 border-green/60">
-                            <SelectValue placeholder="Select Product" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {order.orderItems.map((item) => (
-                            <SelectItem key={item.id} value={item.name}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      {order.orderItems.map((item) => (
+                        <div key={item.id} className="flex gap-2 items-center">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  field.onChange([...field.value, item.id]);
+                                } else {
+                                  field.onChange(
+                                    field.value.filter((id) => id !== item.id)
+                                  );
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          {item.name}
+                        </div>
+                      ))}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -155,9 +210,9 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
                 <Button
                   type="submit"
                   className="h-8 md:h-12 w-[150px] md:w-[170px] text-white mt-5"
-                  disabled={!form.formState.isValid}
+                  disabled={!form.formState.isValid || loading}
                 >
-                  Proceed
+                  {loading ? "Cancelling..." : "Cancel Order"}
                 </Button>
               </form>
             </Form>
