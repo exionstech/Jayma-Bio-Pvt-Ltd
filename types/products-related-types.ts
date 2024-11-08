@@ -41,3 +41,13 @@ export interface Orders {
   sent_email: boolean;
   paymentId: string;
 }
+
+export interface OrderReturnTypes {
+  id: string;
+  images: string[];
+  reason: string;
+  orderId: string;
+  product: Products[];
+  status: string;
+  category: string;
+}

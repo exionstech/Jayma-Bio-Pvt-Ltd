@@ -2,7 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CancelOrders, Category, Orders } from "@/types/products-related-types";
+import {
+  Category,
+  OrderReturnTypes,
+  Orders,
+} from "@/types/products-related-types";
 import { ChevronLeft, Info, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -38,7 +42,7 @@ import Image from "next/image";
 
 interface OrderReturnPageProps {
   order: Orders;
-  cancelledOrder?: CancelOrders;
+  cancelledOrder?: OrderReturnTypes;
   categories: Category[];
 }
 
@@ -63,7 +67,6 @@ const REASON_LIST = [
   "Received wrong Item/Product",
   "Issue with payment or checkout process",
 ] as const;
-
 
 const ReturnOrderPage = ({
   order,
