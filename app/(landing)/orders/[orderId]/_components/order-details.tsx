@@ -11,18 +11,21 @@ import {
 } from "lucide-react";
 import OrderDetailsItem from "./order-details-item";
 import { usePaymentManagement } from "@/hooks/use-payment-management";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import OrderStatusProgressBar from "./order-status-bar";
 import Link from "next/link";
 import useCart from "@/hooks/products/use-carts";
 import { useRouter } from "next/navigation";
-
+import { PiContactlessPaymentBold } from "react-icons/pi";
+import { toast } from "sonner";
+import { getUrl } from "@/actions/get-url";
 
 interface OrderDetailsPageProps {
   order: Orders;
 }
 const OrderDetails = ({ order }: OrderDetailsPageProps) => {
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const router = useRouter();
   const cart = useCart();
   const { shipping, tax } = usePaymentManagement();
@@ -44,6 +47,27 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
       cart.addItem(item);
     });
     router.push("/cart");
+  };
+
+  const onClikAgainPay = async (data: Orders) => {
+    setCheckoutLoading(true);
+    try {
+      const storeId = await getUrl().then((data) => {
+        if (data.data) {
+          return `${data.data.storeId}`;
+        }
+      });
+      const PAYMENT_URL = new URL(process.env.NEXT_PUBLIC_PAYMENT_URL! || "");
+      PAYMENT_URL.searchParams.append("session_id", data.session_id);
+      PAYMENT_URL.searchParams.append("store_id", storeId!);
+      PAYMENT_URL.searchParams.append("order_id", data.id);
+      router.push(PAYMENT_URL.toString());
+    } catch (error) {
+      toast.error("Checkout failed. Please try again.");
+      router.replace("/checkout-failed");
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
 
   return (
@@ -106,23 +130,39 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
             </div>
             <Separator className="h-[1px] w-full bg-separator" />
             <div className="w-full flex items-center justify-between">
-              <h1 className="text-lg text-green">TotalPaid Amount</h1>
+              {order.order_status === "Payment Failed" ||
+              "Payment Processing" ? (
+                <h1 className="text-lg text-green">Total Payble Amount</h1>
+              ) : (
+                <h1 className="text-lg text-green">Total Paid Amount</h1>
+              )}
               <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
             </div>
             <Button
+              onClick={() => onClikAgainPay(order)}
               className={cn(
                 "flex items-center gap-2 mt-2 md:mt-3 cursor-default pointer-events-none select-none",
+                order?.order_status === "Payment Processing" &&
+                  "pointer-events-auto select-all cursor-pointer",
                 order?.order_status === "Payment Failed" ||
                   order?.order_status === "Order Cancelled"
                   ? "bg-red-600"
-                  : "bg-emerald-600"
+                  : "bg-emerald-600",
+                order?.order_status === "Payment Processing" &&
+                  "bg-yellow-600 hover:bg-yellow-700"
               )}
             >
-              {order?.order_status}
+              {order?.order_status === "Payment Processing"
+                ? "Continue Payment"
+                : order?.order_status}
               {order?.order_status === "Payment Failed" ||
               order?.order_status === "Order Cancelled" ? (
                 <>
                   <XCircle className="size-4 md:size-5 shrink-0 text-white" />
+                </>
+              ) : order?.order_status === "Payment Processing" ? (
+                <>
+                  <PiContactlessPaymentBold className="size-4 md:size-6 shrink-0 text-white" />
                 </>
               ) : (
                 <>
@@ -150,6 +190,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
       <Separator className="w-full h-[1px] bg-separator mt-2" />
 
       {order.order_status == "Payment Failed" ||
+      order.order_status === "Payment Processing" ||
       order?.order_status === "Order Cancelled" ? (
         ""
       ) : (
