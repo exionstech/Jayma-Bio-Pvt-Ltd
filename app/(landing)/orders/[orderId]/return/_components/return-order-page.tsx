@@ -2,7 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CancelOrders, Category, Orders } from "@/types/products-related-types";
+import {
+  Category,
+  OrderReturnTypes,
+  Orders,
+} from "@/types/products-related-types";
 import { ChevronLeft, Info, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -38,7 +42,7 @@ import Image from "next/image";
 
 interface OrderReturnPageProps {
   order: Orders;
-  cancelledOrder?: CancelOrders;
+  cancelledOrder?: OrderReturnTypes;
   categories: Category[];
 }
 
@@ -63,7 +67,6 @@ const REASON_LIST = [
   "Received wrong Item/Product",
   "Issue with payment or checkout process",
 ] as const;
-
 
 const ReturnOrderPage = ({
   order,
@@ -140,7 +143,7 @@ const ReturnOrderPage = ({
 
         <div className="w-full flex items-center justify-start mt-2 md:mt-5">
           <h1 className="text-xl md:text-4xl font-medium">
-            Retrun Order Rquest
+            Return Order Request
           </h1>
         </div>
 
@@ -194,7 +197,7 @@ const ReturnOrderPage = ({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Select The Product You Want To Retrun
+                            Select The Product You Want To Return
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}

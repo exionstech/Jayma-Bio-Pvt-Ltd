@@ -7,12 +7,12 @@ interface OrderListItemProps {
 }
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
-  const orderIems = order.orderItems;
-
-  const firstOrderItemName = orderIems[0].name;
-  const firstOrderItemImage = orderIems[0].images[0].url;
+  const orderItems = order.orderItems;
+  
+  const firstOrderItemName = orderItems && orderItems.length > 0 ? orderItems[0].name : order.cancelled_items[0].name;
+  const firstOrderItemImage = orderItems && orderItems.length > 0 ? orderItems[0].images[0].url : order.cancelled_items[0].images[0].url;
   const orderId = order.id;
-
+  
   return (
     <Link href={`/orders/${orderId}`}>
       <div className="w-full  py-4 px-4 flex items-center border-b-[1px] border-separator justify-between cursor-pointer hover:bg-separator/40 transition duration-300 rounded-lg">
@@ -24,7 +24,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
           />
           <div className="flex flex-col gap-2">
             <h1 className="text-sm md:text-lg font-medium text-green w-40 md:w-56">
-             {orderIems.length > 1 ? `${firstOrderItemName} & ${orderIems.length - 1} more` : firstOrderItemName}
+             {orderItems.length > 1 ? `${firstOrderItemName} & ${orderItems.length - 1} more` : firstOrderItemName}
             </h1>
           </div>
         </div>
