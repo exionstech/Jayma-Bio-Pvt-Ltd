@@ -109,7 +109,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   };
 
   return (
-    <section className="min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-14 flex flex-col gap-5">
+    <section className="min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-14 flex flex-col gap-5 max-w-screen-2xl mx-auto">
       <div className="w-full pt-4 md:pt-8">
         <Link href="/products">
           <Button variant="ghost" className="flex items-center gap-1">
