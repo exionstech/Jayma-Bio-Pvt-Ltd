@@ -66,7 +66,7 @@ export default function CookieConsent({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed z-[200] bottom-0 right-0 sm:right-4 sm:bottom-4 w-full sm:max-w-md"
+          className="fixed z-[200] bottom-0 left-0 sm:left-4 sm:bottom-4 w-full sm:max-w-md"
           initial={{ y: 100, x: 100, opacity: 0 }}
           animate={{ y: 0, x: 0, opacity: 1 }}
           exit={{ y: 100, x: 100, opacity: 0 }}
