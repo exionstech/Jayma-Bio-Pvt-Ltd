@@ -115,9 +115,9 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
     }
   };
 
-
-  if(!order) {
+  if (order.order_status === "Order Cancelled" || !order) {
     router.replace("/orders");
+    toast.error("You cancelled this order already");
   }
 
   return (
