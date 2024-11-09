@@ -14,6 +14,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
+import CookieConsent from "@/components/shared/cookie";
 
 const Loader = dynamic(() => import("@/components/shared/loader"), {
   ssr: false,
@@ -88,6 +89,7 @@ export default async function RootLayout({
             setTimeout(showContent, 2000);
           `}
           </Script>
+          <CookieConsent />
         </body>
       </html>
     </SessionProvider>
