@@ -1,6 +1,10 @@
 interface ListTextProps {
   title: string;
   description?: string;
+  description1?: string;
+  description2?: string;
+  description3?: string;
+  description4?: string;
   list1?: string;
   list2?: string;
   list3?: string;
@@ -22,6 +26,10 @@ interface ListTextProps {
 export const ListTextPrivacy = ({
   title,
   description,
+  description1,
+  description2,
+  description3,
+  description4,
   list1,
   list2,
   list3,
@@ -42,12 +50,32 @@ export const ListTextPrivacy = ({
   return (
     <div className="w-full flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl md:text-[26px] font-bold w-full  text-start">
+        <h1 className="text-2xl md:text-[26px] font-bold w-full  text-start mb-2">
           {title}
         </h1>
         {description && (
           <p className="text-start w-full font-medium text-sm md:text-[16px] text-[#4A4A4A]">
             {description}
+          </p>
+        )}
+        {description1 && (
+          <p className="text-start w-full font-medium text-sm md:text-[16px] text-[#4A4A4A]">
+            {description1}
+          </p>
+        )}
+        {description2 && (
+          <p className="text-start w-full font-medium text-sm md:text-[16px] text-[#4A4A4A]">
+            {description2}
+          </p>
+        )}
+        {description3 && (
+          <p className="text-start w-full font-medium text-sm md:text-[16px] text-[#4A4A4A]">
+            {description3}
+          </p>
+        )}
+        {description4 && (
+          <p className="text-start w-full font-medium text-sm md:text-[16px] text-[#4A4A4A]">
+            {description4}
           </p>
         )}
       </div>
