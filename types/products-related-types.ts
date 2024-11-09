@@ -37,16 +37,17 @@ export interface Orders {
   order_status: string;
   session_id: string;
   amount: number;
+  cancelled_items: Products[];
   sent_email: boolean;
   paymentId: string;
 }
 
-
-export interface CancelOrders{
+export interface OrderReturnTypes {
   id: string;
-  orderId: string;
-  itemName: string;
   images: string[];
   reason: string;
-  items: Products[];
+  orderId: string;
+  product: Products[];
+  status: string;
+  category: string;
 }
