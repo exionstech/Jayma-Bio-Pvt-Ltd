@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Cancelled Successful | Jayma Bio Innovations",
+  title: "Order Cancelled Successful | Jayma Bio Innovations",
 };
 
 const CheckoutCancelledPage = () => {
@@ -14,10 +14,15 @@ const CheckoutCancelledPage = () => {
       <div className="w-full flex pt-5 md:pt-20 h-full min-h-[70vh] md:min-h-[80vh] items-center justify-center">
         <div className="w-full flex flex-col gap-5 md:gap-8 pt-10 md:pt-0">
           <div className="w-full flex flex-col items-center justify-center gap-6">
-            <h1 className="text-2xl md:text-4xl font-extralight text-center text-green w-[60%] md:w-full max-w-4xl">
+            <h1 className="text-2xl md:text-3xl font-extralight text-center text-green w-[60%] md:w-full max-w-4xl">
               Your order has been cancelled. Your refund will be processed
               within 4-5 business days.
             </h1>
+            <img
+              src="/checkout/cancelled.svg"
+              alt="cart"
+              className="w-44 md:w-72 select-none mt-5 md:mt-8"
+            />
           </div>
           <div className="w-fill flex items-center justify-center mt-7">
             <Link href="/products">

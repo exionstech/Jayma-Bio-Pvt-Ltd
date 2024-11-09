@@ -6,6 +6,7 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
+  Loader2,
   RotateCcw,
   XCircle,
 } from "lucide-react";
@@ -69,6 +70,10 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
       setCheckoutLoading(false);
     }
   };
+
+  if(order.orderItems.length === 0) {
+    router.replace("/cancel-successful");
+  }
 
   return (
     <section className="w-full min-h-screen h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-8 py-4 md:py-6">
@@ -139,6 +144,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               <h1 className="text-lg text-green">{finalPrice.toFixed(2)}</h1>
             </div>
             <Button
+            disabled={checkoutLoading}
               onClick={() => onClikAgainPay(order)}
               className={cn(
                 "flex items-center gap-2 mt-2 md:mt-3 cursor-default pointer-events-none select-none",
@@ -169,26 +175,32 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
                   <CheckCircle className="size-4 md:size-5 shrink-0 text-white" />
                 </>
               )}
+              {checkoutLoading && (
+                <Loader2 className="size-4 md:size-5 shrink-0 text-white animate-spin" />
+              )}
             </Button>
           </div>
         </div>
       </div>
-      <Separator className="w-full h-[1px] bg-separator mt-2" />
-      <div
-        className="w-full flex items-center justify-between pt-3 cursor-pointer group"
-        onClick={onBuyAgain}
-      >
-        <Button
-          className="text-lg md:text-xl flex items-center gap-2"
-          variant="ghost"
-        >
-          <RotateCcw className="text-green size-5 shrink-0 -rotate-90" /> Buy
-          Again
-        </Button>
-        <ChevronRight className="size-6 md:size-7 shrink-0 text-green group-hover:translate-x-2 transition  duration-300" />
-      </div>
-      <Separator className="w-full h-[1px] bg-separator mt-2" />
-
+      {order.order_status !== "Payment Processing" || order.orderItems.length === 0 && (
+        <>
+          <Separator className="w-full h-[1px] bg-separator mt-2" />
+          <div
+            className="w-full flex items-center justify-between pt-3 cursor-pointer group"
+            onClick={onBuyAgain}
+          >
+            <Button
+              className="text-lg md:text-xl flex items-center gap-2"
+              variant="ghost"
+            >
+              <RotateCcw className="text-green size-5 shrink-0 -rotate-90" />{" "}
+              Buy Again
+            </Button>
+            <ChevronRight className="size-6 md:size-7 shrink-0 text-green group-hover:translate-x-2 transition  duration-300" />
+          </div>
+          <Separator className="w-full h-[1px] bg-separator mt-2" />
+        </>
+      )}
       {order.order_status == "Payment Failed" ||
       order.order_status === "Payment Processing" ||
       order?.order_status === "Order Cancelled" ? (
