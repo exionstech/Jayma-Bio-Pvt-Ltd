@@ -115,6 +115,11 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
     }
   };
 
+
+  if(!order) {
+    router.replace("/orders");
+  }
+
   return (
     <section className="w-full h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-8 py-4 md:py-6 md:min-h-screen">
       <div className="w-full flex flex-col gap-2 md:gap-4">

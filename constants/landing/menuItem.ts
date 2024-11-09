@@ -87,4 +87,10 @@ export const FooterMenuItems = [
     href: "/terms-conditions",
     icon: "/navIcon/contact.svg",
   },
+  {
+    id:8,
+    label: "Privacy Policy",
+    href: "/privacy-policy",
+    icon: "/navIcon/contact.svg",
+  }
 ]
