@@ -165,6 +165,21 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               )}
               <h1 className="text-lg text-green">{order.amount.toFixed(2)}</h1>
             </div>
+            {order.order_status === "Return Requested" && (
+              <>
+                <div className="w-full flex flex-col gap-3">
+                  <div className="w-full flex items-center justify-between">
+                    <h1 className="text-lg text-green">Refundable Amount</h1>
+
+                    <h1 className="text-lg text-green">{order.amount}</h1>
+                  </div>
+
+                  <p className="text-xs md:text-sm text-muted-foreground mt-2">
+                    Your Return Request will be processed within 4-5 business
+                  </p>
+                </div>
+              </>
+            )}
             {order.refundableamount && order.refundableamount > 0 && (
               <div className="w-full flex flex-col gap-3">
                 <div className="w-full flex items-center justify-between">
@@ -247,7 +262,8 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
       )}
       {order.order_status == "Payment Failed" ||
       order.order_status === "Payment Processing" ||
-      order?.order_status === "Order Cancelled" ? (
+      order?.order_status === "Order Cancelled" ||
+      order?.order_status === "Return Requested" ? (
         ""
       ) : (
         <>
@@ -260,7 +276,8 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
             <OrderStatusProgressBar order_status={order.order_status} />
 
             {order.order_status !== "Order Shipped" &&
-              order.order_status !== "Order Delivered" && (
+              order.order_status !== "Order Delivered" &&
+              order.order_status !== "Return Requested" && (
                 <div className="w-full flex items-center justify-end md:mt-4">
                   <Link href={`/orders/${order?.id}/cancel`}>
                     <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">

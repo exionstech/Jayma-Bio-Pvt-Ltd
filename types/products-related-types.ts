@@ -39,18 +39,13 @@ export interface Orders {
   session_id: string;
   amount: number;
   isCancelled: boolean;
+  isReturned: boolean;
+  return_or_refund: string;
+  returnImages: { url: string }[];
   cancelled_items: Products[];
+  returned_items: Products[];
   refundableamount: number;
   sent_email: boolean;
   paymentId: string;
-}
-
-export interface OrderReturnTypes {
-  id: string;
-  images: string[];
-  reason: string;
-  orderId: string;
-  product: Products[];
-  status: string;
-  category: string;
+  return_reason: string;
 }

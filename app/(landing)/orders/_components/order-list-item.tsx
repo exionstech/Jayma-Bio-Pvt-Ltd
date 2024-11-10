@@ -46,7 +46,8 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
             order.order_status === "Order Shipped" && "text-blue-600",
             order.order_status === "Payment Successful" && "text-emerald-400",
             order.order_status === "Payment Failed" && "text-red-600",
-            order.order_status === "Payment Processing" && "text-yellow-600"
+            order.order_status === "Payment Processing" && "text-yellow-600",
+            order.order_status === "Return Requested" && "text-yellow-600",
           )}>
               ({order.order_status})
             </h1>
