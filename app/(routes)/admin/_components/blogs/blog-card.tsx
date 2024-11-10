@@ -49,14 +49,18 @@ const BlogCard: React.FC<BlogCardProps> = ({
   const [loading, setLoading] = useState(false);
 
   const AddEditor = useMemo(
-    () => dynamic(() => import("@/components/editor/add-editor"), { ssr: false }),
+    () =>
+      dynamic(() => import("@/components/editor/add-editor"), { ssr: false }),
     []
   );
   const UpdateEditor = useMemo(
-    () => dynamic(() => import("@/components/editor/update-editor"), { ssr: false }),
+    () =>
+      dynamic(() => import("@/components/editor/update-editor"), {
+        ssr: false,
+      }),
     []
   );
-  
+
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(BlogSchema),
     defaultValues: initialData || {
@@ -66,38 +70,17 @@ const BlogCard: React.FC<BlogCardProps> = ({
     },
   });
 
-  // function simplifyBlockFormat(blocks: any): any[] {
-  //   // Check if blocks is undefined or null
-  //   if (!blocks) {
-  //     return [];
-  //   }
-
-  //   // If blocks is not an array, wrap it in an array
-  //   const blocksArray = JSON.parse(blocks);
-
-  //   try {
-  //     return blocksArray.map((block: any) => {
-  //       // Get the content text if it exists
-  //       const content =
-  //         block.content && block.content[0]?.text ? block.content[0].text : "";
-
-  //       return {
-  //         type: block.type,
-  //         content: content,
-  //       };
-  //     });
-  //   } catch (error) {
-  //     console.error("Error in simplifyBlockFormat:", error);
-  //     return [];
-  //   }
-  // }
-
   useEffect(() => {
-    if (initialData) {
-      form.reset(initialData);
-      setBlocks(JSON.parse(initialData.content));
+    if (initialData?.content) {
+      try {
+        const parsedContent = JSON.parse(initialData.content);
+        setBlocks(parsedContent);
+      } catch (error) {
+        console.error("Error parsing initial content:", error);
+        setBlocks([]);
+      }
     }
-  }, [initialData, form]);
+  }, [initialData]);
 
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
@@ -140,7 +123,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex justify-end items-end">
-            <Button type="submit" className="" disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -200,7 +183,6 @@ const BlogCard: React.FC<BlogCardProps> = ({
                       initialContent={JSON.stringify(blocks)}
                     />
                   )}
-                  
                 </FormControl>
                 <FormMessage />
               </FormItem>
