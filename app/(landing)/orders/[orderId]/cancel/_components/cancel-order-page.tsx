@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -86,7 +86,7 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
         (item) => !values.item.includes(item.id)
       );
 
-      // Calculate price to refund directly without useMemo
+      // Calculate price to refund
       const priceTorefund = selectedItems.reduce((total: number, item) => {
         const price = item.discount
           ? item.price - (item.price * item.discount) / 100
@@ -98,38 +98,38 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       let finalCancelledPrice =
         tax !== 0 ? priceTorefund + (priceTorefund * tax) / 100 : priceTorefund;
 
-      let cancelled_items = [...order.cancelled_items, ...selectedItems];
-      console.log("cancelled_items", cancelled_items);
+      // Ensure cancelled_items exists and is an array before spreading
+      const existingCancelledItems = Array.isArray(order.cancelled_items)
+        ? order.cancelled_items
+        : [];
+
+      const cancelled_items = [...existingCancelledItems, ...selectedItems];
 
       // Prepare request data
-      let data;
-      if (values.item.length === order.orderItems.length) {
-        // All items selected case
-        data = {
-          cancelled_items: cancelled_items,
-          cancelwholeorder: true,
-          orderItems: remainingItems,
-          reason: values.reason,
-          cancelledprice: order.amount,
-        };
-      } else {
-        // Partial cancellation case
-        data = {
-          cancelled_items: cancelled_items, // Send selected items with full data
-          orderItems: remainingItems, // Send remaining items with full data
-          cancelwholeorder: false,
-          reason: values.reason,
-          cancelledprice: finalCancelledPrice,
-        };
-      }
-      
+      const data =
+        values.item.length === order.orderItems.length
+          ? {
+              cancelled_items,
+              cancelwholeorder: true,
+              orderItems: remainingItems,
+              reason: values.reason,
+              cancelledprice: order.amount,
+            }
+          : {
+              cancelled_items,
+              orderItems: remainingItems,
+              cancelwholeorder: false,
+              reason: values.reason,
+              cancelledprice: finalCancelledPrice,
+            };
+
       const response = await axios.post(
         `${URL}/orders/${order.id}/cancel`,
         data
       );
 
       if (response.status === 200) {
-        if (order.orderItems.length === selectedItems.length) {
+        if (values.item.length === order.orderItems.length) {
           toast.success("Order cancelled successfully");
         } else {
           toast.success(
