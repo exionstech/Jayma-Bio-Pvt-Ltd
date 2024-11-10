@@ -2,12 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Category,
-  OrderReturnTypes,
-  Orders,
-} from "@/types/products-related-types";
-import { ChevronLeft, Info, X } from "lucide-react";
+import { Category, Orders } from "@/types/products-related-types";
+import { ChevronLeft, Info, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,10 +35,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { getUrl } from "@/actions/get-url";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface OrderReturnPageProps {
   order: Orders;
-  cancelledOrder?: OrderReturnTypes;
   categories: Category[];
 }
 
@@ -57,6 +55,7 @@ const formSchema = z.object({
   reason: z.string().min(1, {
     message: "Please select the reason for cancelling the order",
   }),
+  return_or_refund: z.enum(["return", "refund"]),
 });
 
 const REASON_LIST = [
@@ -68,16 +67,14 @@ const REASON_LIST = [
   "Issue with payment or checkout process",
 ] as const;
 
-const ReturnOrderPage = ({
-  order,
-  cancelledOrder,
-  categories,
-}: OrderReturnPageProps) => {
+const ReturnOrderPage = ({ order, categories }: OrderReturnPageProps) => {
+  const [loading, setLoading] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<string[]>(
-    cancelledOrder?.images || []
+    order.returnImages?.map((image) => image.url) || []
   );
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,9 +118,42 @@ const ReturnOrderPage = ({
     toast.success("Image removed");
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // Handle form submission
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    try {
+      const URL = await getUrl().then((data) => {
+        if (data.data) {
+          return `${data.data.baseUrl}/${data.data.storeId}`;
+        }
+      });
+
+      const returned_items = order.orderItems.filter(
+        (item) => item.name === values.itemName
+      );
+
+      const data = {
+        return_reason: values.reason,
+        return_or_refund: values.return_or_refund,
+        returnImages: values.images,
+        returned_items: returned_items,
+        returnWholeOrder: true,
+      };
+
+      const response = await axios.post(
+        `${URL}/orders/${order.id}/return`,
+        data
+      );
+
+      if (response.status === 200) {
+        toast.success("Return order placed successfully");
+        router.refresh();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to place return order");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -226,6 +256,32 @@ const ReturnOrderPage = ({
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="return_or_refund"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Would you like to return or refund?
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-10 border-green/60">
+                                <SelectValue placeholder="Select option" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="return">Return</SelectItem>
+                              <SelectItem value="refund">Refund</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <FormField
                       control={form.control}
@@ -236,8 +292,8 @@ const ReturnOrderPage = ({
                             Select The Reason For Return The Order
                           </FormLabel>
                           <Select
-                            onValueChange={field.onChange}
                             defaultValue={field.value}
+                            onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger className="h-10 border-green/60">
@@ -337,8 +393,12 @@ const ReturnOrderPage = ({
                 <Button
                   type="submit"
                   className="h-12 w-[170px] text-white mt-5"
+                  disabled={loading}
                 >
-                  Proceed
+                  {loading ? "Processing" : "Proceed"}
+                  {loading && (
+                    <Loader2 className="size-5 shrink-0 text-white animate-spin" />
+                  )}
                 </Button>
               </form>
             </Form>
