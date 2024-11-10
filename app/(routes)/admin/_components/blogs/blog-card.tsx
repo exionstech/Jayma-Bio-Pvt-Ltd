@@ -46,7 +46,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   onSubmit,
 }) => {
   const [blocks, setBlocks] = useState<Block[]>(
-    simplifyBlockFormat(initialData?.content)
+    initialData ? initialData.content : []
   );
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -60,36 +60,36 @@ const BlogCard: React.FC<BlogCardProps> = ({
     },
   });
   
-  function simplifyBlockFormat(blocks: any): any[] {
-    // Check if blocks is undefined or null
-    if (!blocks) {
-      return [];
-    }
+  // function simplifyBlockFormat(blocks: any): any[] {
+  //   // Check if blocks is undefined or null
+  //   if (!blocks) {
+  //     return [];
+  //   }
 
-    // If blocks is not an array, wrap it in an array
-    const blocksArray = JSON.parse(blocks);
+  //   // If blocks is not an array, wrap it in an array
+  //   const blocksArray = JSON.parse(blocks);
 
-    try {
-      return blocksArray.map((block: any) => {
-        // Get the content text if it exists
-        const content =
-          block.content && block.content[0]?.text ? block.content[0].text : "";
+  //   try {
+  //     return blocksArray.map((block: any) => {
+  //       // Get the content text if it exists
+  //       const content =
+  //         block.content && block.content[0]?.text ? block.content[0].text : "";
 
-        return {
-          type: block.type,
-          content: content,
-        };
-      });
-    } catch (error) {
-      console.error("Error in simplifyBlockFormat:", error);
-      return [];
-    }
-  }
+  //       return {
+  //         type: block.type,
+  //         content: content,
+  //       };
+  //     });
+  //   } catch (error) {
+  //     console.error("Error in simplifyBlockFormat:", error);
+  //     return [];
+  //   }
+  // }
 
   useEffect(() => {
     if (initialData) {
       form.reset(initialData);
-      setBlocks(simplifyBlockFormat(initialData.content));
+      setBlocks(initialData.content);
     }
   }, [initialData, form]);
 
