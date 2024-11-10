@@ -85,9 +85,16 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       const remainingItems = order.orderItems.filter(
         (item) => !values.item.includes(item.id)
       );
+      
+      // Ensure cancelled_items exists and is an array before spreading
+      const existingCancelledItems = Array.isArray(order.cancelled_items)
+        ? order.cancelled_items
+        : [];
+      
+      const cancelled_items = [...existingCancelledItems, ...selectedItems];
 
       // Calculate price to refund
-      const priceTorefund = selectedItems.reduce((total: number, item) => {
+      const priceTorefund = cancelled_items.reduce((total: number, item) => {
         const price = item.discount
           ? item.price - (item.price * item.discount) / 100
           : item.price;
@@ -97,13 +104,6 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       // Calculate the final cancelled price, including tax if applicable
       let finalCancelledPrice =
         tax !== 0 ? priceTorefund + (priceTorefund * tax) / 100 : priceTorefund;
-
-      // Ensure cancelled_items exists and is an array before spreading
-      const existingCancelledItems = Array.isArray(order.cancelled_items)
-        ? order.cancelled_items
-        : [];
-
-      const cancelled_items = [...existingCancelledItems, ...selectedItems];
 
       // Prepare request data
       const data =
