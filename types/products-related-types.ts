@@ -7,6 +7,7 @@ export interface Products {
   images: { url: string }[];
   isFeatured: boolean;
   isArchived: boolean;
+  cancel_reason?: string;
   category: string;
   size: string;
   qty: number;
