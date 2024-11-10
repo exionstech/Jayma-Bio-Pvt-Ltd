@@ -7,7 +7,7 @@ type BlogFormValues = {
   thumbnail: string;
   title: string;
   likes: number;
-  content: Block[];
+  content: string;
 };
 
 export default async function addBlogs(data: BlogFormValues) {
@@ -17,7 +17,7 @@ export default async function addBlogs(data: BlogFormValues) {
         thumbnail: data.thumbnail,
         title: data.title,
         likes: data.likes,
-        content: JSON.stringify(data.content),
+        content: data.content,
       },
     });
 

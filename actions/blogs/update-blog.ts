@@ -8,7 +8,7 @@ type BlogFormValues = {
   id: string;
   thumbnail?: string;
   title?: string;
-  content?: Block[];
+  content?: string;
   toggle?: boolean;
   archived?: boolean;
 };
@@ -22,7 +22,7 @@ export async function updateBlog(data: BlogFormValues) {
       data: {
         thumbnail: data.thumbnail,
         title: data.title,
-        content: JSON.stringify(data.content),
+        content: data.content,
         toggle: data.toggle,
         archived: data.archived,
       },
