@@ -21,20 +21,17 @@ const Page = () => {
   const handleWebhook = async () => {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        return `${data.data.storeId}`;
+        return `${data.data.baseUrl}/${data.data.storeId}`;
       }
     });
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${URL}/status`,
-      {
-        orderId: orderId,
-      }
-    );
+    const response = await axios.post(`${URL}/status`, {
+      orderId: orderId,
+    });
     if (response.data === null) {
       router.push("/checkout-failed");
     }
-    
+
     if (response.data.status === 200) {
       console.log(response.data.data);
 

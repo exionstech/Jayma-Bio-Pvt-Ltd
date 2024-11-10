@@ -88,8 +88,15 @@ const Footer = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen={true}
-            className="w-full h-full rounded-lg border border-green/80 p-1"
+            className="w-full h-[80%] rounded-lg border border-green/80 p-1"
           ></iframe>
+          <h1 className="text-sm md:text-medium font-semibold leading-6">
+            Address :{" "}
+            <span className="font-medium">
+              T1-109, First floor, FTBI Building, NIT Rourkela, Sector-1,
+              Rourkela, Odisha, PIN: 769008
+            </span>
+          </h1>
         </div>
       </div>
       <div className="w-full bg-lightGreen flex items-center justify-center">

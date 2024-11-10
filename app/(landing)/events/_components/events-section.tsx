@@ -34,9 +34,19 @@ const EventsSection = () => {
         if (data.success) {
           if (data.events) {
             console.log(data.events);
-            setFeaturedEvents(data.events.filter((event) => event.eventType === EventType.FEATURED));
-            setPastEvents(data.events.filter((event) => event.eventType === EventType.PAST));
-            setUpcomingEvents(data.events.filter((event) => event.eventType === EventType.UPCOMING));
+            setFeaturedEvents(
+              data.events.filter(
+                (event) => event.eventType === EventType.FEATURED
+              )
+            );
+            setPastEvents(
+              data.events.filter((event) => event.eventType === EventType.PAST)
+            );
+            setUpcomingEvents(
+              data.events.filter(
+                (event) => event.eventType === EventType.UPCOMING
+              )
+            );
           }
         }
       });
@@ -73,13 +83,13 @@ const EventsSection = () => {
                 <img
                   src={banner.image}
                   alt={`${banner.title} banner`}
-                  className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                  className="w-full h-full object-cover object-center transition-transform "
                   loading={index === 0 ? "eager" : "lazy"}
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white text-center px-4 transform transition-all duration-300 hover:scale-105">
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  {/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white text-center px-4 transform transition-all duration-300 hover:scale-105">
                     {banner.title}
-                  </h1>
+                  </h1> */}
                 </div>
               </div>
             </SwiperSlide>

@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,6 +30,9 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { getUrl } from "@/actions/get-url";
 import { Checkbox } from "@/components/ui/checkbox";
+import { usePaymentManagement } from "@/hooks/use-payment-management";
+
+export const revalidate = 0;
 
 interface CencelOrderPageProps {
   order: Orders;
@@ -53,6 +56,7 @@ const REASON_LIST = [
 
 const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
   const [loading, setLoading] = useState(false);
+  const { tax } = usePaymentManagement();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,45 +70,72 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      const storeId = await getUrl().then((data) => {
+      const URL = await getUrl().then((data) => {
         if (data.data) {
-          return `${data.data.storeId}`;
+          return `${data.data.baseUrl}/${data.data.storeId}`;
         }
       });
 
+      // Find selected items with full data
+      const selectedItems = order.orderItems.filter((item) =>
+        values.item.includes(item.id)
+      );
+
+      // Find non-selected items with full data
+      const remainingItems = order.orderItems.filter(
+        (item) => !values.item.includes(item.id)
+      );
+
+      // Calculate price to refund directly without useMemo
+      const priceTorefund = selectedItems.reduce((total: number, item) => {
+        const price = item.discount
+          ? item.price - (item.price * item.discount) / 100
+          : item.price;
+        return total + price * Number(item.qty);
+      }, 0);
+
+      // Calculate the final cancelled price, including tax if applicable
+      let finalCancelledPrice =
+        tax !== 0 ? priceTorefund + (priceTorefund * tax) / 100 : priceTorefund;
+
+      // Prepare request data
       let data;
       if (values.item.length === order.orderItems.length) {
+        // All items selected case
         data = {
-          cancelled_items: order.orderItems,
+          cancelled_items: selectedItems,
           cancelwholeorder: true,
+          orderItems: remainingItems,
           reason: values.reason,
+          cancelledprice: order.amount,
         };
       } else {
+        // Partial cancellation case
         data = {
-          cancelledprice: order.orderItems.reduce((total, item) => {
-            if (values.item.includes(item.id)) {
-              return total + item.price;
-            }
-            return total;
-          }, 0),
-          reason: values.reason,
+          cancelled_items: selectedItems, // Send selected items with full data
+          orderItems: remainingItems, // Send remaining items with full data
           cancelwholeorder: false,
-          cancelled_items: order.orderItems.filter((item) =>
-            values.item.includes(item.id)
-          ),
-          orderItems: order.orderItems.filter((item) =>
-            values.item.includes(item.id)
-          ),
+          reason: values.reason,
+          cancelledprice: finalCancelledPrice,
         };
       }
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${storeId}/orders/${order.id}/cancel`,
+        `${URL}/orders/${order.id}/cancel`,
         data
       );
 
       if (response.status === 200) {
-        toast.success("Order cancelled successfully");
+        if (order.orderItems.length === selectedItems.length) {
+          toast.success("Order cancelled successfully");
+        } else {
+          toast.success(
+            `You cancelled ${selectedItems
+              .map((item) => item.name)
+              .join(", ")} successfully`
+          );
+        }
+        router.refresh();
         router.push(`/cancel-successful`);
       }
     } catch (err) {
@@ -114,6 +145,11 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       setLoading(false);
     }
   };
+
+  if (order.order_status === "Order Cancelled" || !order) {
+    router.replace("/orders");
+    toast.error("You cancelled this order already");
+  }
 
   return (
     <section className="w-full h-full flex flex-col max-w-screen-2xl mx-auto gap-3 md:gap-5 px-5 md:px-10 lg:px-14 mt-5 md:mt-8 py-4 md:py-6 md:min-h-screen">
@@ -149,12 +185,15 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
                   control={form.control}
                   name="item"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col gap-3">
                       <FormLabel>
                         Select The Product You Want To Cancel
                       </FormLabel>
                       {order.orderItems.map((item) => (
-                        <div key={item.id} className="flex gap-2 items-center">
+                        <div
+                          key={item.id}
+                          className="flex gap-3 items-center my-3"
+                        >
                           <FormControl>
                             <Checkbox
                               checked={field.value?.includes(item.id)}
@@ -169,7 +208,14 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
                               }}
                             />
                           </FormControl>
-                          {item.name}
+                          <div className="w-14 aspect-square object-contain rounded-lg">
+                            <img
+                              src={item.images[0].url}
+                              alt={item.name}
+                              className="w-full object-cover rounded-lg"
+                            />
+                          </div>
+                          <p className="w-40 md:w-56">{item.name}</p>
                         </div>
                       ))}
                       <FormMessage />
@@ -212,7 +258,10 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
                   className="h-8 md:h-12 w-[150px] md:w-[170px] text-white mt-5"
                   disabled={!form.formState.isValid || loading}
                 >
-                  {loading ? "Cancelling..." : "Cancel Order"}
+                  {loading ? "Cancelling" : "Cancel Order"}
+                  {loading && (
+                    <Loader2 className="size-5 shrink-0 text-white ml-2 animate-spin" />
+                  )}
                 </Button>
               </form>
             </Form>
