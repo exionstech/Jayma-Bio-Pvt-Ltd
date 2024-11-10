@@ -191,7 +191,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   ) : (
                     <UpdateEditor
                       setBlocks={setBlocks}
-                      initialContent={blocks}
+                      initialContent={JSON.stringify(blocks)}
                     />
                   )}
                 </FormControl>

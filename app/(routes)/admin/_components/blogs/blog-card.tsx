@@ -12,13 +12,12 @@ import { UploadDropzone } from "@/lib/uplaodthing";
 import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ClientUploadedFileData } from "uploadthing/types";
 import * as z from "zod";
-import UpdateEditor from "@/components/editor/update-editor";
-import AddEditor from "@/components/editor/add-editor";
+import dynamic from "next/dynamic";
 
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -31,7 +30,7 @@ type BlogFormValues = {
   thumbnail: string;
   title: string;
   likes: number;
-  content: Block[];
+  content: string;
 };
 
 interface BlogCardProps {
@@ -45,12 +44,23 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
-  const [blocks, setBlocks] = useState<Block[]>(
-    initialData ? initialData.content : []
-  );
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  
+
+  const AddEditor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor/add-editor"), { ssr: false }),
+    []
+  );
+  const UpdateEditor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor/update-editor"), {
+        ssr: false,
+      }),
+    []
+  );
+
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(BlogSchema),
     defaultValues: initialData || {
@@ -59,39 +69,18 @@ const BlogCard: React.FC<BlogCardProps> = ({
       likes: 0,
     },
   });
-  
-  // function simplifyBlockFormat(blocks: any): any[] {
-  //   // Check if blocks is undefined or null
-  //   if (!blocks) {
-  //     return [];
-  //   }
-
-  //   // If blocks is not an array, wrap it in an array
-  //   const blocksArray = JSON.parse(blocks);
-
-  //   try {
-  //     return blocksArray.map((block: any) => {
-  //       // Get the content text if it exists
-  //       const content =
-  //         block.content && block.content[0]?.text ? block.content[0].text : "";
-
-  //       return {
-  //         type: block.type,
-  //         content: content,
-  //       };
-  //     });
-  //   } catch (error) {
-  //     console.error("Error in simplifyBlockFormat:", error);
-  //     return [];
-  //   }
-  // }
 
   useEffect(() => {
-    if (initialData) {
-      form.reset(initialData);
-      setBlocks(initialData.content);
+    if (initialData?.content) {
+      try {
+        const parsedContent = JSON.parse(initialData.content);
+        setBlocks(parsedContent);
+      } catch (error) {
+        console.error("Error parsing initial content:", error);
+        setBlocks([]);
+      }
     }
-  }, [initialData, form]);
+  }, [initialData]);
 
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
@@ -110,7 +99,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       const updatedData = {
         ...data,
         id: initialData?.id,
-        content: blocks,
+        content: JSON.stringify(blocks),
       };
 
       if (onSubmit) {
@@ -134,7 +123,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex justify-end items-end">
-            <Button type="submit" className="" disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -191,7 +180,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   ) : (
                     <UpdateEditor
                       setBlocks={setBlocks}
-                      initialContent={blocks}
+                      initialContent={JSON.stringify(blocks)}
                     />
                   )}
                 </FormControl>
