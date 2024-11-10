@@ -97,13 +97,16 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       // Calculate the final cancelled price, including tax if applicable
       let finalCancelledPrice =
         tax !== 0 ? priceTorefund + (priceTorefund * tax) / 100 : priceTorefund;
-      
+
+      let cancelled_items = [...order.cancelled_items, ...selectedItems];
+      console.log("cancelled_items", cancelled_items);
+
       // Prepare request data
       let data;
       if (values.item.length === order.orderItems.length) {
         // All items selected case
         data = {
-          cancelled_items: selectedItems,
+          cancelled_items: cancelled_items,
           cancelwholeorder: true,
           orderItems: remainingItems,
           reason: values.reason,
@@ -112,14 +115,14 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       } else {
         // Partial cancellation case
         data = {
-          cancelled_items: selectedItems, // Send selected items with full data
+          cancelled_items: cancelled_items, // Send selected items with full data
           orderItems: remainingItems, // Send remaining items with full data
           cancelwholeorder: false,
           reason: values.reason,
           cancelledprice: finalCancelledPrice,
         };
       }
-
+      
       const response = await axios.post(
         `${URL}/orders/${order.id}/cancel`,
         data
