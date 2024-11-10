@@ -85,12 +85,12 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
       const remainingItems = order.orderItems.filter(
         (item) => !values.item.includes(item.id)
       );
-      
+
       // Ensure cancelled_items exists and is an array before spreading
       const existingCancelledItems = Array.isArray(order.cancelled_items)
         ? order.cancelled_items
         : [];
-      
+
       const cancelled_items = [...existingCancelledItems, ...selectedItems];
 
       // Calculate price to refund
@@ -112,14 +112,12 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
               cancelled_items,
               cancelwholeorder: true,
               orderItems: remainingItems,
-              reason: values.reason,
               cancelledprice: order.amount,
             }
           : {
               cancelled_items,
               orderItems: remainingItems,
               cancelwholeorder: false,
-              reason: values.reason,
               cancelledprice: finalCancelledPrice,
             };
 
@@ -235,7 +233,18 @@ const CencelOrderPage = ({ order }: CencelOrderPageProps) => {
                         Select The Reason For Cancelling The Order
                       </FormLabel>
                       <Select
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          const updatedOrderItems = order.orderItems.map(
+                            (item) => {
+                              if (form.getValues("item").includes(item.id)) {
+                                return { ...item, cancel_reason: value };
+                              }
+                              return item;
+                            }
+                          );
+                          order.orderItems = updatedOrderItems;
+                        }}
                         defaultValue={field.value}
                       >
                         <FormControl>
