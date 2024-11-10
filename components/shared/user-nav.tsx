@@ -19,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "../auth/logout-button";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 
 interface UserNavProps {
   user: any;
@@ -80,7 +79,7 @@ export function UserNav({ user }: UserNavProps) {
             <>
               <DropdownMenuItem className="hover:cursor-pointer" asChild>
                 <Link
-                  href="https://ecommerce.jayma-bio.exions.tech"
+                  href="https://ecommerce.jaymabioinnovations.com"
                   target="_blank"
                   className="flex items-center"
                 >
