@@ -34,6 +34,6 @@ export function useProducts() {
 
     fetchProducts();
   }, []);
-
+  
   return { products, loading, error };
 }

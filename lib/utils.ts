@@ -28,3 +28,27 @@ export function tagLabelByValue(value: string): string {
   const tag = options.find((option) => option.value === value);
   return tag ? tag.label : "";
 }
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" });
+
+  // Add ordinal suffix
+  const getOrdinalSuffix = (day: number): string => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  return `${day}${getOrdinalSuffix(day)} ${month}`;
+}

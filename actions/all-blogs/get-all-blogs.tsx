@@ -7,7 +7,7 @@ export async function getAllBlogs() {
     const admin_blogs = await prismadb.blog.findMany();
     const user_blogs = await prismadb.userBlog.findMany();
     const blogs = [...admin_blogs, ...user_blogs];
-
+    
     return { data: blogs, success: true };
   } catch (error) {
     console.error(error);
