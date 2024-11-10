@@ -13,6 +13,7 @@ interface OrderCancelPageProps {
     orderId: string;
   };
 }
+export const revalidate = 0;
 
 const OrderCancelPage = async ({ params }: OrderCancelPageProps) => {
   const order = await getOrder(params.orderId);

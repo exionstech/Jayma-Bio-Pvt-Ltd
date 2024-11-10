@@ -44,7 +44,7 @@ const Page = () => {
   const handleWebhook = async () => {
     const URL = await getUrl().then((data) => {
       if (data.data) {
-        return `${data.data.storeId}`;
+        return `${data.data.baseUrl}/${data.data.storeId}`;
       }
     });
 
@@ -53,14 +53,11 @@ const Page = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_WEBHOOK_STORE_URL}/${URL}/webhook`,
-        {
-          orderId: orderData.orderId,
-          paymentId: orderData.paymentId,
-          status: orderData.status,
-        }
-      );
+      const response = await axios.post(`${URL}/webhook`, {
+        orderId: orderData.orderId,
+        paymentId: orderData.paymentId,
+        status: orderData.status,
+      });
 
       if (response.data.status === 200) {
         // sendSuccessMail();

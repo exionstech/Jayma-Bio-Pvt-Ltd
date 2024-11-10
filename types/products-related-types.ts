@@ -37,7 +37,9 @@ export interface Orders {
   order_status: string;
   session_id: string;
   amount: number;
+  isCancelled: boolean;
   cancelled_items: Products[];
+  refundableamount: number;
   sent_email: boolean;
   paymentId: string;
 }

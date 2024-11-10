@@ -398,9 +398,6 @@ const ProductsList = ({ products }: ProductsListProps) => {
     }
   };
 
-  if (redirecting) {
-    return <Loader />;
-  }
   return (
     <>
       <section className="w-full py-4 md:py-6 flex flex-col gap-7 md:gap-12 mb-8 md:mb-10">
