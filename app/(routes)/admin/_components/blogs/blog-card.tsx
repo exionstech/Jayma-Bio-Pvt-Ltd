@@ -12,13 +12,12 @@ import { UploadDropzone } from "@/lib/uplaodthing";
 import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ClientUploadedFileData } from "uploadthing/types";
 import * as z from "zod";
-import UpdateEditor from "@/components/editor/update-editor";
-import AddEditor from "@/components/editor/add-editor";
+import dynamic from "next/dynamic";
 
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -31,7 +30,7 @@ type BlogFormValues = {
   thumbnail: string;
   title: string;
   likes: number;
-  content: Block[];
+  content: string;
 };
 
 interface BlogCardProps {
@@ -45,11 +44,18 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
-  const [blocks, setBlocks] = useState<Block[]>(
-    initialData ? initialData.content : []
-  );
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const AddEditor = useMemo(
+    () => dynamic(() => import("@/components/editor/add-editor"), { ssr: false }),
+    []
+  );
+  const UpdateEditor = useMemo(
+    () => dynamic(() => import("@/components/editor/update-editor"), { ssr: false }),
+    []
+  );
   
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(BlogSchema),
@@ -59,7 +65,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       likes: 0,
     },
   });
-  
+
   // function simplifyBlockFormat(blocks: any): any[] {
   //   // Check if blocks is undefined or null
   //   if (!blocks) {
@@ -89,7 +95,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   useEffect(() => {
     if (initialData) {
       form.reset(initialData);
-      setBlocks(initialData.content);
+      setBlocks(JSON.parse(initialData.content));
     }
   }, [initialData, form]);
 
@@ -110,7 +116,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       const updatedData = {
         ...data,
         id: initialData?.id,
-        content: blocks,
+        content: JSON.stringify(blocks),
       };
 
       if (onSubmit) {
@@ -191,9 +197,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   ) : (
                     <UpdateEditor
                       setBlocks={setBlocks}
-                      initialContent={blocks}
+                      initialContent={JSON.stringify(blocks)}
                     />
                   )}
+                  
                 </FormControl>
                 <FormMessage />
               </FormItem>
