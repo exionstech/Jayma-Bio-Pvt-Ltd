@@ -39,14 +39,16 @@ const BlogCard = ({
         await navigator.share({
           title: "Jayma Bio Innovations",
           text: "Check out this blog!",
-          url: "https://jaymabioinnovations.com",
+          url: `https://jaymabioinnovations.com/${link}`,
         });
         toast("Link shared successfully");
       } catch (error) {
         toast("Error sharing the link");
       }
     } else {
-      window.navigator.clipboard.writeText("https://jaymabioinnovations.com");
+      window.navigator.clipboard.writeText(
+        `https://jaymabioinnovations.com/${link}`
+      );
       toast("Link copied to clipboard");
     }
   };
@@ -73,7 +75,7 @@ const BlogCard = ({
               <p className="font-extralight text-sm">@{userName}</p>
               <p className="font-extralight text-sm">{formatDate(date, 1)}</p>
             </div>
-            <button onClick={handleShare}>
+            <button onClick={handleShare} className="border-none">
               <Share2 size={24} />
             </button>
           </div>
@@ -85,17 +87,11 @@ const BlogCard = ({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-4">
             <div className="flex flex-row items-center">
-              <button onClick={() => setLike(!like)}>
-                <img
-                  src={
-                    !like
-                      ? "/landing/blogs/heart.png"
-                      : "/landing/blogs/filled-heart.png"
-                  }
-                  alt="likes"
-                  className="w-6 h-6 mr-2"
-                />
-              </button>
+              <img
+                src={"/landing/blogs/filled-heart.png"}
+                alt="likes"
+                className="w-6 h-6 mr-2"
+              />
               <p className="text-xl">{likes}</p>
             </div>
             <div className="flex flex-row items-center">
