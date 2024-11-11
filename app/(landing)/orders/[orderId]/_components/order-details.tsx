@@ -22,6 +22,7 @@ import { PiContactlessPaymentBold } from "react-icons/pi";
 import { toast } from "sonner";
 import { getUrl } from "@/actions/get-url";
 
+
 interface OrderDetailsPageProps {
   order: Orders;
 }
@@ -126,9 +127,10 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               Order Summary
             </h1>
             {order.refundableamount === order.amount ||
-            priceAfterDiscount === 0 ? (
+              priceAfterDiscount === 0 ? (
               ""
             ) : (
+
               <>
                 <Separator className="h-[1px] w-full bg-separator" />
                 <div className="w-full flex flex-col gap-4">
@@ -155,6 +157,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
                   </div>
                 </div>
               </>
+
             )}
             <Separator className="h-[1px] w-full bg-separator" />
             <div className="w-full flex items-center justify-between">
@@ -208,20 +211,22 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               className={cn(
                 "flex items-center gap-2 mt-2 md:mt-3 cursor-default pointer-events-none select-none",
                 order?.order_status === "Payment Processing" &&
-                  "pointer-events-auto select-all cursor-pointer",
+                "pointer-events-auto select-all cursor-pointer",
                 order?.order_status === "Payment Failed" ||
                   order?.order_status === "Order Cancelled"
                   ? "bg-red-600"
                   : "bg-emerald-600",
                 order?.order_status === "Payment Processing" &&
-                  "bg-yellow-600 hover:bg-yellow-700"
+                "bg-yellow-600 hover:bg-yellow-700",
+                order?.order_status === "Return Requested" &&
+                "bg-yellow-600 hover:bg-yellow-700"
               )}
             >
               {order?.order_status === "Payment Processing"
                 ? "Continue Payment"
                 : order?.order_status}
               {order?.order_status === "Payment Failed" ||
-              order?.order_status === "Order Cancelled" ? (
+                order?.order_status === "Order Cancelled" ? (
                 <>
                   <XCircle className="size-4 md:size-5 shrink-0 text-white" />
                 </>
@@ -261,9 +266,8 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
         </>
       )}
       {order.order_status == "Payment Failed" ||
-      order.order_status === "Payment Processing" ||
-      order?.order_status === "Order Cancelled" ||
-      order?.order_status === "Return Requested" ? (
+        order.order_status === "Payment Processing" ||
+        order?.order_status === "Order Cancelled" ? (
         ""
       ) : (
         <>
@@ -276,8 +280,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
             <OrderStatusProgressBar order_status={order.order_status} />
 
             {order.order_status !== "Order Shipped" &&
-              order.order_status !== "Order Delivered" &&
-              order.order_status !== "Return Requested" && (
+              order.order_status !== "Order Delivered" && (
                 <div className="w-full flex items-center justify-end md:mt-4">
                   <Link href={`/orders/${order?.id}/cancel`}>
                     <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
@@ -288,7 +291,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               )}
             {order.order_status === "Order Delivered" && (
               <div className="w-full flex items-center justify-end md:mt-4">
-                <Link href={`/orders/${order?.id}/return`}>
+                <Link href="/">
                   <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
                     Return Order
                   </Button>
