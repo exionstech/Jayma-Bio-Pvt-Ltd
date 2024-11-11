@@ -7,20 +7,18 @@ type BlogFormValues = {
   thumbnail: string;
   title: string;
   likes: number;
-  content: Block[];
+  content: string;
+  name: string;
+  userName: string;
+  userImage: string;
 };
 
 export default async function addBlogs(data: BlogFormValues) {
   try {
     await prismadb.userBlog.create({
-      data: {
-        thumbnail: data.thumbnail,
-        title: data.title,
-        likes: data.likes,
-        content: JSON.stringify(data.content),
-      },
+      data: data,
     });
-
+    
     return { success: true };
   } catch (error) {
     console.error(error);
