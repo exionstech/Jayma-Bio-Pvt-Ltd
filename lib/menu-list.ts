@@ -57,13 +57,13 @@ export function getMenuList(pathname: string): Group[] {
     {
       groupLabel: "Site Management",
       menus: [
-        {
-          href: "/admin",
-          label: "Dashboard",
-          active: pathname.includes("/admin") && pathname === "/admin",
-          icon: LayoutGrid,
-          submenus: [],
-        },
+        // {
+        //   href: "/admin",
+        //   label: "Dashboard",
+        //   active: pathname.includes("/admin") && pathname === "/admin",
+        //   icon: LayoutGrid,
+        //   submenus: [],
+        // },
         {
           href: "/admin/events",
           label: "Events",
