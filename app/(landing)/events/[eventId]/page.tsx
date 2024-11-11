@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 
 const EventsDetailsPage = async ({ params }: EventPageProps) => {
   const event = await getEvent(params.eventId);
-
   return (
     <MaxWrapper>
       <EventsDetails event={event.event} />
