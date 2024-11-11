@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { ClientUploadedFileData } from "uploadthing/types";
 import * as z from "zod";
 import dynamic from "next/dynamic";
+import { useUserData } from "@/hooks/user-data";
 
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -70,6 +71,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
     },
   });
 
+  const user = useUserData();
+
   useEffect(() => {
     if (initialData?.content) {
       try {
@@ -96,11 +99,21 @@ const BlogCard: React.FC<BlogCardProps> = ({
     try {
       setLoading(true);
 
-      const updatedData = {
-        ...data,
-        id: initialData?.id,
-        content: JSON.stringify(blocks),
-      };
+      const updatedData =
+        mode === "update"
+          ? {
+              ...data,
+              id: initialData?.id,
+              content: JSON.stringify(blocks),
+            }
+          : {
+              ...data,
+              id: initialData?.id,
+              name: user?.user?.name,
+              userName: user?.user?.username,
+              userImage: user?.user?.image,
+              content: JSON.stringify(blocks),
+            };
 
       if (onSubmit) {
         await onSubmit(updatedData);

@@ -74,6 +74,7 @@ const ViewEditor = ({ initialContent, className = "" }: ViewEditorProps) => {
         theme="light"
         editable={false}
         sideMenu={false}
+        className=""
       />
     </div>
   );
