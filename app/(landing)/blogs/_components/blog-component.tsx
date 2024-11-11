@@ -33,7 +33,7 @@ const BlogComponent = () => {
               thumbnail={thumbnail}
               title={title}
               likes={likes}
-              content="Jayma Bio Innovations is committed to crafting high-quality, eco-friendly products that align with modern sustainability needs. By using natural resources and focusing on local production, they deliver innovative solutions across healthcare, food, and cosmetic industries. Their dedication to quality and green practices empowers businesses to adopt sustainable choices, helping build a better, more eco-conscious future."
+              content={JSON.parse(content)[0].content[0].text}
               link={`/blogs/${id}`}
               date={createdAt.toISOString()}
               name={name}
