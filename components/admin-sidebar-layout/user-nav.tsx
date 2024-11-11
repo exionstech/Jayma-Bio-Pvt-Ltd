@@ -75,7 +75,7 @@ export async function UserNav() {
           )}
           {user?.role === "ADMIN" && (
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
-              <Link href="/admin" className="flex items-center">
+              <Link href="/admin/events" className="flex items-center">
                 <Cog className="w-4 h-4 mr-3 text-muted-foreground" />
                 Admin Dashboard
               </Link>

@@ -131,13 +131,20 @@ const ReturnOrderPage = ({ order, categories }: OrderReturnPageProps) => {
         (item) => item.name === values.itemName
       );
 
-      const data = {
-        return_reason: values.reason,
-        return_or_refund: values.return_or_refund,
-        returnImages: values.images,
-        returned_items: returned_items,
-        returnWholeOrder: true,
-      };
+      const data =
+        values.itemName.length === order.orderItems.map((item) => item.name).length
+          ? {
+            return_reason: values.reason,
+            return_or_refund: values.return_or_refund,
+            returnImages: values.images,
+            returned_items: returned_items,
+            returnWholeOrder: true,
+          } : {
+            return_reason: values.reason,
+            return_or_refund: values.return_or_refund,
+            returnImages: values.images,
+            returned_items: returned_items,
+          };
 
       const response = await axios.post(
         `${URL}/orders/${order.id}/return`,

@@ -122,7 +122,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
               <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
                 Tags
               </h1>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center flex-wrap gap-2">
                 {event.tags.map((tag, index) => (
                   <Badge
                     variant="outline"

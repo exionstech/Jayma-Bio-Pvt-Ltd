@@ -1,7 +1,6 @@
 "use server";
 
 import prismadb from "@/lib/prismadb";
-import { PaymentManagement } from "@prisma/client";
 
 interface ManagementProps {
   shipping: string;

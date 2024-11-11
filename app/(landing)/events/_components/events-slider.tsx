@@ -64,11 +64,11 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
           modules={[Autoplay]}
           className="!pb-4 md:!pb-6"
         >
-          {data.map((event: any, index: number) => (
+          {data.filter((event) => !event.archived).map((event: any, index: number) => (
             <SwiperSlide key={index}>
-              <Card 
-              onClick={() => handleEventClick(event.id)}
-              className="rounded-lg p-0 overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+              <Card
+                onClick={() => handleEventClick(event.id)}
+                className="rounded-lg p-0 overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                 <CardHeader className="p-0">
                   <div className="relative aspect-video">
                     <Image
@@ -94,7 +94,7 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
                       {event.title}
                     </h3>
                     <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
-                      {JSON.parse(event.description)[0].content[0].text}
+                      {JSON.parse(event.description)[0]?.content[0].text}
                     </p>
                   </div>
                 </CardDescription>
