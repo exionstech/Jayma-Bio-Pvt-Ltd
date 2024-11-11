@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { any, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,6 +47,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { TimePicker12Demo } from "@/components/date-time-picker.tsx/time-picker-demo";
 import { options } from "./event-tags";
+import AddEditor from "@/components/editor/add-editor";
+import UpdateEditor from "@/components/editor/update-editor";
+import { Block } from "@blocknote/core";
+import { Label } from "@/components/ui/label";
 
 const MAX_CHARS = 1200;
 
@@ -70,7 +74,6 @@ type Event = {
 // Schema definition (assumed to be imported from @/schemas)
 const EventsSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
   venue: z.string().min(1, "Venue is required"),
   date: z.date(),
   link: z.string().url("Must be a valid URL"),
@@ -96,6 +99,7 @@ const EventsForm = ({
   const [uploadedImages, setUploadedImages] = useState<string[]>(
     initialData?.image || []
   );
+  const [description, setDescription] = useState<Block[]>([]);
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -105,7 +109,6 @@ const EventsForm = ({
     resolver: zodResolver(EventsSchema),
     defaultValues: {
       title: initialData?.title || "",
-      description: initialData?.description || "",
       venue: initialData?.venue || "",
       link: initialData?.link || "",
       image: initialData?.image || [],
@@ -116,10 +119,6 @@ const EventsForm = ({
       tags: initialData?.tags || [],
     },
   });
-
-  useEffect(() => {
-    setCharCount(form.getValues("description").length);
-  }, []);
 
   const onSubmit = async (data: z.infer<typeof EventsSchema>) => {
     setLoading(true);
@@ -140,6 +139,7 @@ const EventsForm = ({
         body: JSON.stringify({
           ...data,
           id: initialData?.id,
+          description: JSON.stringify(description),
         }),
       });
 
@@ -152,7 +152,7 @@ const EventsForm = ({
         //send mail to subscribed users
         const res = await sendEventMail(
           data.title,
-          data.description,
+          JSON.stringify(description),
           data.date.toString(),
           initialData?.id || result.id
         );
@@ -178,8 +178,6 @@ const EventsForm = ({
       setLoading(false);
     }
   };
-
-
 
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
@@ -281,43 +279,6 @@ const EventsForm = ({
                     )}
                   />
 
-                  {/* Description Field */}
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Textarea
-                              {...field}
-                              placeholder="Enter event description"
-                              className="min-h-[120px] resize-none"
-                              onChange={(e) => {
-                                const input = e.target.value;
-                                if (input.length <= MAX_CHARS) {
-                                  field.onChange(input);
-                                  setCharCount(input.length);
-                                }
-                              }}
-                            />
-                            <span
-                              className={`absolute bottom-2 right-2 text-xs ${
-                                charCount === MAX_CHARS
-                                  ? "text-red-500"
-                                  : "text-gray-500"
-                              }`}
-                            >
-                              {charCount}/{MAX_CHARS}
-                            </span>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
                   {/* Event Type Field */}
                   <FormField
                     control={form.control}
@@ -360,6 +321,28 @@ const EventsForm = ({
                           onValueChange={field.onChange}
                         />
                         <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Archive Checkbox */}
+                  <FormField
+                    control={form.control}
+                    name="archived"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>Archive Event</FormLabel>
+                          <FormDescription>
+                            Move this event to the archives
+                          </FormDescription>
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -445,55 +428,41 @@ const EventsForm = ({
                     )}
                   />
 
-                  {/* Checkboxes Container */}
-                  <div className="space-y-4">
-                    {/* Notification Checkbox */}
-                    <FormField
-                      control={form.control}
-                      name="notify"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>Send Notifications</FormLabel>
-                            <FormDescription>
-                              Notify subscribed users about this event
-                            </FormDescription>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Archive Checkbox */}
-                    <FormField
-                      control={form.control}
-                      name="archived"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>Archive Event</FormLabel>
-                            <FormDescription>
-                              Move this event to the archives
-                            </FormDescription>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  {/* Notification Checkbox */}
+                  <FormField
+                    control={form.control}
+                    name="notify"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 mt-1 leading-none">
+                          <FormLabel>Send Notifications</FormLabel>
+                          <FormDescription>
+                            Notify subscribed users about this event
+                          </FormDescription>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
             </div>
+
+            {/* Description Field */}
+            <Label>Description</Label>
+            {initialData ? (
+              <UpdateEditor
+                setBlocks={setDescription}
+                initialContent={initialData.description}
+              />
+            ) : (
+              <AddEditor setBlocks={setDescription} />
+            )}
 
             {/* Submit Button - Fixed at bottom */}
             <div className="sticky -bottom-6 bg-white p-4 -mx-6 mb-6 mt-6 border-t flex justify-end">

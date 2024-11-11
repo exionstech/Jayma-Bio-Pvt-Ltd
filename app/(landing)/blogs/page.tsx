@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import { MaxWrapper } from "@/components/shared/max-wrapper";
+import BlogComponent from "./_components/blog-component";
 
 const Page = () => {
   return (
-    <div>
-      Blogs
-    </div>
-  )
-}
+    <MaxWrapper>
+      <BlogComponent />
+    </MaxWrapper>
+  );
+};
 
-export default Page
+export default Page;
