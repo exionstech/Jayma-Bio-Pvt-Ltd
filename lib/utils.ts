@@ -29,7 +29,7 @@ export function tagLabelByValue(value: string): string {
   return tag ? tag.label : "";
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, choice: number) {
   const date = new Date(dateString);
 
   const day = date.getDate();
@@ -50,5 +50,10 @@ export function formatDate(dateString: string): string {
     }
   };
 
-  return `${day}${getOrdinalSuffix(day)} ${month}`;
+  switch (choice) {
+    case 1:
+      return `${day}${getOrdinalSuffix(day)} ${month}`;
+    case 2:
+      return `${day}${getOrdinalSuffix(day)} ${month}, ${date.getFullYear()}`;
+  }
 }

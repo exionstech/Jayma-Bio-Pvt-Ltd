@@ -1,4 +1,7 @@
+import { getAllBlogById } from "@/actions/all-blogs/get-all-blogs";
+import { MaxWrapper } from "@/components/shared/max-wrapper";
 import React from "react";
+import BlogComponent from "./_components/blog-component";
 
 interface PageProps {
   params: {
@@ -6,12 +9,15 @@ interface PageProps {
   };
 }
 
-const Page = ({ params }: PageProps) => {
+const Page = async ({ params }: PageProps) => {
+  const { data } = await getAllBlogById(params.blogId);
+
   return (
-    <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto">
-      <h1 className="text-center text-6xl font-bold text-green">Blogs</h1>
-      <div className="py-10 px-20">{params.blogId}</div>
-    </section>
+    <MaxWrapper>
+      <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto">
+        <BlogComponent blog={data!} />
+      </section>
+    </MaxWrapper>
   );
 };
 

@@ -57,7 +57,7 @@ const BlogCard = ({
         <img
           src={thumbnail}
           alt={title}
-          className="rounded-t-lg md:rounded-l-lg"
+          className="rounded-t-lg md:rounded-l-lg md:rounded-t-none object-cover w-full h-full"
         />
       </div>
       <div className="flex flex-col justify-between px-10 py-5 w-full md:w-3/5">
@@ -71,7 +71,7 @@ const BlogCard = ({
               />
               <p className="font-extralight text-sm">{name}</p>
               <p className="font-extralight text-sm">@{userName}</p>
-              <p className="font-extralight text-sm">{formatDate(date)}</p>
+              <p className="font-extralight text-sm">{formatDate(date, 1)}</p>
             </div>
             <button onClick={handleShare}>
               <Share2 size={24} />
