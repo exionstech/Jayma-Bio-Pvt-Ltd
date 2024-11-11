@@ -94,7 +94,7 @@ const EventsSlider = ({ className, data, title }: EventsSliderProps) => {
                       {event.title}
                     </h3>
                     <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
-                      {event.description}
+                      {JSON.parse(event.description)[0].content[0].text}
                     </p>
                   </div>
                 </CardDescription>

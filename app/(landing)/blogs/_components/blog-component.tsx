@@ -29,6 +29,7 @@ const BlogComponent = () => {
             userImage,
           }) => (
             <BlogCard
+              key={id}
               thumbnail={thumbnail}
               title={title}
               likes={likes}

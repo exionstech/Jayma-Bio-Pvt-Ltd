@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SocialShare from "@/app/(routes)/admin/_components/events/social-share";
+import ViewEditor from "@/components/editor/view-editor";
 
 const customStyles = `
   .swiper-pagination-bullet {
@@ -77,9 +78,7 @@ const EventsDetails = ({ event }: EventsDetailsProps) => {
             <h1 className="text-xl md:text-2xl font-medium md:font-semibold text-green">
               Description
             </h1>
-            <p className="text-medium md:text-lg font-medium text-green w-full md:w-[90%] tracking-wide">
-              {event.description}
-            </p>
+            <ViewEditor initialContent={JSON.parse(event.description)} />
           </div>
           <div className="flex flex-col gap-3">
             <h1 className="text-sm md:text-xl font-medium md:font-semibold text-green">
