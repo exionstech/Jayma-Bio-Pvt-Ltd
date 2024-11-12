@@ -13,6 +13,7 @@ export const publicRoutes = [
   "/blogs",
   "/contact",
   "/events",
+  "/career",
   "/products/.*/",
   "/terms-conditions",
   "/cancellation-refund",
