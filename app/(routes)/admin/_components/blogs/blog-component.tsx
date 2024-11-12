@@ -27,6 +27,7 @@ interface Blog {
   likes: number;
   toggle?: boolean;
   archived?: boolean;
+  role: string;
 }
 
 const BlogComponent = () => {
@@ -138,7 +139,7 @@ const BlogComponent = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {blogs.map((blog) => (
+              {blogs.map((blog) => blog.role === "ADMIN" && (
                 <TableRow key={blog.id}>
                   <TableCell>
                     <img

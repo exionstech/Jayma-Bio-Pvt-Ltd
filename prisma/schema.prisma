@@ -127,21 +127,8 @@ model Blog {
   name      String
   userName  String
   userImage String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model UserBlog {
-  id        String   @id @default(cuid())
-  thumbnail String
-  title     String
-  content   String
-  likes     Int      @default(0)
-  toggle    Boolean  @default(false)
-  archived  Boolean  @default(true)
-  name      String
-  userName  String
-  userImage String
+  role      UserRole
+  likedId   String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
