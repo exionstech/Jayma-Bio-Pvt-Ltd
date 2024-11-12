@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 lg:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
-      <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
+      <div className="max-w-screen-2xl mx-auto flex items-center justify-between 2xl:px-8">
         <div className="lg:flex items-center shrink-0 hidden">
           <Link href="/">
             <Image

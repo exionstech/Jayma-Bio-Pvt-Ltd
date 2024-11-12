@@ -56,7 +56,7 @@ const logos = [
 const Services = () => {
   return (
     <div className="w-full">
-      <div className="mx-auto w-full md:px-6">
+      <div className="mx-auto w-full md:px-6 max-w-screen-2xl">
         <div
           className="group relative mt-5 md:mt-4 flex gap-6 overflow-hidden py-2 md:py-4 border border-green"
           style={{
