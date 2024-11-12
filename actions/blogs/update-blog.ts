@@ -28,6 +28,7 @@ export async function updateBlog(data: BlogFormValues) {
         toggle: data.toggle,
         archived: data.archived,
         likes: data.likes,
+        likedId: data.likedId,
       },
     });
 
