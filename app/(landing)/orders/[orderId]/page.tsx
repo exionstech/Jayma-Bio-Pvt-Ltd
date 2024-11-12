@@ -26,7 +26,7 @@ const OrderDetailsPage = async ({ params }: OrderDetailsPageProps) => {
 
   return (
     <MaxWrapper>
-      <OrderDetails order={order} />
+      <OrderDetails order={order} returns={returns} />
     </MaxWrapper>
   );
 };

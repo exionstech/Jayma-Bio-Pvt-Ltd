@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 };
 
 const CareerPage = async () => {
-  const careers = await getCareers();
+  const { careers } = await getCareers();
   
   return (
     <MaxWrapper>
-      <CarrerPageDetails />
+      <CarrerPageDetails careers={careers} />
     </MaxWrapper>
   );
 };
