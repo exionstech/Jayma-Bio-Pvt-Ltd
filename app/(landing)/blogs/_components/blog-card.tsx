@@ -41,7 +41,7 @@ const BlogCard = ({
   likedId,
 }: BlogCardProps) => {
   const { user } = useUserData();
-  const [like, setLike] = useState(likedId.includes(user?.id!));
+  const [like, setLike] = useState(likedId?.includes(user?.id!));
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -49,7 +49,7 @@ const BlogCard = ({
         await navigator.share({
           title: "Jayma Bio Innovations",
           text: "Check out this blog!",
-          url: `https://jaymabioinnovations.com/${link}`,
+          url: `${process.env.NEXT_PUBLIC_APP_URL!}${link}`,
         });
         toast("Link shared successfully");
       } catch (error) {
@@ -57,7 +57,7 @@ const BlogCard = ({
       }
     } else {
       window.navigator.clipboard.writeText(
-        `https://jaymabioinnovations.com/${link}`
+        `${process.env.NEXT_PUBLIC_APP_URL!}${link}`
       );
       toast("Link copied to clipboard");
     }
