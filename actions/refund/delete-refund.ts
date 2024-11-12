@@ -12,7 +12,7 @@ interface ResponseTypes {
   error?: any;
 }
 
-export async function deleteCareer(
+export async function deleteRefund(
   data: DeleteCareerTypes
 ): Promise<ResponseTypes> {
   try {
