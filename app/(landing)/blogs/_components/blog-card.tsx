@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { Eye, Share2 } from "lucide-react";
@@ -42,6 +40,7 @@ const BlogCard = ({
 }: BlogCardProps) => {
   const { user } = useUserData();
   const [like, setLike] = useState(likedId?.includes(user?.id!));
+  const [likeCount, setLikeCount] = useState(likes);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -51,7 +50,6 @@ const BlogCard = ({
           text: "Check out this blog!",
           url: `${process.env.NEXT_PUBLIC_APP_URL!}${link}`,
         });
-        toast("Link shared successfully");
       } catch (error) {
         toast("Error sharing the link");
       }
@@ -63,37 +61,38 @@ const BlogCard = ({
     }
   };
 
-  const handleLike = async (id: string) => {
+  const handleLike = async () => {
     setLike(!like);
     try {
       const data = await updateBlog({
         id: id,
-        likes: like ? likes - 1 : likes + 1,
+        likes: like ? likeCount - 1 : likeCount + 1,
         likedId: like
           ? likedId.filter((likeId) => likeId !== user?.id)
           : [...likedId, user?.id!],
       });
 
       if (data.success) {
-        toast("Blog liked successfully");
+        setLikeCount(like ? likeCount - 1 : likeCount + 1);
+        toast(like ? "Blog disliked successfully" : "Blog liked successfully");
       } else {
-        toast("Error liking the blog");
+        toast("Error updating the blog");
       }
     } catch (error) {
-      toast("Error liking the blog");
+      toast("Error updating the blog");
     }
   };
 
   return (
-    <div className="flex flex-col md:flex-row border shadow-md rounded-lg">
-      <div className="w-full md:w-2/5 h-full">
+    <div className="flex flex-col md:flex-row border shadow-md rounded-lg my-3">
+      <div className="w-full md:w-3/7 h-full object-contain aspect-[4/2] md:aspect-[4/2.5] overflow-hidden rounded-tl-lg md:rounded-bl-lg">
         <img
           src={thumbnail}
           alt={title}
           className="rounded-t-lg md:rounded-l-lg md:rounded-t-none object-cover w-full h-full"
         />
       </div>
-      <div className="flex flex-col justify-between px-10 py-5 w-full md:w-3/5">
+      <div className="flex flex-col justify-between px-5 md:px-10 py-5 w-full md:w-4/7">
         <div className="space-y-4">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row items-center gap-2">
@@ -114,7 +113,7 @@ const BlogCard = ({
               <Share2 size={24} />
             </button>
           </div>
-          <div className="space-y-3 w-full">
+          <div className="space-y-3 w-full min-h-[20vh] md:min-h-0 py-3 md:py-0">
             <h1 className="text-2xl font-bold">{title}</h1>
             <p className="font-extralight text-sm">{content}</p>
           </div>
@@ -122,7 +121,7 @@ const BlogCard = ({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-4">
             <div className="flex flex-row items-center">
-              <button onClick={() => handleLike(id)}>
+              <button onClick={handleLike} className="border-none">
                 <img
                   src={
                     !like
@@ -133,15 +132,11 @@ const BlogCard = ({
                   className="w-6 h-6 mr-2"
                 />
               </button>
-              <p className="text-xl">{likes}</p>
-            </div>
-            <div className="flex flex-row items-center">
-              <IoEyeOutline className="w-8 h-8 mr-2" />
-              <p className="text-xl">{10}</p>
+              <p className="text-xl">{likeCount}</p>
             </div>
           </div>
           <Link href={link}>
-            <Button className="bg-green">Read More</Button>
+            <Button className="bg-green">Read</Button>
           </Link>
         </div>
       </div>

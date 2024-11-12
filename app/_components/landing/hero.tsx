@@ -58,7 +58,9 @@ export const HeroSection = () => {
                 size={"lg"}
                 className="w-[240px] md:w-[300px] justify-end rounded-full bg-green text-white text-medium hover:bg-green/90"
               >
-                <span className="text-white">Careers</span>
+                <span className="text-white">
+                  Join Our Team
+                </span>
               </Button>
             </Link>
 

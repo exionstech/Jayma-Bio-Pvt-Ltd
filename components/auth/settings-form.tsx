@@ -84,7 +84,7 @@ const SettingsForm = () => {
                           <Input
                             type="email"
                             {...field}
-                            placeholder="john.doe@example.com"
+                            placeholder="enter your mail address"
                             disabled={isPending}
                             autoComplete="off"
                             autoCorrect="off"
