@@ -246,7 +246,7 @@ const UserComponent = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No products found.
+                    No users found.
                   </TableCell>
                 </TableRow>
               )}

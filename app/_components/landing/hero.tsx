@@ -53,12 +53,14 @@ export const HeroSection = () => {
               </Button>
             </Link>
 
-            <Button
-              size={"lg"}
-              className="w-[220px] md:w-[380px] justify-end rounded-full bg-green text-white text-medium hover:bg-green/90"
-            >
-              <span className="text-white"> Our Updates</span>
-            </Button>
+            <Link href={"/blogs"}>
+              <Button
+                size={"lg"}
+                className="w-[220px] md:w-[380px] justify-end rounded-full bg-green text-white text-medium hover:bg-green/90"
+              >
+                <span className="text-white"> Our Updates</span>
+              </Button>
+            </Link>
 
             <Button
               size={"lg"}
