@@ -25,6 +25,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { getBlogs } from "@/actions/blogs/get-blogs";
 import { deleteBlog } from "@/actions/blogs/delete-blog";
+import { useUserData } from "@/hooks/user-data";
 
 interface Blog {
   id: string;
@@ -35,10 +36,12 @@ interface Blog {
   toggle?: boolean;
   archived?: boolean;
   role?: string;
+  userName?: string;
 }
 
 const BlogComponent = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const { user } = useUserData();
   const [loading, setLoading] = useState(true);
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete Blog",
@@ -86,6 +89,8 @@ const BlogComponent = () => {
     fetchBlogs();
   }, []);
 
+  const filteredBlog = blogs.filter((blog) => blog.userName === user?.username);
+
   return (
     <>
       <div className="space-y-4">
@@ -111,7 +116,7 @@ const BlogComponent = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {blogs.map(
+              {filteredBlog.map(
                 (blog) =>
                   blog.role === "USER" && (
                     <TableRow key={blog.id}>

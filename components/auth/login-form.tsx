@@ -119,7 +119,7 @@ export const LoginForm = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="john.doe@example.com"
+                          placeholder="enter your mail address"
                           type="email"
                           autoCorrect="off"
                           autoComplete="off"
