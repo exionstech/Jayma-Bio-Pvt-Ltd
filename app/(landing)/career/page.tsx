@@ -1,19 +1,20 @@
-import { MaxWrapper } from '@/components/shared/max-wrapper';
-import { Metadata } from 'next';
-import CarrerPageDetails from './_components/career-page-details';
-
+import { MaxWrapper } from "@/components/shared/max-wrapper";
+import { Metadata } from "next";
+import CarrerPageDetails from "./_components/career-page-details";
+import { getCareers } from "@/actions/careers/get-careers";
 
 export const metadata: Metadata = {
-    title: "Career | Jayma Bio Innovations",
-  };
+  title: "Career | Jayma Bio Innovations",
+};
 
+const CareerPage = async () => {
+  const careers = await getCareers();
   
-const CareerPage = () => {
   return (
-  <MaxWrapper>
-   <CarrerPageDetails />
-  </MaxWrapper>
-  )
-}
+    <MaxWrapper>
+      <CarrerPageDetails />
+    </MaxWrapper>
+  );
+};
 
-export default CareerPage
+export default CareerPage;
