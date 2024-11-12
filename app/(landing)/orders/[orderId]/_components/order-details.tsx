@@ -21,14 +21,16 @@ import { useRouter } from "next/navigation";
 import { PiContactlessPaymentBold } from "react-icons/pi";
 import { toast } from "sonner";
 import { getUrl } from "@/actions/get-url";
+import { RefundPolicy } from "@/app/(routes)/admin/_components/policy/policy-component";
 
 
 interface OrderDetailsPageProps {
   order: Orders;
+  returns?: RefundPolicy;
 }
 export const revalidate = 0;
 
-const OrderDetails = ({ order }: OrderDetailsPageProps) => {
+const OrderDetails = ({ order, returns }: OrderDetailsPageProps) => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const router = useRouter();
   const cart = useCart();
@@ -291,7 +293,7 @@ const OrderDetails = ({ order }: OrderDetailsPageProps) => {
               )}
             {order.order_status === "Order Delivered" && (
               <div className="w-full flex items-center justify-end md:mt-4">
-                <Link href="/">
+                <Link href={`${returns?.link}`}>
                   <Button className="w-[160px] md:w-[200px] bg-green hover:bg-green/90 text-medium text-white h-8 md:h-12">
                     Return Order
                   </Button>

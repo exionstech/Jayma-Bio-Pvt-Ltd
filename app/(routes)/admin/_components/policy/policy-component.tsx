@@ -20,7 +20,7 @@ import { addRefund } from "@/actions/refund/add-refund";
 import { updateRefund } from "@/actions/refund/update-refund";
 import { deleteRefund } from "@/actions/refund/delete-refund";
 
-type RefundPolicy = {
+export type RefundPolicy = {
   id: string;
   title: string;
   link: string;

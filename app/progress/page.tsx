@@ -14,6 +14,7 @@ const Page = () => {
 
   useEffect(() => {
     if (!orderId) {
+      router.push("/checkout-cancelled");
       return;
     }
   }, [orderId]);
@@ -44,6 +45,8 @@ const Page = () => {
             "&status=" +
             response.data.data.payment_status.toLowerCase()
         );
+      } else if (response.data.data.cf_payment_id === null || "") {
+        router.push("/checkout-cancelled");
       } else if (response.data.data.payment_status === "FAILED" || "FAILURE") {
         router.push("/checkout-failed");
       } else {

@@ -53,12 +53,12 @@ export const HeroSection = () => {
               </Button>
             </Link>
 
-            <Link href={"/blogs"}>
+            <Link href={"/career"}>
               <Button
                 size={"lg"}
-                className="w-[220px] md:w-[380px] justify-end rounded-full bg-green text-white text-medium hover:bg-green/90"
+                className="w-[240px] md:w-[300px] justify-end rounded-full bg-green text-white text-medium hover:bg-green/90"
               >
-                <span className="text-white"> Our Updates</span>
+                <span className="text-white">Careers</span>
               </Button>
             </Link>
 
