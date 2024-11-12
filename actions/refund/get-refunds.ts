@@ -12,7 +12,6 @@ interface ResponseTypes {
   message: string;
   status: number;
   error?: any;
-  refunds?: Refund[];
   refund?: Refund;
 }
 
@@ -23,7 +22,7 @@ export async function getRefunds(): Promise<ResponseTypes> {
     return {
       message: "Refunds found successfully",
       status: 200,
-      refunds: refunds,
+      refund: refunds[0],
     };
   } catch (error) {
     console.log(error);
