@@ -15,7 +15,7 @@ const BlogComponent = () => {
   return (
     <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto">
       <h1 className="text-center text-6xl font-bold text-green">Blogs</h1>
-      <div className="py-10 px-20">
+      <div className="py-10 px-20 space-y-5">
         {blogs.map(
           ({
             thumbnail,
@@ -27,9 +27,11 @@ const BlogComponent = () => {
             name,
             userName,
             userImage,
+            likedId
           }) => (
             <BlogCard
               key={id}
+              id={id}
               thumbnail={thumbnail}
               title={title}
               likes={likes}
@@ -39,6 +41,7 @@ const BlogComponent = () => {
               name={name}
               userName={userName}
               userImage={userImage}
+              likedId={likedId}
             />
           )
         )}

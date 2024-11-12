@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import BlogCard from "../blog-card";
 import { useRouter } from "next/navigation";
-import addBlogs from "@/actions/user-blogs/add-blogs";
+import addBlogs from "@/actions/blogs/add-blogs";
 import { toast } from "sonner";
 
 const AddBlogForm = () => {

@@ -7,8 +7,14 @@ import { Eye, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
+import { updateBlog } from "@/actions/blogs/update-blog";
+import ProfileCard from "@/components/profile-card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FaUser } from "react-icons/fa";
+import { useUserData } from "@/hooks/user-data";
 
 interface BlogCardProps {
+  id: string;
   thumbnail: string;
   title: string;
   likes: number;
@@ -18,9 +24,11 @@ interface BlogCardProps {
   name: string;
   userName: string;
   userImage: string;
+  likedId: string[];
 }
 
 const BlogCard = ({
+  id,
   thumbnail,
   title,
   likes,
@@ -30,8 +38,10 @@ const BlogCard = ({
   name,
   userName,
   userImage,
+  likedId,
 }: BlogCardProps) => {
-  const [like, setLike] = useState(false);
+  const { user } = useUserData();
+  const [like, setLike] = useState(likedId.includes(user?.id!));
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -53,6 +63,27 @@ const BlogCard = ({
     }
   };
 
+  const handleLike = async (id: string) => {
+    setLike(!like);
+    try {
+      const data = await updateBlog({
+        id: id,
+        likes: like ? likes - 1 : likes + 1,
+        likedId: like
+          ? likedId.filter((likeId) => likeId !== user?.id)
+          : [...likedId, user?.id!],
+      });
+
+      if (data.success) {
+        toast("Blog liked successfully");
+      } else {
+        toast("Error liking the blog");
+      }
+    } catch (error) {
+      toast("Error liking the blog");
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row border shadow-md rounded-lg">
       <div className="w-full md:w-2/5 h-full">
@@ -66,11 +97,15 @@ const BlogCard = ({
         <div className="space-y-4">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row items-center gap-2">
-              <img
-                src={userImage}
-                alt={name}
-                className="rounded-full w-12 h-12"
-              />
+              <Avatar className="lg:h-12 lg:w-12 h-12 w-12">
+                <AvatarImage
+                  src={userImage}
+                  alt={`${userName}'s profile image`}
+                />
+                <AvatarFallback className="bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 text-white">
+                  <FaUser className="lg:w-5 lg:h-5 h-10 w-10" />
+                </AvatarFallback>
+              </Avatar>
               <p className="font-extralight text-sm">{name}</p>
               <p className="font-extralight text-sm">@{userName}</p>
               <p className="font-extralight text-sm">{formatDate(date, 1)}</p>
@@ -87,11 +122,17 @@ const BlogCard = ({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-4">
             <div className="flex flex-row items-center">
-              <img
-                src={"/landing/blogs/filled-heart.png"}
-                alt="likes"
-                className="w-6 h-6 mr-2"
-              />
+              <button onClick={() => handleLike(id)}>
+                <img
+                  src={
+                    !like
+                      ? "/landing/blogs/heart.png"
+                      : "/landing/blogs/filled-heart.png"
+                  }
+                  alt="likes"
+                  className="w-6 h-6 mr-2"
+                />
+              </button>
               <p className="text-xl">{likes}</p>
             </div>
             <div className="flex flex-row items-center">

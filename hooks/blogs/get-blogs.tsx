@@ -1,6 +1,7 @@
 "use client";
 
-import { getAllBlogs } from "@/actions/all-blogs/get-all-blogs";
+import { getBlogs } from "@/actions/blogs/get-blogs";
+import { UserRole } from "@prisma/client";
 import { useState, useEffect } from "react";
 
 interface Blog {
@@ -14,6 +15,8 @@ interface Blog {
   name: string;
   userName: string;
   userImage: string;
+  role: UserRole;
+  likedId: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,8 +29,8 @@ export function useBlogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await getAllBlogs();
-
+        const response = await getBlogs();
+        
         if (response.data) {
           setBlogs(response.data);
         } else {

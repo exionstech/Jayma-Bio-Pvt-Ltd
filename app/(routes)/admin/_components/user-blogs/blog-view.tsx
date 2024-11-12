@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getBlogById } from "@/actions/user-blogs/get-blogs";
 import Loader from "@/components/shared/loader";
 import BlogCard from "./blog-card";
-import { getAllBlogById } from "@/actions/all-blogs/get-all-blogs";
+import { getBlogById } from "@/actions/blogs/get-blogs";
 
 interface ViewBlogProps {
   blogId: string;
@@ -26,13 +25,12 @@ const ViewBlog = ({ blogId, initialBlog }: ViewBlogProps) => {
     if (!initialBlog) {
       const fetchBlog = async () => {
         try {
-          await getAllBlogById(blogId).then((data) => {
-            if (data.success) {
-              setBlog(data.data);
-            } else {
-              toast.error("Failed to fetch blog");
-            }
-          });
+          const data = await getBlogById(blogId);
+          if (data.success) {
+            setBlog(data.data);
+          } else {
+            toast.error("Failed to fetch blog");
+          }
         } catch (error) {
           toast.error("Error fetching blog");
         } finally {
