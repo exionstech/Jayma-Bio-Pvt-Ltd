@@ -70,7 +70,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       likes: 0,
     },
   });
-
+  
   const user = useUserData();
 
   useEffect(() => {
@@ -109,6 +109,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
           : {
               ...data,
               id: initialData?.id,
+              role: user?.user?.role,
               name: user?.user?.name,
               userName: user?.user?.username,
               userImage: user?.user?.image,

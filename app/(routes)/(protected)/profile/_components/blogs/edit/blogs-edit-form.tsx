@@ -13,8 +13,8 @@ import BlogCard from "../../../_components/blogs/blog-card";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getBlogById } from "@/actions/user-blogs/get-blogs";
-import { updateBlog } from "@/actions/user-blogs/update-blog";
+import { getBlogById } from "@/actions/blogs/get-blogs";
+import { updateBlog } from "@/actions/blogs/update-blog";
 import Loader from "@/components/shared/loader";
 
 interface EditBlogFormProps {

@@ -23,10 +23,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getBlogs } from "@/actions/user-blogs/get-blogs";
-import { deleteBlog } from "@/actions/user-blogs/delete-blog";
+import { getBlogs } from "@/actions/blogs/get-blogs";
+import { deleteBlog } from "@/actions/blogs/delete-blog";
 import { Switch } from "@/components/ui/switch";
-import { updateBlog } from "@/actions/user-blogs/update-blog";
+import { updateBlog } from "@/actions/blogs/update-blog";
 
 interface Blog {
   id: string;
@@ -36,6 +36,7 @@ interface Blog {
   likes: number;
   toggle?: boolean;
   archived?: boolean;
+  role: string;
 }
 
 const BlogComponent = () => {
@@ -141,7 +142,7 @@ const BlogComponent = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {blogs.map((blog) => (
+              {blogs.map((blog) => blog.role === "USER" && (
                 <TableRow key={blog.id}>
                   <TableCell>
                     <img

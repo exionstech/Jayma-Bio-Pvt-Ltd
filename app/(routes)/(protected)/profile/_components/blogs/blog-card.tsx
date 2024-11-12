@@ -11,14 +11,14 @@ import { Input } from "@/components/ui/input";
 import { UploadDropzone } from "@/lib/uplaodthing";
 import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ClientUploadedFileData } from "uploadthing/types";
 import * as z from "zod";
-import UpdateEditor from "@/components/editor/update-editor";
-import AddEditor from "@/components/editor/add-editor";
+import dynamic from "next/dynamic";
+import { useUserData } from "@/hooks/user-data";
 
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -31,7 +31,7 @@ type BlogFormValues = {
   thumbnail: string;
   title: string;
   likes: number;
-  content: Block[];
+  content: string;
 };
 
 interface BlogCardProps {
@@ -45,11 +45,22 @@ const BlogCard: React.FC<BlogCardProps> = ({
   mode = "add",
   onSubmit,
 }) => {
-  const [blocks, setBlocks] = useState<Block[]>(
-    simplifyBlockFormat(initialData?.content)
-  );
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [uploadedImage, setUploadedImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const AddEditor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor/add-editor"), { ssr: false }),
+    []
+  );
+  const UpdateEditor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor/update-editor"), {
+        ssr: false,
+      }),
+    []
+  );
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(BlogSchema),
@@ -60,38 +71,19 @@ const BlogCard: React.FC<BlogCardProps> = ({
     },
   });
 
-  function simplifyBlockFormat(blocks: any): any[] {
-    // Check if blocks is undefined or null
-    if (!blocks) {
-      return [];
-    }
-
-    // If blocks is not an array, wrap it in an array
-    const blocksArray = JSON.parse(blocks);
-
-    try {
-      return blocksArray.map((block: any) => {
-        // Get the content text if it exists
-        const content =
-          block.content && block.content[0]?.text ? block.content[0].text : "";
-
-        return {
-          type: block.type,
-          content: content,
-        };
-      });
-    } catch (error) {
-      console.error("Error in simplifyBlockFormat:", error);
-      return [];
-    }
-  }
+  const user = useUserData();
 
   useEffect(() => {
-    if (initialData) {
-      form.reset(initialData);
-      setBlocks(simplifyBlockFormat(initialData.content));
+    if (initialData?.content) {
+      try {
+        const parsedContent = JSON.parse(initialData.content);
+        setBlocks(parsedContent);
+      } catch (error) {
+        console.error("Error parsing initial content:", error);
+        setBlocks([]);
+      }
     }
-  }, [initialData, form]);
+  }, [initialData]);
 
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
@@ -107,11 +99,22 @@ const BlogCard: React.FC<BlogCardProps> = ({
     try {
       setLoading(true);
 
-      const updatedData = {
-        ...data,
-        id: initialData?.id,
-        content: blocks,
-      };
+      const updatedData =
+        mode === "update"
+          ? {
+              ...data,
+              id: initialData?.id,
+              content: JSON.stringify(blocks),
+            }
+          : {
+              ...data,
+              id: initialData?.id,
+              role: user?.user?.role,
+              name: user?.user?.name,
+              userName: user?.user?.username,
+              userImage: user?.user?.image,
+              content: JSON.stringify(blocks),
+            };
 
       if (onSubmit) {
         await onSubmit(updatedData);
@@ -134,7 +137,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex justify-end items-end">
-            <Button type="submit" className="" disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />

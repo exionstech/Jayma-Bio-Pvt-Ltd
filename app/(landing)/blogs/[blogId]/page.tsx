@@ -1,7 +1,7 @@
-import { getAllBlogById } from "@/actions/all-blogs/get-all-blogs";
 import { MaxWrapper } from "@/components/shared/max-wrapper";
 import React from "react";
 import BlogComponent from "./_components/blog-component";
+import { getBlogById } from "@/actions/blogs/get-blogs";
 
 interface PageProps {
   params: {
@@ -10,7 +10,7 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const { data } = await getAllBlogById(params.blogId);
+  const { data } = await getBlogById(params.blogId);
 
   return (
     <MaxWrapper>

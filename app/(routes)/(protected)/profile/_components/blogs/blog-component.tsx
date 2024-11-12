@@ -23,8 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
-import { getBlogs } from "@/actions/user-blogs/get-blogs";
-import { deleteBlog } from "@/actions/user-blogs/delete-blog";
+import { getBlogs } from "@/actions/blogs/get-blogs";
+import { deleteBlog } from "@/actions/blogs/delete-blog";
 
 interface Blog {
   id: string;
@@ -34,6 +34,7 @@ interface Blog {
   likes: number;
   toggle?: boolean;
   archived?: boolean;
+  role?: string;
 }
 
 const BlogComponent = () => {
@@ -110,48 +111,55 @@ const BlogComponent = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {blogs.map((blog) => (
-                <TableRow key={blog.id}>
-                  <TableCell>
-                    <img
-                      src={blog.thumbnail}
-                      alt={blog.title}
-                      className="w-16 h-16 object-cover rounded-md"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{blog.title}</TableCell>
-                  <TableCell className="text-center">{blog.likes}</TableCell>
-                  <TableCell className="mx-auto text-center">
-                    {blog.archived ? (
-                      <div className="flex justify-center items-center gap-2">
-                        <Clock10 className="text-yellow-500" />
-                        Waiting for approval
-                      </div>
-                    ) : (
-                      <div className="flex justify-center items-center gap-2">
-                        <Check className="text-green" />
-                        Approved
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Link href={`/admin/blogs/edit/${blog.id}`}>
-                        <Button variant="outline" size="sm">
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(blog.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {blogs.map(
+                (blog) =>
+                  blog.role === "USER" && (
+                    <TableRow key={blog.id}>
+                      <TableCell>
+                        <img
+                          src={blog.thumbnail}
+                          alt={blog.title}
+                          className="w-16 h-16 object-cover rounded-md"
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {blog.title}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {blog.likes}
+                      </TableCell>
+                      <TableCell className="mx-auto text-center">
+                        {blog.archived ? (
+                          <div className="flex justify-center items-center gap-2">
+                            <Clock10 className="text-yellow-500" />
+                            Waiting for approval
+                          </div>
+                        ) : (
+                          <div className="flex justify-center items-center gap-2">
+                            <Check className="text-green" />
+                            Approved
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Link href={`/admin/blogs/edit/${blog.id}`}>
+                            <Button variant="outline" size="sm">
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDelete(blog.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+              )}
             </TableBody>
           </Table>
         </div>

@@ -11,6 +11,8 @@ type BlogFormValues = {
   content?: string;
   toggle?: boolean;
   archived?: boolean;
+  likes? : number;
+  likedId?: string[];
 };
 
 export async function updateBlog(data: BlogFormValues) {
@@ -25,6 +27,7 @@ export async function updateBlog(data: BlogFormValues) {
         content: data.content,
         toggle: data.toggle,
         archived: data.archived,
+        likes: data.likes,
       },
     });
 
