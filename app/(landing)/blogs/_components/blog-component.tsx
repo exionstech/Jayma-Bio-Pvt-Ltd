@@ -13,9 +13,9 @@ const BlogComponent = () => {
   }
 
   return (
-    <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto">
+    <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto px-5 md:px-10 lg:px-14 flex flex-col gap-6">
       <h1 className="text-center text-6xl font-bold text-green">Blogs</h1>
-      <div className="py-10 px-20 space-y-5">
+      <div className="flex flex-col gap-8 mt-4 md:mt-8">
         {blogs.map(
           ({
             thumbnail,
@@ -35,7 +35,7 @@ const BlogComponent = () => {
               thumbnail={thumbnail}
               title={title}
               likes={likes}
-              content={JSON.parse(content)[0].content[0].text}
+              content={JSON.parse(content)[0]?.content[0]?.text}
               link={`/blogs/${id}`}
               date={createdAt.toISOString()}
               name={name}

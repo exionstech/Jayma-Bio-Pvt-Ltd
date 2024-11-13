@@ -106,7 +106,7 @@ const ProfilePage = () => {
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input disabled={isPending} placeholder="johndoe" {...field} />
+                        <Input disabled={isPending} placeholder="johndoe_" {...field} />
                       </FormControl>
                       <FormDescription>
                         This is your public display name.
