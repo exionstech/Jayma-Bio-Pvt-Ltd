@@ -1,5 +1,6 @@
 import { MoveRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const MissionSection = () => {
   const stats = [
@@ -14,10 +15,16 @@ const MissionSection = () => {
       <div className="w-full flex flex-col items-center max-w-screen-2xl mx-auto h-full mt-14 md:mt-20">
         <div className="w-full flex justify-end items-end">
           <div className="flex justify-center w-[35%] md:w-[20%] items-center self-end gap-2 font-semibold text-xs md:text-[18px] cursor-pointer rounded-bl-3xl relative">
-          <img src="/landing/misson/curve.svg" alt="curve" className="w-full select-none pointer-events-none" />
+            <img
+              src="/landing/misson/curve.svg"
+              alt="curve"
+              className="w-full select-none pointer-events-none"
+            />
             <div className="absolute top-0 left-0 w-full flex items-center justify-center h-full gap-2 pl-3">
-            <span className="text-green">Know more</span>
-            <MoveRight className="size-5 md:size-6 shrink-0 text-green" />
+              <Link href={"/products"}>
+                <span className="text-green">Know more</span>
+              </Link>
+              <MoveRight className="size-5 md:size-6 shrink-0 text-green" />
             </div>
           </div>
         </div>
