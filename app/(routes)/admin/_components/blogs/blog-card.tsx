@@ -8,10 +8,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UploadDropzone } from "@/lib/uplaodthing";
 import { Block } from "@blocknote/core";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +18,7 @@ import { ClientUploadedFileData } from "uploadthing/types";
 import * as z from "zod";
 import dynamic from "next/dynamic";
 import { useUserData } from "@/hooks/user-data";
+import { UploadDropzone } from "@/lib/uplaodthing";
 
 const BlogSchema = z.object({
   thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -46,7 +46,12 @@ const BlogCard: React.FC<BlogCardProps> = ({
   onSubmit,
 }) => {
   const [blocks, setBlocks] = useState<Block[]>([]);
-  const [uploadedImage, setUploadedImage] = useState<string>("");
+  const [uploadedImage, setUploadedImage] = useState<string | null>(
+    initialData?.thumbnail || null
+  );
+  const [description, setDescription] = useState<Block[]>([]);
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const AddEditor = useMemo(
@@ -70,7 +75,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       likes: 0,
     },
   });
-  
+
   const user = useUserData();
 
   useEffect(() => {
@@ -93,6 +98,12 @@ const BlogCard: React.FC<BlogCardProps> = ({
       form.setValue("thumbnail", res[0].url);
       toast.success("Image uploaded successfully");
     }
+  };
+
+  const handleImageDelete = () => {
+    setUploadedImage(null);
+    form.setValue("thumbnail", "");
+    toast.success("Image removed");
   };
 
   const handleSubmit = async (data: BlogFormValues) => {
@@ -154,14 +165,43 @@ const BlogCard: React.FC<BlogCardProps> = ({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <UploadDropzone
-                    endpoint="imageUploader"
-                    onClientUploadComplete={handleImageUpload}
-                    onUploadError={(error: Error) => {
-                      console.error(`Upload error: ${error.message}`);
-                      toast.error("Image upload failed");
-                    }}
-                  />
+                  <div className="space-y-4">
+                    <UploadDropzone
+                      endpoint="imageUploader"
+                      onClientUploadComplete={handleImageUpload}
+                      onUploadError={(error: Error) => {
+                        toast.error("Image upload failed");
+                      }}
+                    />
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {uploadedImage && (
+                        <div className="relative group aspect-auto">
+                          <div
+                            className="cursor-pointer rounded-lg overflow-hidden h-full"
+                            onClick={() => {
+                              setSelectedImage(uploadedImage);
+                              setShowImageDialog(true);
+                            }}
+                          >
+                            <img
+                              src={uploadedImage}
+                              alt={`Event image ${uploadedImage + 1}`}
+                              className="w-full h-full object-cover transition-transform hover:scale-105"
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={handleImageDelete}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -24,7 +24,7 @@ export const HeroSection = () => {
             <br />
             Tomorrow.
           </h1>
-          <AnimatedButton buttonText="Get Started" link={"/auth/login"} />
+          <AnimatedButton buttonText="Get Started" link={"/products"} />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-[4rem] h-full mt-10 md:mt-14">
