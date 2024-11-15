@@ -29,7 +29,7 @@ const Socials = [
   },
 ];
 const ContactUsSection = () => {
-  const [state, handleSubmit] = useForm("xnnqpqyz");
+  const [state, handleSubmit] = useForm("xrbgkwae");
   useEffect(() => {
     if (state.succeeded) {
       toast.success("Message sent successfully");
