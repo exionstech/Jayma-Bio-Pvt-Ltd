@@ -80,9 +80,9 @@ export const HeroSection = () => {
             <div className="h-full w-1/2 flex justify-center items-center">
               <div className="flex flex-col items-center justify-center gap-2">
                 <Image
-                  src={"/landing/hero/right-image.svg"}
+                  src={"/landing/hero/right-image.png"}
                   alt="image"
-                  height={70}
+                  height={60}
                   width={70}
                   className="rounded-full"
                 />
