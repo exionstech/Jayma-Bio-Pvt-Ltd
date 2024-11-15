@@ -10,9 +10,9 @@ const LatestProductsLg = () => {
     <div className="hidden md:flex flex-col w-full">
       {LatestProductsDetails.map((product, index) => (
         <div key={index} className="flex flex-col gap-8 items-start py-5">
-          <div className="flex gap-2 rounded-3xl border border-green px-16 py-3">
-            <span className="text-green text-xl">0{index + 1}.</span>
-            <span className="text-green text-xl">{product.name}</span>
+          <div className="flex gap-2 rounded-3xl border bg-green px-16 py-3">
+            <span className="text-white text-xl">0{index + 1}.</span>
+            <span className="text-white text-xl">{product.name}</span>
           </div>
           <div
             className={cn(
