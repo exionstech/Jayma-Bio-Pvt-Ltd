@@ -17,12 +17,10 @@ export const HeroSection = () => {
             <div className="bg-green h-[1.5px] w-10 pt-[1px]" />
           </div>
           <h1 className="text-2xl leading-[2.5rem] md:leading-[4.3rem] 2xl:leading-[5.3rem] 2xl:text-6xl md:text-5xl font-medium tracking-tight mb-3 md:mb-0 text-green">
-            Innovating Solutions <br /> for a{" "}
+            Where Innovations <br /> Meet{" "}
             <span className="bg-lightGreen py-0.5 px-3 md:px-4 rounded-full text-4.5xl">
-              Greener
+              Nature
             </span>
-            <br />
-            Tomorrow.
           </h1>
           <AnimatedButton buttonText="Get Started" link={"/products"} />
         </div>
@@ -43,16 +41,6 @@ export const HeroSection = () => {
                 </p>
               </div>
             </div>
-            <Link href="/events">
-              <Button
-                variant="outline"
-                className="text-green w-[180px] md:w-[240px] rounded-full border border-green text-sm md:text-medium flex items-center justify-end font-medium"
-                size={"lg"}
-              >
-                Upcoming Events
-              </Button>
-            </Link>
-
             <Link href={"/career"}>
               <Button
                 size={"lg"}

@@ -47,9 +47,14 @@ const MissionSection = () => {
           <div className="md:w-1/2 w-full flex md:flex-row flex-col gap-5 mt-5 md:mt-1">
             <div className="md:w-1/2 w-full flex flex-col gap-5 items-start justify-center">
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <img
+                  src="/landing/hero/1.svg"
+                  alt="/landing/hero/1.svg"
+                  className="w-9 h-9"
+                />
                 <div className="flex w-full justify-between">
-                  <h1 className="text-green text-4xl font-extra-bold-custom">
-                    2022
+                  <h1 className="text-green text-2xl font-extra-bold-custom">
+                    Since 2022
                   </h1>
                   <Image
                     src={"/landing/misson/misson.svg"}
@@ -65,6 +70,11 @@ const MissionSection = () => {
                 </p>
               </div>
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <img
+                  src="/landing/hero/2.svg"
+                  alt="/landing/hero/2.svg"
+                  className="w-9 h-9"
+                />
                 <div className="flex w-full justify-between">
                   <Image
                     src={"/landing/misson/misson1.svg"}
@@ -73,9 +83,11 @@ const MissionSection = () => {
                     height={60}
                     className="shrink-0 md:hidden"
                   />
-                  <h1 className="text-green text-4xl font-extra-bold-custom">
-                    1000+
-                  </h1>
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-green text-2xl font-extra-bold-custom">
+                      1000+ Users
+                    </h1>
+                  </div>
                 </div>
                 <p className="text-green text-sm md:text-[15px]">
                   JAYMA BIO INNOVATIONS PVT LTD has 1000+ active user everyday
@@ -85,10 +97,17 @@ const MissionSection = () => {
             </div>
             <div className="md:w-1/2 w-full flex flex-col gap-5 items-center justify-center md:mt-10">
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5 md:mt-5">
+                <img
+                  src="/landing/hero/3.svg"
+                  alt="/landing/hero/3.svg"
+                  className="w-9 h-9"
+                />
                 <div className="flex w-full justify-between">
-                  <h1 className="text-green text-4xl font-extra-bold-custom">
-                    50+
-                  </h1>
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-green text-2xl font-extra-bold-custom">
+                      50+ Customers
+                    </h1>
+                  </div>
                   <Image
                     src={"/landing/misson/misson.svg"}
                     alt="misson"
@@ -103,6 +122,11 @@ const MissionSection = () => {
                 </p>
               </div>
               <div className="bg-white rounded-xl w-full flex flex-col gap-5 px-5 py-5">
+                <img
+                  src="/landing/hero/4.svg"
+                  alt="/landing/hero/4.svg"
+                  className="w-8 h-8"
+                />
                 <div className="flex w-full justify-between">
                   <Image
                     src={"/landing/misson/misson1.svg"}
@@ -111,13 +135,15 @@ const MissionSection = () => {
                     height={60}
                     className="shrink-0 md:hidden"
                   />
-                  <h1 className="text-green text-4xl font-extra-bold-custom">
-                    3
-                  </h1>
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-green text-2xl font-extra-bold-custom">
+                      Expert Team
+                    </h1>
+                  </div>
                 </div>
                 <p className="text-green text-sm md:text-[15px]">
-                  JAYMA BIO INNOVATIONS PVT LTD has launched 3 products that are
-                  available for all users
+                  JAYMA BIO INNOVATIONS PVT LTD has offered extensive
+                  distribution and channel sales expertise.
                 </p>
               </div>
             </div>
