@@ -2,54 +2,28 @@ import Image from "next/image";
 
 const logos = [
   {
-    type: "text",
-    name: "Innovative, Nature-Driven Solutions",
-    url: "/landing/services/image1.svg",
-  },
-  {
-    type: "",
-    name: "Smart Products",
-    url: "/landing/services/image2.svg",
-  },
-  {
-    type: "text",
     name: "Connecting People and Plants",
-    url: "/landing/services/image1.svg",
+    url: "/landing/services/image1.jpg",
   },
   {
-    type: "",
-    name: "Smart Bio Technology",
-    url: "/landing/services/image1.svg",
+    name: "Cultivating Nature's Intelligence",
+    url: "/landing/services/image2.jpg",
   },
   {
-    type: "text",
-    name: "Sustainable Tech for Green Living",
-    url: "/landing/services/image1.svg",
+    name: "Innovative and Nature Driven Solution",
+    url: "/landing/services/image3.jpg",
   },
   {
-    type: "",
-    name: "Smart Products",
-    url: "/landing/services/image2.svg",
+    name: "Sustainable Tech for Green-Living",
+    url: "/landing/services/image4.png",
   },
   {
-    type: "text",
-    name: "Real-Time Plant Insights",
-    url: "/landing/services/image1.svg",
+    name: "Commitment to Eco-conscious Wellness",
+    url: "/landing/services/image5.jpg",
   },
   {
-    type: "",
-    name: "Smart Bio Technology",
-    url: "/landing/services/image1.svg",
-  },
-  {
-    type: "text",
-    name: "Cultivating Nature’s Intelligence",
-    url: "/landing/services/image1.svg",
-  },
-  {
-    type: "",
-    name: "Smart Products",
-    url: "/landing/services/image2.svg",
+    name: "Bridgeing Research and Real-world Impact",
+    url: "/landing/services/image6.jpg",
   },
 ];
 
@@ -64,28 +38,25 @@ const Services = () => {
               "linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 99%)",
           }}
         >
-          {Array(8)
+          {Array(6)
             .fill(null)
             .map((index) => (
               <div
                 key={index}
                 className="flex shrink-0 animate-logo-cloud flex-row justify-between items-center gap-10"
               >
-                {logos.map((logo, key) =>
-                  logo.type === "text" ? (
-                    <h1 key={key} className="text-green text-xl">
-                      {logo.name}
-                    </h1>
-                  ) : (
+                {logos.map((logo, key) => (
+                  <div key={key} className="flex items-center gap-4">
                     <Image
-                      key={key}
                       src={logo.url}
-                      height={50}
-                      width={50}
+                      height={40}
+                      width={40}
                       alt={`${logo.name}`}
+                      className="w-14 h-14 rounded-md object-cover"
                     />
-                  )
-                )}
+                    <h1 className="text-green text-xl">{logo.name}</h1>
+                  </div>
+                ))}
               </div>
             ))}
         </div>

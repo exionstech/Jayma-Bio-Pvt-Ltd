@@ -32,13 +32,13 @@ export const HeroSection = () => {
             <div className="w-full flex items-center justify-start -mb-10 md:hidden">
               <div className="flex flex-col gap-1 items-start justify-center">
                 <Image
-                  src={"/landing/hero/right-image.svg"}
+                  src={"/landing/hero/right-image.png"}
                   alt="image"
                   height={70}
                   width={70}
                   className="rounded-full"
                 />
-                <p className="text-green text-xs">
+                <p className="text-green text-xs text-center">
                   making lives <br /> easier
                 </p>
               </div>
