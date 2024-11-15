@@ -169,7 +169,7 @@ const config = {
         updown: "updown 3s ease-in-out infinite",
         "logo-cloud": "logo-cloud 30s linear infinite",
         scroll:
-          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+          "scroll var(--animation-duration, 30s) var(--animation-direction, forwards) linear infinite",
         flashing: "flashing 1.4s infinite linear",
         smoothSpin: "smoothSpin 8s linear infinite",
         marquee: "marquee var(--duration) linear infinite",
