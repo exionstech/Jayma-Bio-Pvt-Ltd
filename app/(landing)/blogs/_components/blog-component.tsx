@@ -27,23 +27,25 @@ const BlogComponent = () => {
             name,
             userName,
             userImage,
-            likedId
-          }) => (
-            <BlogCard
-              key={id}
-              id={id}
-              thumbnail={thumbnail}
-              title={title}
-              likes={likes}
-              content={JSON.parse(content)[0]?.content[0]?.text}
-              link={`/blogs/${id}`}
-              date={createdAt.toISOString()}
-              name={name}
-              userName={userName}
-              userImage={userImage}
-              likedId={likedId}
-            />
-          )
+            likedId,
+            archived,
+          }) =>
+            !archived && (
+              <BlogCard
+                key={id}
+                id={id}
+                thumbnail={thumbnail}
+                title={title}
+                likes={likes}
+                content={JSON.parse(content)[0]?.content[0]?.text}
+                link={`/blogs/${id}`}
+                date={createdAt.toISOString()}
+                name={name}
+                userName={userName}
+                userImage={userImage}
+                likedId={likedId}
+              />
+            )
         )}
       </div>
     </section>

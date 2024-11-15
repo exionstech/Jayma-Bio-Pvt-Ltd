@@ -16,19 +16,25 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 lg:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
       <div className="max-w-screen-2xl mx-auto flex items-center justify-between 2xl:px-8">
-        <div className="lg:flex items-center shrink-0 hidden">
-          <Link href="/">
+        <div className="lg:flex flex-col shrink-0 hidden">
+          <Link href="/" className="flex justify-center items-center gap-2">
             <Image
               src="/logos/logo.png"
               alt="logo"
-              height={75}
-              width={75}
+              height={65}
+              width={65}
               className="shrink-0"
             />
+            <h1 className="text-xl max-w-60">
+              Jayma Bio Innovations Private Limited
+            </h1>
           </Link>
         </div>
         <div className="flex items-center shrink-0 lg:hidden">
-          <Link href="/">
+          <Link
+            href="/"
+            className="flex flex-row justify-center items-center gap-4"
+          >
             <Image
               src="/logos/logo.png"
               alt="logo"
@@ -37,6 +43,9 @@ const Navbar = () => {
               className="shrink-0"
             />
           </Link>
+          <h1 className="text-medium max-w-60">
+            Jayma Bio Innovations Private Limited
+          </h1>
         </div>
 
         <div className="hidden lg:flex items-center justify-between ml-4">
