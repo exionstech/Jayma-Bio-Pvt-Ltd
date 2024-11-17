@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useUserData } from "@/hooks/user-data";
 import { UserNav } from "./user-nav";
+import { LogIn } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -87,8 +88,8 @@ const Navbar = () => {
           <UserNav user={user} />
         ) : (
           <Link href="/auth/login" className="hidden lg:block">
-            <Button className="w-[140px] h-[40px] rounded-full bg-green hover:bg-green/90">
-              Login
+            <Button className="w-[50px] h-[40px] rounded-full bg-green hover:bg-green/90">
+              <LogIn className="size-8 shrink-0" />
             </Button>
           </Link>
         )}

@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { IoEyeOutline } from "react-icons/io5";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import { updateBlog } from "@/actions/blogs/update-blog";
-import ProfileCard from "@/components/profile-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import { useUserData } from "@/hooks/user-data";
+import { useRouter } from "next/navigation";
 
 interface BlogCardProps {
   id: string;
@@ -41,6 +40,7 @@ const BlogCard = ({
   const { user } = useUserData();
   const [like, setLike] = useState(likedId?.includes(user?.id!));
   const [likeCount, setLikeCount] = useState(likes);
+  const router = useRouter();
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -62,6 +62,11 @@ const BlogCard = ({
   };
 
   const handleLike = async () => {
+    if (!user) {
+      toast.info("Please login to like the blog");
+      router.push("/login");
+      return;
+    }
     setLike(!like);
     try {
       const data = await updateBlog({
