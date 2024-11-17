@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { updateBlog } from "@/actions/blogs/update-blog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
@@ -22,6 +22,8 @@ interface BlogCardProps {
   userName: string;
   userImage: string;
   likedId: string[];
+  className?: string;
+  reverse?: boolean;
 }
 
 const BlogCard = ({
@@ -36,6 +38,8 @@ const BlogCard = ({
   userName,
   userImage,
   likedId,
+  className,
+  reverse,
 }: BlogCardProps) => {
   const { user } = useUserData();
   const [like, setLike] = useState(likedId?.includes(user?.id!));
@@ -89,12 +93,25 @@ const BlogCard = ({
   };
 
   return (
-    <div className="flex flex-col md:flex-row border shadow-md rounded-lg my-3">
-      <div className="w-full md:w-3/7 h-full object-contain aspect-[4/2] md:aspect-[4/2.5] overflow-hidden rounded-tl-lg md:rounded-bl-lg">
+    <div
+      className={cn(
+        "flex flex-col md:flex-row-reverse border shadow-md rounded-lg my-3",
+        reverse && "md:flex-row",
+        className
+      )}
+    >
+      <div
+        className={cn(
+          "w-full md:w-3/7 h-full object-contain aspect-[4/2] md:aspect-[4/2.5] overflow-hidden rounded-tl-lg",
+          reverse
+            ? "md:rounded-tl-lg md:rounded-bl-lg"
+            : "md:rounded-tr-lg md:rounded-br-lg md:rounded-tl-none md:rounded-bl-none"
+        )}
+      >
         <img
           src={thumbnail}
           alt={title}
-          className="rounded-t-lg md:rounded-l-lg md:rounded-t-none object-cover w-full h-full"
+          className={cn("object-cover w-full h-full")}
         />
       </div>
       <div className="flex flex-col justify-between px-5 md:px-10 py-5 w-full md:w-4/7">
@@ -141,7 +158,7 @@ const BlogCard = ({
             </div>
           </div>
           <Link href={link}>
-            <Button className="bg-green">Read</Button>
+            <Button className="bg-green">Read More</Button>
           </Link>
         </div>
       </div>
