@@ -228,3 +228,8 @@ export const BlogSchema = z.object({
   content: z.optional(z.array(z.string())),
   likes: z.number().default(0),
 });
+
+export const SupporterSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  image: z.string().url().min(1, { message: "Image is required" }),
+});

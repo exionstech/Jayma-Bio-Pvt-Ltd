@@ -83,7 +83,7 @@ export default function RefundPolicyComponent() {
       title: formData.get("title") as string,
       link: formData.get("link") as string,
     };
-
+    
     try {
       const updateData = { id: data?.id!, ...policyData };
       const result = data
