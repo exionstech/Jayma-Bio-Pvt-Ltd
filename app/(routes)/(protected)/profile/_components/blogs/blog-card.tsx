@@ -84,7 +84,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       }
     }
   }, [initialData]);
-
+  
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
   ) => {

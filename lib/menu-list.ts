@@ -108,6 +108,13 @@ export function getMenuList(pathname: string): Group[] {
           icon: Files,
           submenus: [],
         },
+        {
+          href: "/admin/supporter",
+          label: "Supported By",
+          active: pathname.includes("/admin/supporter"),
+          icon: Files,
+          submenus: [],
+        },
       ],
     },
     {

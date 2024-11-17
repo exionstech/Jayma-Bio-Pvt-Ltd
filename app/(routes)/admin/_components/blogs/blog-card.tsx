@@ -99,7 +99,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       toast.success("Image uploaded successfully");
     }
   };
-
+  
   const handleImageDelete = () => {
     setUploadedImage(null);
     form.setValue("thumbnail", "");
