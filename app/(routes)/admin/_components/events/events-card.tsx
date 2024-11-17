@@ -178,7 +178,7 @@ const EventsForm = ({
       setLoading(false);
     }
   };
-
+  
   const handleImageUpload = (
     res: ClientUploadedFileData<{ uploadedBy: string }>[]
   ) => {
