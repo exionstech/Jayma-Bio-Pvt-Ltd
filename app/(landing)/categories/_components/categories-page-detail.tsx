@@ -30,7 +30,10 @@ const CategoriesPageDetails = ({ categories }: CategoriesPageDetailsProps) => {
         </div>
         <div className="w-full grid grid-cols-3 md:grid-cols-9 gap-8">
           {categories.map((category) => (
-            <Card className="overflow-hidden bg-white rounded-lg shadow-md col-span-3">
+            <Card
+              key={category.id}
+              className="overflow-hidden bg-white rounded-lg shadow-md col-span-3"
+            >
               <div className="relative p-2">
                 <div className="aspect-square relative rounded-lg border overflow-hidden">
                   <img
