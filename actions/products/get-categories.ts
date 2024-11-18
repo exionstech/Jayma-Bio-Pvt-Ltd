@@ -8,7 +8,7 @@ const getCategories = async (): Promise<Category[]> => {
         return `${data.data.baseUrl}/${data.data.storeId}/categories`;
       }
     });
-    
+
     if (!URL) {
       throw new Error("URL is undefined");
     }
@@ -20,7 +20,7 @@ const getCategories = async (): Promise<Category[]> => {
       },
       cache: "no-store",
     });
-    
+
     if (!categoryRes.ok) {
       throw new Error(
         `Failed to fetch categories: ${categoryRes.status} ${categoryRes.statusText}`

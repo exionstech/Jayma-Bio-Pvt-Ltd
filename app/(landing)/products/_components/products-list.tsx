@@ -400,7 +400,7 @@ const ProductsList = ({ products }: ProductsListProps) => {
 
   return (
     <>
-      <section className="w-full py-4 md:py-6 flex flex-col gap-7 md:gap-12 mb-8 md:mb-10">
+      <section className="w-full py-4 md:py-6 flex flex-col gap-7 md:gap-12 mb-6">
         {/* BrewBucha Products */}
         {(loadingStates.brewbucha || brewBuchaProducts.length > 0) && (
           <div className="w-full flex flex-col gap-4 md:gap-6">

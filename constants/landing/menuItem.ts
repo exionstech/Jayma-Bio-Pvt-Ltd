@@ -14,7 +14,7 @@ export const MenuItem = [
   {
     id: 3,
     label: "Products",
-    href: "/products",
+    href: "/categories",
     icon: "/navIcon/products.svg",
   },
   {
@@ -36,7 +36,6 @@ export const MenuItem = [
     icon: "/navIcon/contact.svg",
   },
 ];
-
 
 export const FooterMenuItems = [
   // {
@@ -88,9 +87,9 @@ export const FooterMenuItems = [
     icon: "/navIcon/contact.svg",
   },
   {
-    id:8,
+    id: 8,
     label: "Privacy Policy",
     href: "/privacy-policy",
     icon: "/navIcon/contact.svg",
-  }
-]
+  },
+];

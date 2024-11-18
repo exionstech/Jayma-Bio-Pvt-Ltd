@@ -18,6 +18,9 @@ export interface Category {
   billboardId: string;
   billboardLabel: string;
   name: string;
+  description: string;
+  banner: string;
+  categoryDesc: { video: string; desc: string }[];
 }
 
 export interface Size {

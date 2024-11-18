@@ -41,16 +41,6 @@ export const BoardDirectorDetails = [
     linkedin: "",
   },
   {
-    name: "Baishali Dey",
-    role: "Chief of Market Research, Innovation & Scientific Officer, and Director, Kombucha & Cellulose Div",
-    linkedin: "https://www.linkedin.com/in/baishali-dey-910b344b/",
-  },
-  {
-    name: "Anand Babu",
-    role: "Non-Executive Director & CFO",
-    linkedin: "linkedin",
-  },
-  {
     name: "Shyam Arjunan",
     image: "/leaders/four.png",
     role: "CTO, COO, Chief Policy & Strategy Officer & Director of Sapstudio Div.",
