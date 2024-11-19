@@ -3,10 +3,10 @@ import CareerItem from "./career-item";
 import { Careers } from "@prisma/client";
 
 interface CareerPageDetailsProps {
-    careers: any;
+  careers: any;
 }
 
-const CarrerPageDetails = ({careers}:CareerPageDetailsProps) => {
+const CarrerPageDetails = ({ careers }: CareerPageDetailsProps) => {
   return (
     <section className="mt-8 md:mt-12 py-4 md:py-8 max-w-screen-2xl mx-auto min-h-screen px-5 md:px-10 lg:px-14 flex flex-col gap-8">
       <div className="w-full flex items-center justify-start md:mt-4">
@@ -28,9 +28,9 @@ const CarrerPageDetails = ({careers}:CareerPageDetailsProps) => {
       </div>
 
       <div className="w-full flex flex-col gap-4 mt-3 md:mt-6">
-      {careers.map((career:Careers) => (
-        <CareerItem key={career.id} career={career} />
-      ))}
+        {careers?.map((career: Careers) => (
+          <CareerItem key={career.id} career={career} />
+        ))}
       </div>
     </section>
   );
