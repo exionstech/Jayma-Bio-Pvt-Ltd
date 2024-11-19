@@ -10,15 +10,6 @@ export const ExecutiveLeadersDetails = [
     x: "",
   },
   {
-    name: "Baishali Dey",
-    image: "/leaders/two.png",
-    role: "Chief of Market Research, Innovation & Scientific Officer, and Director, Kombucha & Cellulose Div",
-    instagram: "",
-    linkedin: "https://www.linkedin.com/in/baishali-dey-910b344b/",
-    facebook: "",
-    x: "",
-  },
-  {
     name: "Shyam Arjunan",
     image: "/leaders/four.png",
     role: "CTO, COO, Chief Policy & Strategy Officer & Director of Sapstudio Div.",
