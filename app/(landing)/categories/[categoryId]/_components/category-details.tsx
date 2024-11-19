@@ -30,7 +30,7 @@ const CategoryDetails = ({ category, products }: CategoryDetailsProps) => {
                   width="100%"
                   height="100%"
                   controls
-                  playing
+                  autoPlay={false}
                 />
               </div>
             </div>
