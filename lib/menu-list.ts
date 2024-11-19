@@ -10,6 +10,7 @@ import {
   TagsIcon,
   Workflow,
   Files,
+  HeartHandshake,
 } from "lucide-react";
 
 type Submenu = {
@@ -112,7 +113,7 @@ export function getMenuList(pathname: string): Group[] {
           href: "/admin/supporter",
           label: "Supported By",
           active: pathname.includes("/admin/supporter"),
-          icon: Files,
+          icon: HeartHandshake,
           submenus: [],
         },
       ],

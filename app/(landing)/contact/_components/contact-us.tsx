@@ -29,7 +29,7 @@ const Socials = [
   },
 ];
 const ContactUsSection = () => {
-  const [state, handleSubmit] = useForm("xnnqpqyz");
+  const [state, handleSubmit] = useForm("xrbgkwae");
   useEffect(() => {
     if (state.succeeded) {
       toast.success("Message sent successfully");
@@ -66,7 +66,7 @@ const ContactUsSection = () => {
               className="w-full md:w-[80%] border-b-2 border-green/80 py-4 focus:ring-0 focus:outline-none focus:border-transparent focus:border-b-green placeholder:text-green placeholder:opacity-70 text-green placeholder:text-sm md:placeholder:text-lg text-sm md:text-lg font-medium"
               type="text"
               required
-              name="name"
+              name="email"
             />
             <textarea
               id="message"
@@ -74,7 +74,7 @@ const ContactUsSection = () => {
               className="w-full md:w-[80%] border-b-2 border-green py-4 focus:ring-0 focus:outline-none focus:border-transparent focus:border-b-green/80 placeholder:text-green placeholder:opacity-70 resize-none h-[120px] text-green  font-medium placeholder:text-sm md:placeholder:text-lg text-sm md:text-lg"
               typeof="text"
               required
-              name="name"
+              name="message"
             />
             <div className="w-full flex items-center justify-center md:justify-start">
               <Button

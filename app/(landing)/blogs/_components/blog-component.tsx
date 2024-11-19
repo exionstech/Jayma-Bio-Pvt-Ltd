@@ -29,7 +29,7 @@ const BlogComponent = () => {
             userImage,
             likedId,
             archived,
-          }) =>
+          }, index) =>
             !archived && (
               <BlogCard
                 key={id}
@@ -44,6 +44,7 @@ const BlogComponent = () => {
                 userName={userName}
                 userImage={userImage}
                 likedId={likedId}
+                reverse={index % 2 === 0}
               />
             )
         )}

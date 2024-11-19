@@ -39,10 +39,12 @@ const Footer = () => {
                 <p className="text-sm text-green">+91 99405 15782</p>
               </div>
             </Link>
-            <Link href="mailto:jaymabiotech@gmail.com">
+            <Link href="mailto:info@jaymabioinnovations.com">
               <div className="flex gap-2 items-center">
                 <MdEmail className="size-4 shrink-0 fill-green" />
-                <p className="text-sm text-green">jaymabiotech@gmail.com</p>
+                <p className="text-sm text-green">
+                  info@jaymabioinnovations.com
+                </p>
               </div>
             </Link>
           </div>
