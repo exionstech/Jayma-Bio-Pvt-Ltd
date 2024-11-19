@@ -278,7 +278,7 @@ const AboutUsSection = ({ supports }: AboutUsSectionProps) => {
           </div>
 
           <div className="w-full flex items-center justify-center md:justify-start flex-wrap gap-6 md:gap-10">
-            {supports.map((support: any, index: number) => (
+            {supports?.map((support: any, index: number) => (
               <img
                 key={index}
                 src={support.image}
