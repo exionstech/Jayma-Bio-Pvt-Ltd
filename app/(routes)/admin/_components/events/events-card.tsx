@@ -52,8 +52,6 @@ import UpdateEditor from "@/components/editor/update-editor";
 import { Block } from "@blocknote/core";
 import { Label } from "@/components/ui/label";
 
-const MAX_CHARS = 1200;
-
 // Event type definition
 type Event = {
   id: string;
@@ -152,11 +150,11 @@ const EventsForm = ({
         //send mail to subscribed users
         const res = await sendEventMail(
           data.title,
-          JSON.stringify(description),
+          (description[0]?.content as any)?.[0]?.text || "",
           data.date.toString(),
           initialData?.id || result.id
         );
-
+        
         if (!res.success) {
           toast.error("Failed to send mail to subscribed users");
         } else {
