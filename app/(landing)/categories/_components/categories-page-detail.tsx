@@ -22,9 +22,9 @@ const CategoriesPageDetails = ({ categories }: CategoriesPageDetailsProps) => {
       id="categories"
       className="w-full min-h-screen py-8 md:py-12 mt-4 md:mt-10"
     >
-      <div className="max-w-screen-2xl mx-auto px-5 md:px-8 lg:px-12 w-full flex flex-col gap-6 md:gap-10">
-        <div className="flex flex-col items-center gap-6 md:gap-12 mb-4 md:mb-8 pt-4 md:pt-0">
-          <h1 className="text-4xl md:text-7xl font-semibold text-green select-none">
+      <div className="max-w-screen-2xl mx-auto px-5 md:px-8 lg:px-12 w-full flex flex-col gap-6 md:gap-8">
+        <div className="flex flex-col items-center gap-6 md:gap-12 mb-4 pt-4 md:pt-0">
+          <h1 className="text-4xl md:text-6xl font-semibold text-green select-none">
             All products
           </h1>
         </div>
