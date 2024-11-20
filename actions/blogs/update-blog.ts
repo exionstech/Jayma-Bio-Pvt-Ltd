@@ -35,7 +35,7 @@ export async function updateBlog(data: BlogFormValues) {
     if (data.toggle && !data.archived) {
       const res = await sendEventMail(
         blog.title,
-        blog.title,
+        JSON.parse(blog.content)[0]?.content?.[0]?.text || "",
         new Date(blog.updatedAt).toDateString(),
         blog.id,
       );
