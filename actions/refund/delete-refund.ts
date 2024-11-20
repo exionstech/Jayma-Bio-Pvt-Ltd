@@ -16,7 +16,7 @@ export async function deleteRefund(
   data: DeleteCareerTypes
 ): Promise<ResponseTypes> {
   try {
-    await prismadb.careers.delete({
+    await prismadb.refund.delete({
       where: {
         id: data.id,
       },
