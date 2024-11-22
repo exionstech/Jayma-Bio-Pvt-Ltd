@@ -111,7 +111,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
   return (
     <section className="min-h-screen mt-8 md:mt-12 px-5 md:px-10 lg:px-14 flex flex-col gap-5 max-w-screen-2xl mx-auto">
       <div className="w-full pt-4 md:pt-8">
-        <Link href="/products">
+        <Link href="/categories">
           <Button variant="ghost" className="flex items-center gap-1">
             <ChevronLeft className="size-6 shrink-0 text-green" />
             Back
@@ -132,7 +132,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
               />
             </div>
             <div className="w-fill flex items-center justify-center mt-7">
-              <Link href="/products">
+              <Link href="/categories">
                 <Button
                   className="w-[140px] md:w-[200px] flex items-center gap-2"
                   variant="ghost"
@@ -314,7 +314,7 @@ const CartDetails = ({ userId }: CartDetailsProps) => {
                   </Form>
                 </div>
 
-                <Link href="/products">
+                <Link href="/categories">
                   <Button
                     className="w-full flex items-center gap-2 border-none"
                     variant="ghost"
