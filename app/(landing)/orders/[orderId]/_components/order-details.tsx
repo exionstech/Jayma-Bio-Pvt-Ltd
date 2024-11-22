@@ -304,7 +304,7 @@ const OrderDetails = ({ order, returns }: OrderDetailsPageProps) => {
         </>
       )}
       <div className="w-full flex items-center justify-center mt-6 md:mt-14">
-        <Link href="/products">
+        <Link href="/categories">
           <Button
             className="w-[240px] md:w-[280px] flex items-center gap-2 border-none"
             variant="ghost"

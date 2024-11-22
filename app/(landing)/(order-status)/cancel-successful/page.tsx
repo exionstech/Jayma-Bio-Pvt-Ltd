@@ -25,7 +25,7 @@ const CheckoutCancelledPage = () => {
             />
           </div>
           <div className="w-fill flex items-center justify-center mt-7">
-            <Link href="/products">
+            <Link href="/categories">
               <Button
                 className="w-[240px] md:w-[280px] flex items-center gap-2 border-none"
                 variant="ghost"

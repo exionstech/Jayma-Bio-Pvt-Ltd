@@ -22,7 +22,7 @@ const OrderListpage = ({ orders }: OrderListpageProps) => {
         <>
           <div className="w-full flex flex-col gap-2 md:gap-4">
             <div className="w-full flex items-center justify-start mt-2 md:mt-4">
-              <Link href="/products">
+              <Link href="/categories">
                 <Button
                   className="flex items-center gap-2 text-green"
                   variant="outline"
@@ -55,7 +55,7 @@ const OrderListpage = ({ orders }: OrderListpageProps) => {
               className="w-40 md:w-64 select-none mt-4"
             />
           </div>
-          <Link href="/products" className="absolute top-5 left-0">
+          <Link href="/categories" className="absolute top-5 left-0">
             <Button
               className="flex items-center gap-2 text-green"
               variant="outline"
