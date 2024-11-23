@@ -63,7 +63,7 @@ const SettingsForm = () => {
   };
 
   return (
-    <Card className="my-20 lg:w-[800px] md:w-[600px] w-full">
+    <Card className="my-10 lg:w-[800px] md:w-[600px] w-full">
       <CardHeader>
         <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
       </CardHeader>
@@ -84,7 +84,7 @@ const SettingsForm = () => {
                           <Input
                             type="email"
                             {...field}
-                            placeholder="john.doe@example.com"
+                            placeholder="enter your mail address"
                             disabled={isPending}
                             autoComplete="off"
                             autoCorrect="off"

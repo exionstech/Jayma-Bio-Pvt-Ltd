@@ -12,7 +12,12 @@ export const publicRoutes = [
   "/products",
   "/blogs",
   "/contact",
-  "/terms-of-service",
+  "/events",
+  "/career",
+  "/products/.*/",
+  "/terms-conditions",
+  "/cancellation-refund",
+  "/privacy-policy",
   "/api/products/add",
   "/api/products/getById",
   "/api/products/getAll",
@@ -20,6 +25,11 @@ export const publicRoutes = [
   "/api/products/delete",
   "/api/uploadthing",
   "/api/newsletter/add",
+  "/api/events/add",
+  "/api/events/getById",
+  "/api/events/getAll",
+  "/api/events/update",
+  "/api/events/delete",
 ];
 
 /**

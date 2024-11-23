@@ -41,8 +41,11 @@ const config = {
         dark: "#000000",
         lightGreen: "#D9E6BA",
         green: "#0D2A25",
+        lightText:"#A7A5A5",
+        separator:"#D9D9D9",
+        rating:'#DF7A10',
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#0D2A25",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -166,7 +169,7 @@ const config = {
         updown: "updown 3s ease-in-out infinite",
         "logo-cloud": "logo-cloud 30s linear infinite",
         scroll:
-          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+          "scroll var(--animation-duration, 30s) var(--animation-direction, forwards) linear infinite",
         flashing: "flashing 1.4s infinite linear",
         smoothSpin: "smoothSpin 8s linear infinite",
         marquee: "marquee var(--duration) linear infinite",

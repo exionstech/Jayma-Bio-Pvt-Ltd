@@ -9,7 +9,7 @@ import Collaborators from "../_components/landing/collaborators";
 import CtaNewsLetterSection from "../_components/landing/cta-newsletter";
 
 export const metadata: Metadata = {
-  title: "Jayma Bio Innovations | Home",
+  title: "Home | Jayma Bio Innovations",
 };
 
 const LandingPage = () => {

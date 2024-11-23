@@ -1,11 +1,16 @@
 import {
   Tag,
-  Users,
   Settings,
   Bookmark,
-  SquarePen,
   LayoutGrid,
   LucideIcon,
+  User,
+  User2,
+  Cog,
+  TagsIcon,
+  Workflow,
+  Files,
+  HeartHandshake,
 } from "lucide-react";
 
 type Submenu = {
@@ -30,27 +35,38 @@ type Group = {
 export function getMenuList(pathname: string): Group[] {
   return [
     {
-      groupLabel: "",
+      groupLabel: "Store Management",
       menus: [
         {
-          href: "/dashboard",
-          label: "Dashboard",
-          active: pathname.includes("/dashboard"),
-          icon: LayoutGrid,
-          submenus: [],
+          href: "/admin/endpoint",
+          label: "Store",
+          active: false,
+          icon: Cog,
+          submenus: [
+            {
+              href: "/admin/endpoint",
+              label: "Store Endpoint",
+              active: pathname.includes("/admin/endpoint"),
+            },
+            {
+              href: "/admin/payment-management",
+              label: "Order Charges",
+              active: pathname.includes("/admin/payment-management"),
+            },
+          ],
         },
       ],
     },
     {
-      groupLabel: "Contents",
+      groupLabel: "Site Management",
       menus: [
-        {
-          href: "/admin/products",
-          label: "Products",
-          active: pathname.includes("/admin/products"),
-          icon: SquarePen,
-          submenus: [],
-        },
+        // {
+        //   href: "/admin",
+        //   label: "Dashboard",
+        //   active: pathname.includes("/admin") && pathname === "/admin",
+        //   icon: LayoutGrid,
+        //   submenus: [],
+        // },
         {
           href: "/admin/events",
           label: "Events",
@@ -65,22 +81,57 @@ export function getMenuList(pathname: string): Group[] {
           icon: Tag,
           submenus: [],
         },
-      ],
-    },
-    {
-      groupLabel: "Settings",
-      menus: [
         {
-          href: "/users",
-          label: "Users",
-          active: pathname.includes("/users"),
-          icon: Users,
+          href: "/admin/user-blogs",
+          label: "User Blogs",
+          active: pathname.includes("/admin/user-blogs"),
+          icon: TagsIcon,
           submenus: [],
         },
         {
-          href: "/account",
-          label: "Account",
-          active: pathname.includes("/account"),
+          href: "/admin/users",
+          label: "Users",
+          active: pathname.includes("/admin/users"),
+          icon: User2,
+          submenus: [],
+        },
+        {
+          href: "/admin/careers",
+          label: "Careers",
+          active: pathname.includes("/admin/careers"),
+          icon: Workflow,
+          submenus: [],
+        },
+        {
+          href: "/admin/policy",
+          label: "Return Policy",
+          active: pathname.includes("/admin/policy"),
+          icon: Files,
+          submenus: [],
+        },
+        {
+          href: "/admin/supporter",
+          label: "Supported By",
+          active: pathname.includes("/admin/supporter"),
+          icon: HeartHandshake,
+          submenus: [],
+        },
+      ],
+    },
+    {
+      groupLabel: "Account",
+      menus: [
+        {
+          href: "/profile",
+          label: "Profile",
+          active: pathname.includes("/profile"),
+          icon: User,
+          submenus: [],
+        },
+        {
+          href: "/settings",
+          label: "Settings",
+          active: pathname.includes("/settings"),
           icon: Settings,
           submenus: [],
         },

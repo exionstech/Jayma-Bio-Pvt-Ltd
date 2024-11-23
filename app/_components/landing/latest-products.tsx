@@ -10,9 +10,9 @@ const LatestProductsLg = () => {
     <div className="hidden md:flex flex-col w-full">
       {LatestProductsDetails.map((product, index) => (
         <div key={index} className="flex flex-col gap-8 items-start py-5">
-          <div className="flex gap-2 rounded-3xl border border-green px-16 py-3">
-            <span className="text-green text-xl">0{index + 1}.</span>
-            <span className="text-green text-xl">{product.name}</span>
+          <div className="flex gap-2 rounded-3xl border bg-green px-16 py-3">
+            <span className="text-white text-xl">0{index + 1}.</span>
+            <span className="text-white text-xl">{product.name}</span>
           </div>
           <div
             className={cn(
@@ -72,7 +72,7 @@ const LatestProductsSm = () => {
                 alt={product.name}
                 width={800}
                 height={100}
-                className="h-[80%] w-full"
+                className={cn("h-[80%] w-full rounded-3xl", index%2 === 0 && "rounded-[25px]")}
               />
             </div>
             <div className="w-full flex flex-col items-center justify-center gap-5 md:px-10">
@@ -112,7 +112,7 @@ const LatestProducts = () => {
           <LatestProductsSm />
         </div>
         <div className="flex items-center justify-center pb-5">
-          <AnimatedButton buttonText="All Products" link={"/"} />
+          <AnimatedButton buttonText="All Products" link={"/products"} />
         </div>
       </div>
     </section>

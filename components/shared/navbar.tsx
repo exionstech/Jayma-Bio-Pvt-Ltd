@@ -8,42 +8,53 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useUserData } from "@/hooks/user-data";
 import { UserNav } from "./user-nav";
+import { LogIn } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user } = useUserData();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 lg:px-12 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
-      <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
-        <div className="lg:flex items-center shrink-0 hidden">
-          <Link href="/">
+    <nav className="fixed top-0 left-0 right-0 w-full py-3 px-5 md:px-6 z-30 bg-white/90 border-b border-gray-200 backdrop-blur-lg">
+      <div className="max-w-screen-2xl mx-auto flex items-center justify-between 2xl:px-8">
+        <div className="lg:flex flex-col shrink-0 hidden">
+          <Link href="/" className="flex justify-center items-center gap-2">
             <Image
-              src="/logos/site-logo.svg"
+              src="/logos/logo.png"
               alt="logo"
-              height={75}
-              width={75}
+              height={65}
+              width={65}
               className="shrink-0"
             />
+            <h1 className="text-medium font-medium max-w-60">
+              Jayma Bio Innovations <br /> Private Limited
+            </h1>
           </Link>
         </div>
         <div className="flex items-center shrink-0 lg:hidden">
-          <Link href="/">
+          <Link
+            href="/"
+            className="flex flex-row justify-center items-center gap-4"
+          >
             <Image
-              src="/logos/site-logo.svg"
+              src="/logos/logo.png"
               alt="logo"
               height={50}
               width={50}
               className="shrink-0"
             />
           </Link>
+          <h1 className="text-sm max-w-60 ml-1.5">
+            Jayma Bio Innovations <br /> Private Limited
+          </h1>
         </div>
 
         <div className="hidden lg:flex items-center justify-between ml-4">
           <div className="flex space-x-5">
             {MenuItem.map((item, index) => {
               const active =
-                pathname === item.href && pathname.includes(item.href);
+                pathname === item.href ||
+                (pathname.startsWith(item.href) && item.href !== "/");
               return (
                 <Link key={index} href={item.href}>
                   <div
@@ -77,12 +88,12 @@ const Navbar = () => {
           <UserNav user={user} />
         ) : (
           <Link href="/auth/login" className="hidden lg:block">
-            <Button className="w-[140px] h-[40px] rounded-full bg-green hover:bg-green/90">
-              Login
+            <Button className="w-[50px] h-[40px] rounded-full bg-green hover:bg-green/90">
+              <LogIn className="size-8 shrink-0" />
             </Button>
           </Link>
         )}
-        <MobileNavbar  user={user}/>
+        <MobileNavbar user={user} />
       </div>
     </nav>
   );

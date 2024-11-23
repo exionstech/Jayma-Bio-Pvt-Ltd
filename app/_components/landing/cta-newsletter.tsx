@@ -71,7 +71,7 @@ const CtaNewsLetterSection = () => {
   }
 
   return (
-    <section className="w-full h-full md:h-[50vh] flex items-center justify-center px-5 md:px-10 lg:px-13 py-8 md:py-10">
+    <section className="w-full h-full md:h-[50vh] flex items-center justify-center px-5 md:px-10 lg:px-13 py-8 lg:py-10 max-w-screen-2xl mx-auto">
       <div className="bg-lightGreen w-full h-full rounded-[2rem] flex flex-col md:flex-row items-center gap-6 px-4 md:px-10">
         <div className="w-full md:w-2/5 flex flex-col items-start md:items-start justify-center gap-3 pt-6 md:py-0 px-2 md:px-0">
           <h1 className="text-xl md:text-3xl tracking-tight font-medium capitalize flex flex-col gap-2">
@@ -86,7 +86,7 @@ const CtaNewsLetterSection = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full flex flex-col md:flex-row items-center justify-start gap-4"
+              className="w-full flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4"
             >
               <FormField
                 control={form.control}

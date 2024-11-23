@@ -201,7 +201,35 @@ export const ProductsSchema = z.object({
     message: "Title is required",
   }),
   description: z.string().min(10, { message: "Description is required" }),
-  price: z.number().min(1, { message: "Price is required" }),
+  price: z.string().min(1, { message: "Price is required" }),
   link: z.string().url().min(1, { message: "Link is required" }),
   image: z.array(z.string().url().min(1, { message: "Image is required" })),
+});
+
+export const EventsSchema = z.object({
+  title: z.string().min(1, {
+    message: "Title is required",
+  }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be minimum 10 characters" }),
+  venue: z.string().min(1, { message: "Price is required" }),
+  date: z.string().min(1, { message: "Date is required" }),
+  link: z.string().url().min(1, { message: "Link is required" }),
+  image: z.array(z.string().url().min(1, { message: "Image is required" })),
+  eventType: z.enum(["FEATURED", "UPCOMMING", "PAST"]),
+  notify: z.boolean(),
+  archived: z.boolean(),
+});
+
+export const BlogSchema = z.object({
+  thumbnail: z.string().url().min(1, { message: "Thumbnail is required" }),
+  title: z.string().min(1, { message: "Title is required" }),
+  content: z.optional(z.array(z.string())),
+  likes: z.number().default(0),
+});
+
+export const SupporterSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  image: z.string().url().min(1, { message: "Image is required" }),
 });

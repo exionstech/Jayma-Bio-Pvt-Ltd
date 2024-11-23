@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { transporter } from "./nodemailer";
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
@@ -57,7 +58,7 @@ export const sendVerificationEmail = async (
                             and no action is required on your part.</p>
                           <p style="font-size:18px;line-height:24px;margin:16px 0;">If you have any questions or
                             concerns, please don't hesitate to contact our support team.</p>
-                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jayma-bio.exions.tech" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
+                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
                           </p>
                         </td>
                       </tr>
@@ -77,7 +78,7 @@ export const sendVerificationEmail = async (
             </tbody>
           </table>
           <p style="font-size:12px;line-height:24px;margin:16px 0;text-align:center;color:rgb(0,0,0, 0.7)">© 2024 |
-            <a href="https://jayma-bio.exions.tech" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
+            <a href="https://jaymabioinnovations.com" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
               target="_blank">Exions Tech</a>
           </p>
         </td>
@@ -136,7 +137,7 @@ export const sendPasswordResetEmail = async (
                           <p style="font-size:18px;line-height:24px;margin:20px 0;text-align:left;">If this wasn't you, please ignore this email. Your account security is important to us.</p>
                         <p style="font-size:18px;line-height:24px;margin:16px 0;">If you have any questions or
                             concerns, please don't hesitate to contact our support team.</p>
-                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
+                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
                           </p>
                         </td>
                       </tr>
@@ -156,7 +157,7 @@ export const sendPasswordResetEmail = async (
             </tbody>
           </table>
           <p style="font-size:12px;line-height:24px;margin:16px 0;text-align:center;color:rgb(0,0,0, 0.7)">© 2024 |
-            <a href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
+            <a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
               target="_blank">Exions Tech</a>
           </p>
         </td>
@@ -211,7 +212,7 @@ export const sendTwoFactorTokenEmail = async (
                           </table>
                           <p style="font-size:18px;line-height:24px;margin:20px 0;text-align:left;">This code will expire in 5 minutes. If you didn't attempt to log in, please ignore this email and consider changing your password for security reasons.</p>
                           <p style="font-size:18px;line-height:24px;margin:16px 0;">If you have any questions or concerns, please don't hesitate to contact our support team.</p>
-                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
+                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
                           </p>
                         </td>
                       </tr>
@@ -231,7 +232,7 @@ export const sendTwoFactorTokenEmail = async (
             </tbody>
           </table>
           <p style="font-size:12px;line-height:24px;margin:16px 0;text-align:center;color:rgb(0,0,0, 0.7)">© 2024 |
-            <a href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
+            <a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a href="https://exions.tech"
               target="_blank">Exions Tech</a>
           </p>
         </td>
@@ -286,7 +287,7 @@ export const subcribedNewsleter = async (email: string) => {
                             Stay tuned for inspiring content and exclusive offers as we work towards a greener future together!
                           </p>
                           <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a
-                              href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
+                              href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
                           </p>
                         </td>
                       </tr>
@@ -306,7 +307,7 @@ export const subcribedNewsleter = async (email: string) => {
             </tbody>
           </table>
           <p style="font-size:12px;line-height:24px;margin:16px 0;text-align:center;color:rgb(0,0,0, 0.7)">© 2024 |
-            <a href="https://jayma-bio.exions.tech/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a
+            <a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a
               href="https://exions.tech" target="_blank">Exions Tech</a>
           </p>
         </td>
@@ -314,7 +315,103 @@ export const subcribedNewsleter = async (email: string) => {
     </tbody>
   </table>
 </body>
-
 </html>`,
   });
+};
+
+export const sendEventNewsletter = async (
+  email: string,
+  title: string,
+  description: string,
+  date: string,
+  eventId: string
+) => {
+  const info = await transporter.sendMail({
+    from: `"Jayma Bio Innovations" <${process.env.GMAIL_EMAIL}>`,
+    to: email,
+    subject: `New Event: ${title}`,
+    html: `<html dir="ltr" lang="en">
+
+<head>
+  <link rel="preload" as="image" href="https://utfs.io/f/aoQyAq6fictrObn6USip9naGtPDMNeS7jURlyO2zvkVfbAmH" />
+  <link rel="preload" as="image" href="https://utfs.io/f/aoQyAq6fictrObn6USip9naGtPDMNeS7jURlyO2zvkVfbAmH" />
+  <link rel="preload" as="image" href="https://utfs.io/f/aoQyAq6fictrObn6USip9naGtPDMNeS7jURlyO2zvkVfbAmH" />
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+
+<body
+  style="background-color:#fff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
+  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation"
+    style="max-width:37.5em">
+    <tbody>
+      <tr style="width:100%">
+        <td>
+          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation"
+            style="padding:30px 20px"></table>
+          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation"
+            style="border:1px solid rgb(0,0,0, 0.1);border-radius:3px;overflow:hidden">
+            <tbody>
+              <tr>
+                <td>
+                  <img src="https://utfs.io/f/aoQyAq6fictrObn6USip9naGtPDMNeS7jURlyO2zvkVfbAmH" style="display:block;outline:none;border:none;text-decoration:none" width="620"/>
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation"
+                    style="padding:30px 40px;">
+                    <tbody style="width:100%">
+                      <tr style="width:100%">
+                        <td data-id="__react-email-column">
+                          <h2 style="font-size:26px;font-weight:bold;text-align:left;margin-bottom:30px;">
+                            See Our Latest Event – ${title}
+                          </h2>
+                       
+                          <p style="font-size:18px;line-height:24px;margin:20px 0;text-align:left;">
+                            ${description}
+                          </p>
+                          <p style="font-size:18px;line-height:24px;margin:20px 0;text-align:left;">
+                           Event Date:  ${format(new Date(date), "EEEE, MMMM d, yyyy")}
+                          </p>
+                          <p style="font-size:18px;line-height:24px;margin:20px 0;text-align:left;">
+                           Event Time:  ${format(new Date(date), "hh:mm a")}
+                          </p>
+                        <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tr>
+                              <td align="center" style="padding: 30px 0;">
+                                <a href="https://jaymabioinnovations.com/events/${eventId}" style="background-color: #000000; color: #ffffff; padding: 14px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 18px;">
+                                  View Event
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                          <p style="font-size:18px;line-height:24px;margin:16px 0;">Best regards,<br><a
+                              href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation"
+            style="padding:45px 0 0 0">
+            <tbody>
+              <tr>
+                <td><img src="https://korabi-ecommerce-admin.vercel.app/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdncmjp41z%2Fimage%2Fupload%2Fv1704195824%2Fpcgb9zsaecqlryiuwifi.png&amp;w=1920&amp;q=75" style="display:block;outline:none;border:none;text-decoration:none" width="620" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:12px;line-height:24px;margin:16px 0;text-align:center;color:rgb(0,0,0, 0.7)">© 2024 |
+            <a href="https://jaymabioinnovations.com/" target="_blank">Jayma Bio Innovations Pvt Ltd</a> developed by <a
+              href="https://exions.tech" target="_blank">Exions Tech</a>
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>`,
+  });
+
+  return info;
 };
