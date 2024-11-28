@@ -1,1 +1,1 @@
-# Jayma Bio Pvt ltd
+# Jayma Bio Private Limited
